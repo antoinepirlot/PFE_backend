@@ -15,7 +15,7 @@ def getUsers():
             user = {
                 "id_user": row[0],
                 "lastname": row[1],
-                "firstname": row[2],
+                "firstname": row[2]
             }
             resultsExportUsers.append(user)
         return resultsExportUsers

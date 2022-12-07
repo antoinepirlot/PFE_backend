@@ -1,9 +1,12 @@
 from sqlalchemy.dialects.postgresql import psycopg2
-import database
+import data.database as database
 import sqlalchemy
 
 
 class CoursesDAO:
+    def __init__(self):
+        pass
+
     def createOneCourse(self, course):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
@@ -14,14 +17,14 @@ class CoursesDAO:
               """
         try:
             dico_variables = {"id_category": str(course.id_category), "id_teacher": str(course.id_teacher),
-                                 "course_description": course.course_description,
-                                 "price_per_hour": str(course.price_per_hour),
-                                 "city": course.city, "country": course.country, "id_level": str(course.id_level),
-                                 }
+                              "course_description": course.course_description,
+                              "price_per_hour": str(course.price_per_hour),
+                              "city": course.city, "country": course.country, "id_level": str(course.id_level),
+                              }
             cursor.execute(sql, dico_variables)
             connection.commit()
             results = cursor.fetchall()
-            return results[0] ##TODO : test while tuples in db for level, teacher and category
+            return results[0]  ##TODO : test while tuples in db for level, teacher and category
         except (Exception, psycopg2.DatabaseError) as e:
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))

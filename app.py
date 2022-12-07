@@ -1,6 +1,5 @@
-import donnees.UserDao as UserDao
-import donnees.database as database
 from services.CoursesService import CoursesService
+from services.UsersService import UsersService
 from models.Course import Course
 
 from flask import Flask
@@ -11,7 +10,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 courses_service = CoursesService()
-database.initialiseConnection()
+users_service = UsersService()
 
 
 @app.route('/')
@@ -41,7 +40,7 @@ def create_course():
 def get_users():
     try:
 
-        result = UserDao.getUsers()
+        result = users_service.get_users()
         return jsonify({'users': result}), 200
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

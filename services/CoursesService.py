@@ -1,4 +1,4 @@
-from daos.CoursesDAO import CoursesDAO
+from data.CoursesDAO import CoursesDAO
 
 
 class CoursesService:

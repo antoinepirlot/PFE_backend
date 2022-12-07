@@ -35,22 +35,23 @@ def getUsers():
         cursor.close()
         connection.close()
 
-def getUser(id):
+def getUserById(id):
     connection = database.initialiseConnection()
     cursor = connection.cursor()
-    sql = "SELECT * FROM pfe.users WHERE id_user = %i" % (id)
+    sql = "SELECT * FROM projet.users WHERE id_user = %i" % (id)
     try:
         cursor.execute(sql)
         connection.commit()
         result = cursor.fetchone()
         user = {
             "id_user": result[0],
-            "email": result[1],
-            "last_name": result[2],
-            "first_name": result[3],
-            "password": result[4],
-            "campus": result[5],
-            "role": result[6]
+            "lastname": result[1],
+            "firstname": result[2],
+            "email": result[3],
+            "pseudo": result[4],
+            "sexe": result[5],
+            "phone": result[6],
+            "password": result[7],
         }
         return user
     except (Exception, psycopg2.DatabaseError) as e:

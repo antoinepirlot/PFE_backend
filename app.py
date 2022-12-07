@@ -19,11 +19,20 @@ def create_course():
     return courses_service.create_one_course(None)
 
 
-@app.route('/util', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def get_users():
     try:
 
         result = UserDao.getUsers()
+        return jsonify({'users': result}), 200
+    except (Exception) as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+@app.route('/users/<int:id_user>', methods=['GET'])
+def get_user_by_id(id_user):
+    try:
+
+        result = UserDao.getUserById(id_user)
         return jsonify({'users': result}), 200
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

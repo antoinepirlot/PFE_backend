@@ -7,11 +7,12 @@ class CoursesDAO:
     def createOneCourse(self, course):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
-        sql = """INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
-         id_level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, \
-              %(city)s, %(country)s, %(id_level)s)"""
+        sql = """
+                INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
+                id_level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
+                %(country)s, %(id_level)s)
+              """
         try:
-            print(str(course.id_category))
             dico_variables = {"id_category": str(course.id_category), "id_teacher": str(course.id_teacher),
                                  "course_description": course.course_description,
                                  "price_per_hour": str(course.price_per_hour),

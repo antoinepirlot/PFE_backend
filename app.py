@@ -1,7 +1,7 @@
 import donnees.UserDao as UserDao
 import services.CoursesService as CoursesService
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -22,7 +22,6 @@ def create_course():
 @app.route('/users', methods=['GET'])
 def get_users():
     try:
-
         result = UserDao.getUsers()
         return jsonify({'users': result}), 200
     except (Exception) as e:
@@ -31,9 +30,16 @@ def get_users():
 @app.route('/users/<int:id_user>', methods=['GET'])
 def get_user_by_id(id_user):
     try:
-
         result = UserDao.getUserById(id_user)
         return jsonify({'users': result}), 200
+    except (Exception) as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+@app.route('/users', methods=['POST'])
+def add_user():
+    try:
+        UserDao.singInUser(request.json)
+        return jsonify({'user': 'user created'}), 201
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 

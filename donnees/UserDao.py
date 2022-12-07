@@ -66,3 +66,22 @@ def getUserById(id):
         cursor.close()
         connection.close()
 
+def singInUser(user):
+    connection = database.initialiseConnection()
+    cursor = connection.cursor()
+    sql = "INSERT INTO projet.users VALUES (DEFAULT,'%s','%s','%s','%s','%s','%s','%s')" % (
+        user['lastname'], user['firstname'], user['email'], user['pseudo'], user['sexe'], user['phone'], user['password'])
+    try:
+        cursor.execute(sql)
+        connection.commit()
+    except (Exception, psycopg2.DatabaseError) as e:
+        try:
+            print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            raise Exception from e
+        except IndexError:
+            connection.rollback()
+            print("SQL Error: %s" % str(e))
+            raise Exception from e
+    finally:
+        cursor.close()
+        connection.close()

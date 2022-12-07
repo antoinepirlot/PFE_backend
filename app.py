@@ -1,5 +1,4 @@
-import database
-import users.dao
+import donnees.UserDao as UserDao
 import services.CoursesService as CoursesService
 
 from flask import Flask, jsonify
@@ -8,7 +7,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 courses_service = CoursesService.CoursesService()
-database.initialiseConnection()
 
 
 @app.route('/')
@@ -25,7 +23,7 @@ def create_course():
 def get_users():
     try:
 
-        result = users.dao.getUsers()
+        result = UserDao.getUsers()
         return jsonify({'users': result}), 200
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

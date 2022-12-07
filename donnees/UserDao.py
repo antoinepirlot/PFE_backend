@@ -1,6 +1,6 @@
-import database
+import donnees.database as database
 import psycopg2
-import os
+
 
 def getUsers():
     connection = database.initialiseConnection()

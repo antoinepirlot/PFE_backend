@@ -5,7 +5,7 @@ import os
 def getUsers():
     connection = database.initialiseConnection()
     cursor = connection.cursor()
-    sql = "SELECT * FROM users"
+    sql = "SELECT * FROM projet.users"
     resultsExportUsers = []
     try:
         cursor.execute(sql)

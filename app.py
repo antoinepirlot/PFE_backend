@@ -41,7 +41,7 @@ def get_users():
 
         result = users_service.get_users()
 
-        return jsonify({'users': result}), 200
+        return jsonify(result), 200
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 
@@ -49,7 +49,7 @@ def get_users():
 def get_user_by_id(id_user):
     try:
         result = users_service.get_users_by_id(id_user)
-        return jsonify({'users': result}), 200
+        return jsonify(result), 200
     except (Exception) as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 

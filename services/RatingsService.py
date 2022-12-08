@@ -6,3 +6,6 @@ class RatingsService:
 
     def __init__(self):
         pass
+
+    def get_ratings(self, id_teacher):
+        return self.ratings_DAO.get_ratings_from_teacher(id_teacher)

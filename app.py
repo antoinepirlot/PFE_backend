@@ -12,4 +12,5 @@ app.register_blueprint(courses.route, url_prefix="/courses")
 app.register_blueprint(users.route, url_prefix="/users")
 
 if __name__ == '__main__':
+
     app.run()

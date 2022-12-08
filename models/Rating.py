@@ -5,6 +5,10 @@ class Rating:
         self.rating_text = rating_text
         self.rating_number = rating_number
 
+    @classmethod
+    def init_rating_with_json(cls, json):
+        return cls(json["id_rater"], json["id_rated"], json["rating_text"], json["rating_number"])
+
     def convert_to_json(self):
         return {
             "id_rater": self.id_rater,

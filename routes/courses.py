@@ -1,4 +1,5 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort, Response, jsonify
+from requests import HTTPError
 
 from services.CoursesService import CoursesService
 from models.Course import Course
@@ -7,9 +8,19 @@ courses_service = CoursesService()
 
 route = Blueprint("courses", __name__)
 
+
 # #########
 # ###GET###
 # #########
+@route.route("/<id_course>", methods=["GET"])
+def get_one(id_course):
+    id_course = int(id_course)
+    if id_course < 1:
+        abort(400, "No id course lower than 1")
+    # TODO 404
+    result = courses_service.get_one(id_course)
+    return result.convert_to_json()
+
 
 
 # ########

@@ -1,10 +1,32 @@
 import psycopg2
+from flask import abort
+
 import data.database as database
+from data.services.DALService import DALService
+from models.Course import Course
 
 
 class CoursesDAO:
     def __init__(self):
+        self.dal = DALService()
         pass
+
+    def get_one(self, id_course):
+        """
+        Get one course from the database
+        :param id_course: the id of the requested course
+        :return: the course matching with id_course
+        """
+        sql = """
+                SELECT id_category, id_teacher, course_description, price_per_hour, city, country, id_level           
+                FROM projet.courses
+                WHERE id_course = %(id_course)s;
+              """
+        values = {"id_course": id_course}
+        self.dal.start()
+        result = self.dal.commit(sql, values)[0]
+        course = Course(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
+        return course
 
     def createOneCourse(self, course):
         connection = database.initialiseConnection()

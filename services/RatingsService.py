@@ -1,4 +1,5 @@
 from flask import abort
+from werkzeug.exceptions import NotFound
 
 from data.RatingsDAO import RatingsDAO
 from data.UsersDao import UsersDAO
@@ -23,7 +24,14 @@ class RatingsService:
         appointment = self.appointements_DAO.get_appointments_from_teacher_and_student(rating.id_rated, rating.id_rater)
         if appointment[0].get_appointment_state() != 'finished':
             abort(403, "You have not finished the course with this teacher")
-        #TODO : check if a rating already exist
-        #TODO : create rating
+        #check if a rating already exist
+        try:
+            self.ratings_DAO.get_rating_by_id_rater_and_id_rated(rating.id_rater, rating.id_rated)
+            abort(409, "You already give this teacher a rating.")
+        except NotFound as not_found_e:
+            #TODO create rating
+            pass
+
+
         return rating
 

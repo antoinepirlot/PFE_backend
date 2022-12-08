@@ -1,24 +1,22 @@
+from flask import Blueprint, request
+
 from services.CoursesService import CoursesService
-from services.UsersService import UsersService
 from models.Course import Course
 
-from flask import Flask, jsonify, request
-
-from flask_cors import CORS
-
-from routes import test
-
-app = Flask(__name__)
-cors = CORS(app)
 courses_service = CoursesService()
-users_service = UsersService()
+
+route = Blueprint("courses", __name__)
+
+# #########
+# ###GET###
+# #########
 
 
-#Routes
-app.register_blueprint(test.route, url_prefix="/")
-
-@app.route("/createCourse", methods=["POST"])
-def create_course():
+# ########
+# ##POST##
+# ########
+@route.route("/", methods=["POST"])
+def create_one():
     # check body is not empty
     if request.json['id_category'] is None or request.json['id_category'] < 1 or \
             request.json['id_teacher'] is None or request.json['id_teacher'] < 1 or \
@@ -33,34 +31,11 @@ def create_course():
                         request.json['price_per_hour'], request.json['city'], request.json['country'],
                         request.json['id_level'])
     return courses_service.create_one_course(new_course)
+# #########
+# ###PUT###
+# #########
 
 
-@app.route('/users', methods=['GET'])
-def get_users():
-    try:
-
-        result = users_service.get_users()
-
-        return jsonify(result), 200
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
-
-@app.route('/users/<int:id_user>', methods=['GET'])
-def get_user_by_id(id_user):
-    try:
-        result = users_service.get_users_by_id(id_user)
-        return jsonify(result), 200
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
-
-@app.route('/users', methods=['POST'])
-def add_user():
-    try:
-        users_service.singInUser(request.json)
-        return jsonify({'user': 'user created'}), 201
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
-
-
-if __name__ == '__main__':
-    app.run()
+# ############
+# ###DELETE###
+# ############

@@ -10,7 +10,7 @@ route = Blueprint("users", __name__)
 # #########
 # ###GET###
 # #########
-@route.route('/', methods=['GET'])
+@route.route('', methods=['GET'])
 def get_users():
     try:
         result = users_service.get_users()
@@ -32,7 +32,7 @@ def get_user_by_id(id_user):
 # ########
 # ##POST##
 # ########
-@route.route('/', methods=['POST'])
+@route.route('', methods=['POST'])
 def add_user():
     try:
         users_service.singInUser(request.json)

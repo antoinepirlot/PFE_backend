@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "id_teacher": 3,
-  "id_student": 11
+  "id_student": 2
 }
 
 ###jsdkfh

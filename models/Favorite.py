@@ -5,5 +5,5 @@ class Favorite:
 
     def convert_to_json(self):
         return {"id_teacher": self.id_teacher,
-                "id_user": self.id_student,
+                "id_student": self.id_student,
                 }

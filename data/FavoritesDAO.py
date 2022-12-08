@@ -39,7 +39,7 @@ class FavoritesDAO:
     def addFavorite(self, favorite):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
-        sql = "INSERT INTO projet.favorites (id_teacher, id_student) VALUES('%s', '%s')" % (
+        sql = "INSERT INTO projet.favorites VALUES('%s', '%s')" % (
             favorite['id_teacher'], favorite['id_student']
         )
         try:

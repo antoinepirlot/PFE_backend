@@ -11,3 +11,7 @@ cors = CORS(app)
 app.register_blueprint(courses.route, url_prefix="/courses")
 app.register_blueprint(users.route, url_prefix="/users")
 app.register_blueprint(favorites.route, url_prefix="/favorites")
+
+
+if __name__ == '__main__':
+    app.run()

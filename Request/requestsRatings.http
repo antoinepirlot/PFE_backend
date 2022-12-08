@@ -6,7 +6,7 @@ POST http://localhost:5000/ratings
 Content-Type: application/json
 
 {
-     "id_rater": 100,
+     "id_rater": 5,
       "id_rated": 1,
       "rating_text": "bof comme prof",
       "rating_number": 3

@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "id_category": 1,
   "id_teacher": 1,
-  "course_description": "Ce cours est une introduction à PHP. Il permettra à l''élève d''apprendre les bases telle que les variables etc. L''élève sera ainsi capable de réaliser de superbes programme tel que la Berlin Clock Kata.",
+  "course_description": "Ce cours est une introduction à PHP. Il permettra à l'élève d'apprendre les bases telle que les variables, les fonctions, etc. L'élève sera ainsi capable de réaliser de superbes programme tel que la Berlin Clock Kata.",
   "price_per_hour" : 20.5,
   "city" : "Bruxelles",
   "country": "Belgique",

@@ -30,7 +30,7 @@ def create_one():
     new_course = Course(request.json['id_category'], request.json['id_teacher'], request.json['course_description'],
                         request.json['price_per_hour'], request.json['city'], request.json['country'],
                         request.json['id_level'])
-    return courses_service.create_one_course(new_course)
+    return courses_service.create_one_course(new_course).convert_to_json()
 # #########
 # ###PUT###
 # #########

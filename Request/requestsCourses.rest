@@ -1,12 +1,12 @@
-POST http://localhost:5000/createCourse
+POST http://localhost:5000/courses
 Content-Type: application/json
 
 {
   "id_category": 1,
   "id_teacher": 1,
-  "course_description": "Ce cours est une introduction à PHP. Il permettra à l''élève d''apprendre les bases telle que les variables etc. L''élève sera ainsi capable de réaliser de superbes programme tel que la Berlin Clock Kata.",
+  "course_description": "Ce cours est pour ceux qui connaissent déjà les bases en PHP",
   "price_per_hour" : 20.5,
-  "city" : "Bruxelles",
-  "country": "Belgique",
-  "id_level": 1
+  "city" : "Paris",
+  "country": "France",
+  "id_level": 2
 }

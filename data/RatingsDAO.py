@@ -10,6 +10,32 @@ class RatingsDAO:
     def __init__(self):
         pass
 
+    def create_one_rating(self, rating):
+        connection = database.initialiseConnection()
+        cursor = connection.cursor()
+        sql = """
+                       INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated) 
+                       VALUES( %(rating_text)s, %(rating_number)s, %(id_rater)s, %(id_rated)s)
+                     """
+        try:
+            dico_variables = {"rating_text": str(rating.rating_text), "rating_number": int(rating.rating_number),
+                              "id_rater": int(rating.id_rater),
+                              "id_rated": int(rating.id_rated)
+                              }
+            cursor.execute(sql, dico_variables)
+            connection.commit()
+            return rating
+        except (Exception, psycopg2.DatabaseError) as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise Exception from e
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise Exception from e
+        finally:
+            cursor.close()
+            connection.close()
+
     def get_rating_by_id_rater_and_id_rated(self, id_rater, id_rated):
         connection = database.initialiseConnection()
         cursor = connection.cursor()

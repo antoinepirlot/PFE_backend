@@ -8,6 +8,6 @@ Content-Type: application/json
 {
      "id_rater": 5,
       "id_rated": 1,
-      "rating_text": "bof comme prof",
+      "rating_text": "bof comme prof j'ai pas vrmt apprécié",
       "rating_number": 3
 }

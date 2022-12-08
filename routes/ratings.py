@@ -37,4 +37,4 @@ def create_one():
             request.json['rating_number'] < 1 or request.json['rating_number'] > 5:
         return "Rating is not in the good format", 400
     new_rating = Rating.init_rating_with_json(request.json)
-    return ratings_service.create_rating(new_rating)
+    return ratings_service.create_rating(new_rating).convert_to_json(),201

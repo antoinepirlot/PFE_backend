@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, session, url_for, redirect
+from flask import Flask, request, render_template, session, url_for, redirect
 from flask_socketio import SocketIO, join_room, leave_room, emit
 from flask_cors import CORS
 
@@ -21,7 +21,7 @@ def index():
 
 @app.route('/chat/room/user1/user2', methods=['GET', 'POST'])
 def chat():
-    # on check si user1 et user2 ont une room (oui -> on get la room | non -> on la crée)
+    # on check si user1 et user2 ont une room (oui -> on get la room | non -> on la crée en db)
     if request.method == 'POST':
         username = request.form['username']
         room = request.form['room']

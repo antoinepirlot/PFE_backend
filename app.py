@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 
 from flask_cors import CORS
 
-from routes import test
+from routes import test, user
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -16,6 +16,7 @@ users_service = UsersService()
 
 #Routes
 app.register_blueprint(test.route, url_prefix="/")
+app.register_blueprint(user.route, url_prefix="/")
 
 @app.route("/createCourse", methods=["POST"])
 def create_course():
@@ -35,31 +36,7 @@ def create_course():
     return courses_service.create_one_course(new_course)
 
 
-@app.route('/users', methods=['GET'])
-def get_users():
-    try:
 
-        result = users_service.get_users()
-
-        return jsonify(result), 200
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
-
-@app.route('/users/<int:id_user>', methods=['GET'])
-def get_user_by_id(id_user):
-    try:
-        result = users_service.get_users_by_id(id_user)
-        return jsonify(result), 200
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
-
-@app.route('/users', methods=['POST'])
-def add_user():
-    try:
-        users_service.singInUser(request.json)
-        return jsonify({'user': 'user created'}), 201
-    except (Exception) as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
 
 
 if __name__ == '__main__':

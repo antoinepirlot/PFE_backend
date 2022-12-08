@@ -15,19 +15,10 @@ class UsersDAO:
             results = cursor.fetchall()
 
             for row in results:
-                # user = User.User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]), str(row[7]))
-                # user.convert_to_json()
-                user = {
-                    "id_user": row[0],
-                    "lastname": row[1],
-                    "firstname": row[2],
-                    "email": row[3],
-                    "pseudo": row[4],
-                    "sexe": row[5],
-                    "phone": row[6],
-                    "password": row[7],
-                }
-                resultsExportUsers.append(user)
+                user = User.User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]),
+                                 str(row[6]), str(row[7]))
+
+                resultsExportUsers.append(user.convert_to_json())
             return resultsExportUsers
         except (Exception, psycopg2.DatabaseError) as e:
             try:

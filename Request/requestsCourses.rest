@@ -4,7 +4,7 @@ GET http://localhost:5000/courses/1
 ### 400 expected because id is lower than 1
 GET http://localhost:5000/courses/0
 
-###
+### Create a course
 POST http://localhost:5000/courses
 Content-Type: application/json
 

@@ -9,6 +9,11 @@ class User:
         self.phone = phone
         self.password = password
 
+    @classmethod
+    def init_user_with_json(cls, json):
+        return cls(json["id_user"], json["lastname"], json["firstname"], json["email"], json["pseudo"], json["sexe"],
+                   json["phone"], json["password"])
+
     def convert_to_json(self):
         return {"id_user": self.id_user,
                 "lastname": self.lastname,

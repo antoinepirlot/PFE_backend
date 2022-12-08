@@ -8,4 +8,7 @@ class UsersService:
         pass
 
     def get_users(self):
-        return self.users_DAO.get_users()
+        return self.users_DAO.getUsers()
+
+    def get_users_by_id(self, id):
+        return self.users_DAO.getUserById(id)

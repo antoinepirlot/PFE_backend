@@ -1,6 +1,5 @@
-from sqlalchemy.dialects.postgresql import psycopg2
+import psycopg2
 import data.database as database
-import sqlalchemy
 
 
 class CoursesDAO:

@@ -9,6 +9,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 #Session(app)
 
+
 socketio = SocketIO(app, manage_session=False)
 
 
@@ -17,8 +18,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/chat', methods=['GET', 'POST'])
+@app.route('/chat/room/user1/user2', methods=['GET', 'POST'])
 def chat():
+    # on check si user1 et user2 ont une room (oui -> on get la room | non -> on la crée)
     if request.method == 'POST':
         username = request.form['username']
         room = request.form['room']
@@ -35,6 +37,7 @@ def chat():
 
 @socketio.on('join', namespace='/chat')
 def join(message):
+    # si user n'est pas present dans la room -> tu t'en va
     room = session.get('room')
     join_room(room)
     emit('joinStatus', {'msg': session.get('username')}, room=room)

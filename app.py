@@ -1,14 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, jsonify, request, render_template, session, url_for, redirect
 from flask_socketio import SocketIO, join_room, leave_room, emit
-from flask_session import Session
+from flask_cors import CORS
+
+from routes import courses, users
 
 app = Flask(__name__)
+cors = CORS(app)
+
 app.debug = True
 app.config['SECRET_KEY'] = 'secret'
 app.config['SESSION_TYPE'] = 'filesystem'
-
-#Session(app)
-
 
 socketio = SocketIO(app, manage_session=False)
 
@@ -57,6 +58,10 @@ def left(message):
     session.clear()
     emit('leftStatus', {'msg': username}, room=room)
 
+
+# Routes
+app.register_blueprint(courses.route, url_prefix="/courses")
+app.register_blueprint(users.route, url_prefix="/users")
 
 if __name__ == '__main__':
     socketio.run(app)

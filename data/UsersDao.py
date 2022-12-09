@@ -63,7 +63,7 @@ class UsersDAO:
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = "SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password " \
-              "FROM projet.users WHERE email = %s" % (email)
+              "FROM projet.users WHERE email = '%s'" % (email)
         try:
             cursor.execute(sql)
             connection.commit()

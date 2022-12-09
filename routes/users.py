@@ -31,9 +31,10 @@ def get_user_by_id(id_user):
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 
-@route.route('/<str:email>', methods=['GET'])
+@route.route('/<string:email>', methods=['GET'])
 def get_user_by_email(email):
     try:
+        print(email)
         result = users_service.get_users_by_email(email)
         return result.convert_to_json(), 200
     except HTTPError as http_e:

@@ -1,8 +1,7 @@
-from flask import Blueprint, request, abort, Response, jsonify
-from requests import HTTPError
+from flask import Blueprint, request, abort
 
-from services.CoursesService import CoursesService
 from models.Course import Course
+from services.CoursesService import CoursesService
 
 courses_service = CoursesService()
 
@@ -20,8 +19,18 @@ def get_one(id_course):
     course = courses_service.get_one(id_course)
     if course is None:
         abort(404, f"No course matching id: {id_course}")
-    return 200, course.convert_to_json()
+    return course, 200
 
+
+@route.route("/teacher/<id_teacher>", methods=["GET"])
+def get_all_courses_from_teacher(id_teacher):
+    id_teacher = int(id_teacher)
+    if id_teacher < 1:
+        abort(400, "No id teacher lower than 1")
+    courses = courses_service.get_all_courses_from_teacher(id_teacher)
+    if courses is None:
+        abort(404, f"No courses for teacher's id {id_teacher}")
+    return courses, 200
 
 
 # ########
@@ -30,7 +39,7 @@ def get_one(id_course):
 @route.route("/", methods=["POST"])
 def create_one():
     # check body is not empty
-    if request.json['id_category'] is None or (not isinstance(request.json['id_category'], int)) or\
+    if request.json['id_category'] is None or (not isinstance(request.json['id_category'], int)) or \
             request.json['id_category'] < 1 or request.json['id_teacher'] is None or \
             (not isinstance(request.json['id_teacher'], int)) or request.json['id_teacher'] < 1 or \
             request.json['course_description'] is None or len(str(request.json['course_description']).strip()) == 0 or \

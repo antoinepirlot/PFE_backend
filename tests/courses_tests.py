@@ -29,7 +29,8 @@ class CoursesTests(unittest.TestCase):
     def test_get_one_course_with_id_course_ok(self):
         self.dal_service.commit = Mock(return_value=self.course_from_db)
         response = routes.courses.get_one(1)
-        self.assertEqual(self.course_json, response[1])
+        self.assertEqual(200, response[1])
+        self.assertEqual(self.course_json, response[0])
 
     def test_get_one_course_with_id_course_not_existing(self):
         self.dal_service.commit = Mock(return_value=[])
@@ -44,6 +45,25 @@ class CoursesTests(unittest.TestCase):
             routes.courses.get_one(0)
         except Exception as e:
             self.assertEqual(400, e.code)
+
+    def test_get_all_courses_from_teacher_id_ok(self):
+        self.dal_service.commit = Mock(return_value=self.course_from_db)
+        response = routes.courses.get_all_courses_from_teacher(1)
+        self.assertEqual(200, response[1])
+        self.assertEqual([self.course_json], response[0])
+
+    def test_get_all_courses_from_teacher_id_lower_than_1(self):
+        try:
+            routes.courses.get_all_courses_from_teacher(0)
+        except Exception as e:
+            self.assertEqual(400, e.code)
+
+    def test_get_all_courses_from_teacher_id_not_existing(self):
+        self.dal_service.commit = Mock(return_value=[])
+        try:
+            routes.courses.get_all_courses_from_teacher(100)
+        except Exception as e:
+            self.assertEqual(404, e.code)
 
 
 if __name__ == '__main__':

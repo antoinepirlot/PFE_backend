@@ -16,7 +16,7 @@ class NotificationsDAO:
 
         sql = """SELECT *
         FROM projet.notifications 
-        WHERE id_user = %(id_user)s;"""
+        WHERE id_user = %(id_user)s ORDER BY notification_date DESC;"""
 
         resultsExportNotif = []
         value = {"id_user": id_user}
@@ -24,7 +24,8 @@ class NotificationsDAO:
         results = self.dal.commit(sql, value)
 
         for row in results:
-            notif = Notification(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]))
+            print(type(row[2]))
+            notif = Notification(int(row[0]), int(row[1]), str(row[2]), str(row[3]), bool(row[4]))
 
             resultsExportNotif.append(notif)
         return resultsExportNotif

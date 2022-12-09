@@ -15,6 +15,10 @@ route = Blueprint("notification", __name__)
 def getNotificationFromUser(id_user):
     try:
         result = notification_service.getNotificationFromUser(id_user)
-        return jsonify(result), 200
+        users = []
+        for user in result:
+            users.append(user.convert_to_json())
+
+        return users, 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

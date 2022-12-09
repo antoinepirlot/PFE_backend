@@ -36,4 +36,4 @@ def login():
         key=my_secret,
     )
 
-    return token, 200
+    return jsonify(token), 200

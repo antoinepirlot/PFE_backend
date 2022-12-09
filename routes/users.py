@@ -40,8 +40,8 @@ def get_user_by_email(email):
     try:
         result = users_service.get_users_by_email(email)
         return result.convert_to_json(), 200
-    except HTTPError as http_e:
-        return http_e.args[1], http_e.args[0]
+    except NotFound as not_found_e:
+        raise not_found_e
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 

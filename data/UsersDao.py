@@ -47,30 +47,21 @@ class UsersDAO:
             raise not_found_e
 
     def getUserByEmail(self, email):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password " \
-              "FROM projet.users WHERE email = '%s'" % (email)
+        sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
+                          FROM projet.users 
+                          WHERE email = %(email)s;
+                          """
         try:
-            cursor.execute(sql)
-            connection.commit()
-            result = cursor.fetchone()
-            if result is None:
-                raise HTTPError(404, "User not found")
+            value = {"email": email}
+            self.dal.start()
+            result = self.dal.commit(sql, value)
+            if len(result) == 0:
+                abort(404, "User not found")
+            result = result[0]
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
-        except HTTPError as http_e:
-            raise http_e
-        except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()
+        except NotFound as not_found_e:
+            raise not_found_e
 
     def singInUser(self, user):
         connection = database.initialiseConnection()

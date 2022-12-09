@@ -9,7 +9,6 @@ import data.database as database
 import psycopg2
 
 
-
 class UsersDAO:
     def __init__(self):
         self.dal = DALService()

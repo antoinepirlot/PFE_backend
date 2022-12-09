@@ -3,6 +3,7 @@ from flask import abort
 
 import bcrypt
 
+
 class UsersService:
     users_DAO = UsersDAO()
 
@@ -22,7 +23,6 @@ class UsersService:
         return user
 
     def singInUser(self, user):
-
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()

@@ -6,6 +6,10 @@ Content-Type: application/json
 GET http://localhost:5000/favorites/3
 Content-Type: application/json
 
+### Get the mosts favorites teachers
+GET http://localhost:5000/favorites/mostFavoritesTeachers
+Content-Type: application/json
+
 ### Add a favorite teacher
 POST http://localhost:5000/favorites
 Content-Type: application/json

@@ -41,7 +41,7 @@ class FavoritesDAO:
             cursor.close()
             connection.close()
 
-    def get_favotite_teachers_from_user(self, id):
+    def get_favorite_teachers_from_user(self, id):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = "SELECT id_student, id_teacher FROM projet.favorites WHERE id_student = %i" % (id)
@@ -54,6 +54,38 @@ class FavoritesDAO:
             for row in results:
                 favorite = Favorite(int(row[0]), int(row[1]))
                 results_export_fav_teachers.append(favorite)
+
+            return results_export_fav_teachers
+
+        except (Exception, psycopg2.DatabaseError) as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise Exception from e
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise Exception from e
+
+        finally:
+            cursor.close()
+            connection.close()
+
+    def get_most_favorites_teachers(self):
+        connection = database.initialiseConnection()
+        cursor = connection.cursor()
+        sql = "SELECT id_teacher, count(id_student) as total FROM projet.favorites " \
+              "GROUP BY id_teacher ORDER BY total DESC"
+        results_export_fav_teachers = []
+        try:
+            cursor.execute(sql)
+            connection.commit()
+            results = cursor.fetchall()
+
+            for row in results:
+                res = {
+                    "id_teacher": row[0],
+                    "total_like": row[1]
+                }
+                results_export_fav_teachers.append(res)
 
             return results_export_fav_teachers
 

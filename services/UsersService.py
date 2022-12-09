@@ -1,4 +1,4 @@
-from data.UsersDao import UsersDAO
+from data.UsersDAO import UsersDAO
 from flask import abort
 
 import bcrypt

@@ -1,0 +1,2 @@
+### Get ratings from a teacher
+GET http://localhost:5000/notifications/1

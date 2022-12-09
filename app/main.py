@@ -2,7 +2,9 @@ from flask import Flask, jsonify, request
 
 from flask_cors import CORS
 
-from routes import courses, users, ratings, favorites
+
+from routes import courses, users, ratings, favorites, authentications, notifications
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -12,6 +14,8 @@ app.register_blueprint(courses.route, url_prefix="/courses")
 app.register_blueprint(users.route, url_prefix="/users")
 app.register_blueprint(ratings.route, url_prefix="/ratings")
 app.register_blueprint(favorites.route, url_prefix="/favorites")
+app.register_blueprint(notifications.route, url_prefix="/notifications")
+app.register_blueprint(authentications.route, url_prefix="/authentications")
 
 
 if __name__ == '__main__':

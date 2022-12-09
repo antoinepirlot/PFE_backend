@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "id_student": 2,
-  "id_teacher": 5
+  "id_teacher": 2
 }
 
 ### Delete a favorite teacher

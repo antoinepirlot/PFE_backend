@@ -2,6 +2,7 @@ import jwt
 from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, request
 from requests import HTTPError
+import os
 
 from services.UsersService import UsersService
 
@@ -14,16 +15,25 @@ route = Blueprint("authentications", __name__)
 # ########
 @route.route("/login", methods=["POST"])
 def login():
-    # check body is not empty
-    if request.json['email'] is None or len(str(request.json['email']).strip()) == 0 or \
-            request.json['password'] is None or len(str(request.json['password']).strip()) == 0:
+    data = request.get_json()
+
+    # check body
+    if 'email' not in data or len(str(data['email']).strip()) == 0 or \
+            'password' not in data or len(str(data['password']).strip()) == 0:
         return "Login object is not in the good format", 400
 
-    payload = {
-        'exp': datetime.utcnow() + timedelta(minutes=10),  # Expiration time
-        'email': request.json['email']
+    user = users_service.get_users_by_email(data['email'])
+
+    payload_data = {
+        "id": user.convert_to_json()['id_user'],
+        'exp': datetime.utcnow() + timedelta(minutes=10) #expiration time
     }
 
-    return jwt.encode(payload, "ok",algorithm='HS256'), 200
+    my_secret = os.getenv("JWT_SECRET")
 
-    #return courses_service.create_one_course(new_course).convert_to_json(), 201
+    token = jwt.encode(
+        payload=payload_data,
+        key=my_secret,
+    )
+
+    return token, 200

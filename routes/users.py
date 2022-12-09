@@ -34,7 +34,6 @@ def get_user_by_id(id_user):
 @route.route('/<string:email>', methods=['GET'])
 def get_user_by_email(email):
     try:
-        print(email)
         result = users_service.get_users_by_email(email)
         return result.convert_to_json(), 200
     except HTTPError as http_e:

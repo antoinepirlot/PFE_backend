@@ -1,4 +1,5 @@
-from requests import HTTPError
+from flask import abort
+from werkzeug.exceptions import NotFound
 
 import data.database as database
 from models.User import User
@@ -17,7 +18,7 @@ class UsersDAO:
             results = cursor.fetchall()
 
             for row in results:
-                user = User.User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]),
+                user = User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]),
                                  str(row[6]), str(row[7]))
 
                 resultsExportUsers.append(user.convert_to_json())
@@ -43,11 +44,11 @@ class UsersDAO:
             connection.commit()
             result = cursor.fetchone()
             if result is None:
-                raise HTTPError(404, "User not found")
+                abort(404, "User not found")
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
-        except HTTPError as http_e:
-            raise http_e
+        except NotFound as not_found_e:
+            raise not_found_e
         except (Exception, psycopg2.DatabaseError) as e:
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))

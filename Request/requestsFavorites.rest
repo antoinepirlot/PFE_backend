@@ -1,0 +1,29 @@
+### Get a favorite
+GET http://localhost:5000/favorites/1/3
+Content-Type: application/json
+
+### Get all your favorite teacher
+GET http://localhost:5000/favorites/3
+Content-Type: application/json
+
+### Get the mosts favorites teachers
+GET http://localhost:5000/favorites/mostFavoritesTeachers
+Content-Type: application/json
+
+### Add a favorite teacher
+POST http://localhost:5000/favorites
+Content-Type: application/json
+
+{
+  "id_student": 2,
+  "id_teacher": 2
+}
+
+### Delete a favorite teacher
+DELETE http://localhost:5000/favorites
+Content-Type: application/json
+
+{
+  "id_teacher": 2,
+  "id_student": 1
+}

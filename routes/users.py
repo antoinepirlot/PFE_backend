@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from requests import HTTPError
-
+from models.User import User
 from services.UsersService import UsersService
 
 users_service = UsersService()

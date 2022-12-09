@@ -33,7 +33,7 @@ class UsersService:
 
         userFound = self.get_users_by_email(email).convert_to_json()
 
-        if bcrypt.checkpw(password.encode(), userFound['password'].encode()):
+        if not bcrypt.checkpw(password.encode(), userFound['password'].encode()):
             abort(404, "Email or password incorrect")
 
         return userFound

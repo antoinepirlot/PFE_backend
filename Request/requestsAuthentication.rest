@@ -3,6 +3,6 @@ POST http://localhost:5000/authentications/login
 Content-Type: application/json
 
 {
-      "email": "aaa@gmail.com",
-      "password": "nknkna"
+      "email": "a@gmail.com",
+      "password": "a"
 }

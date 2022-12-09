@@ -15,8 +15,11 @@ route = Blueprint("users", __name__)
 def get_users():
     try:
         result = users_service.get_users()
+        users = []
+        for user in result:
+            users.append(user.convert_to_json())
 
-        return jsonify(result), 200
+        return users, 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 

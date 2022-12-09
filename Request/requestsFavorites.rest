@@ -1,0 +1,11 @@
+POST http://localhost:5000/favorites
+Content-Type: application/json
+
+{
+  "id_teacher": 3,
+  "id_student": 3
+}
+
+###jsdkfh
+GET http://localhost:5000/favorites/1
+Content-Type: application/json

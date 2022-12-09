@@ -12,3 +12,6 @@ class UsersService:
 
     def get_users_by_id(self, id):
         return self.users_DAO.getUserById(id)
+
+    def singInUser(self, user):
+        return self.users_DAO.singInUser(user)

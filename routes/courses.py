@@ -19,7 +19,7 @@ def get_one(id_course):
     course = courses_service.get_one(id_course)
     if course is None:
         abort(404, f"No course matching id: {id_course}")
-    return 200, course
+    return course, 200
 
 
 @route.route("/teacher/<id_teacher>", methods=["GET"])
@@ -30,7 +30,7 @@ def get_all_courses_from_teacher(id_teacher):
     courses = courses_service.get_all_courses_from_teacher(id_teacher)
     if courses is None:
         abort(404, f"No courses for teacher's id {id_teacher}")
-    return 200, courses
+    return courses, 200
 
 
 # ########

@@ -5,7 +5,7 @@ GET http://localhost:5000/users
 GET http://localhost:5000/users/10
 
 ### get user by email
-GET http://localhost:5000/users/requinFR@gmail.com
+GET http://localhost:5000/users/aa@gmail.com
 
 ### create new user
 POST http://localhost:5000/users
@@ -14,9 +14,9 @@ Content-Type: application/json
 {
      "lastname": "potato",
       "firstname": "tito",
-      "email": "test123456@gmail.com",
-      "pseudo": "test123456",
+      "email": "aaaa@gmail.com",
+      "pseudo": "aaaa",
       "sexe": "male",
       "phone": "0472586978",
-      "password": "potato123"
+      "password": "a"
 }

@@ -22,10 +22,10 @@ def login():
             'password' not in data or len(str(data['password']).strip()) == 0:
         return "Login object is not in the good format", 400
 
-    user = users_service.get_users_by_email(data['email'])
+    user = users_service.logInUser(data['email'], data['password'])
 
     payload_data = {
-        "id": user.convert_to_json()['id_user'],
+        "id": user['id_user'],
         'exp': datetime.utcnow() + timedelta(minutes=10) #expiration time
     }
 

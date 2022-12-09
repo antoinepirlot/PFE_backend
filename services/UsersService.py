@@ -1,4 +1,5 @@
 from data.UsersDao import UsersDAO
+from flask import abort
 
 import bcrypt
 
@@ -15,7 +16,10 @@ class UsersService:
         return self.users_DAO.getUserById(id)
 
     def get_users_by_email(self, email):
-        return self.users_DAO.getUserByEmail(email)
+        user = self.users_DAO.getUserByEmail(email)
+        if user is None:
+            abort(404, "User not found")
+        return user
 
     def singInUser(self, user):
 
@@ -24,3 +28,12 @@ class UsersService:
         user['password'] = hashed.decode()
 
         return self.users_DAO.singInUser(user)
+
+    def logInUser(self, email, password):
+
+        userFound = self.get_users_by_email(email).convert_to_json()
+
+        if bcrypt.checkpw(password.encode(), userFound['password'].encode()):
+            abort(404, "Email or password incorrect")
+
+        return userFound

@@ -37,10 +37,10 @@ class UsersDAO:
         try:
             value = {"id_user": id_user}
             self.dal.start()
-            result = self.dal.commit(sql, value)[0]
-            if result is None:
-                raise HTTPError(404, "User not found")
-
+            result = self.dal.commit(sql, value)
+            if len(result) == 0:
+                abort(404, "User not found")
+            result = result[0]
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
         except NotFound as not_found_e:

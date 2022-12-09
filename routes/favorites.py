@@ -11,13 +11,19 @@ route = Blueprint("favorites", __name__)
 # #########
 # ###GET###
 # #########
+@route.route('/<int:id_teacher>/<int:id_student>', methods=['GET'])
+def get_favorite(id_teacher, id_student):
+    favorite = favorites_service.get_favorite(id_teacher, id_student)
+    return favorite.convert_to_json()
+
+
 @route.route('/<int:id_user>', methods=['GET'])
 def get_favorites_from_user(id_user):
-    try:
-        result = favorites_service.get_favorites_from_user(id_user)
-        return jsonify(result), 200
-    except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+    all_favorites = favorites_service.get_favorites_from_user(id_user)
+    all_favorites_json = []
+    for favorite in all_favorites:
+        all_favorites_json.append(favorite.convert_to_json())
+    return all_favorites_json
 
 
 # ########
@@ -25,11 +31,9 @@ def get_favorites_from_user(id_user):
 # ########
 @route.route("/", methods=["POST"])
 def add_favorite():
-    try:
-        favorites_service.add_favorite(request.json)
-        return jsonify({'favorite': 'favorite added'}), 201
-    except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+    new_favorite = Favorite.init_favorite_with_json(request.json)
+    return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
+
 
 # #########
 # ###PUT###
@@ -38,3 +42,11 @@ def add_favorite():
 # ############
 # ###DELETE###
 # ############
+@route.route("/", methods=["DELETE"])
+def remove_favorite():
+    try:
+        print(request.json)
+        favorites_service.remove_favorite(request.json)
+        return jsonify({'favorite': 'favorite deleted'}), 201
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500

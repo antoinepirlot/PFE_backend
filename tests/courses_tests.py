@@ -46,8 +46,7 @@ class CoursesTests(unittest.TestCase):
             self.assertEqual(400, e.code)
 
     def test_get_all_courses_from_teacher_id_ok(self):
-        courses = self.course_from_db
-        self.dal_service.commit = Mock(return_value=courses)
+        self.dal_service.commit = Mock(return_value=self.course_from_db)
         response = routes.courses.get_all_courses_from_teacher(1)
         self.assertEqual(200, response[0])
         self.assertEqual([self.course_json], response[1])

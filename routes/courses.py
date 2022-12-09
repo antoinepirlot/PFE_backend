@@ -20,7 +20,7 @@ def get_one(id_course):
     course = courses_service.get_one(id_course)
     if course is None:
         abort(404, f"No course matching id: {id_course}")
-    return course.convert_to_json()
+    return 200, course.convert_to_json()
 
 
 

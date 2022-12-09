@@ -1,8 +1,8 @@
+import psycopg2
 from flask import abort
 
-import data.database as database
+import data.services.database as database
 from models.Appointment import Appointment
-import psycopg2
 
 
 class AppointmentsDAO:

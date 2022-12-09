@@ -1,13 +1,10 @@
+import psycopg2
 from requests import HTTPError
-from data.services.DALService import DALService
-from models.User import User
-
-from flask import abort
 from werkzeug.exceptions import NotFound
 
-import data.database as database
-import psycopg2
-
+import data.services.database as database
+from data.services.DALService import DALService
+from models.User import User
 
 
 class UsersDAO:

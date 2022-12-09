@@ -1,6 +1,6 @@
-import data.database as database
-import models.User as User
 import psycopg2
+
+import data.services.database as database
 
 
 class FavoritesDAO:

@@ -1,9 +1,9 @@
+import psycopg2
 from flask import abort
 from werkzeug.exceptions import NotFound
 
-import data.database as database
+import data.services.database as database
 from models.Rating import Rating
-import psycopg2
 
 
 class RatingsDAO:

@@ -1,4 +1,4 @@
-import data.database as database
+import data.services.database as database
 
 
 class DALService:

@@ -1,6 +1,6 @@
 import psycopg2
 
-import data.database as database
+import data.services.database as database
 from data.services.DALService import DALService
 from models.Course import Course
 

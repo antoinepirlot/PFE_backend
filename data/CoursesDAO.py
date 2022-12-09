@@ -1,5 +1,4 @@
 import psycopg2
-from flask import abort
 
 import data.database as database
 from data.services.DALService import DALService
@@ -7,9 +6,17 @@ from models.Course import Course
 
 
 class CoursesDAO:
+
     def __init__(self):
         self.dal = DALService()
-        pass
+
+    # __new__ Redefined to use singleton pattern
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            # No instance of CoursesDAO class, a new one is created
+            cls.instance = super(CoursesDAO, cls).__new__(cls)
+        # There's already an instance of CoursesDAO class, so the existing one is returned
+        return cls.instance
 
     def get_one(self, id_course):
         """
@@ -24,7 +31,10 @@ class CoursesDAO:
               """
         values = {"id_course": id_course}
         self.dal.start()
-        result = self.dal.commit(sql, values)[0]
+        result = self.dal.commit(sql, values)
+        if len(result) == 0:
+            return None
+        result = result[0]
         course = Course(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
         return course
 

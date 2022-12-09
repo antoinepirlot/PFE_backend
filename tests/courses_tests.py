@@ -52,6 +52,12 @@ class CoursesTests(unittest.TestCase):
         self.assertEqual(200, response[0])
         self.assertEqual([self.course_json], response[1])
 
+    def test_get_all_courses_from_teacher_id_lower_than_1(self):
+        try:
+            routes.courses.get_all_courses_from_teacher(0)
+        except Exception as e:
+            self.assertEqual(400, e.code)
+
 
 if __name__ == '__main__':
     unittest.main()

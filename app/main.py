@@ -16,4 +16,5 @@ app.register_blueprint(authentications.route, url_prefix="/authentications")
 
 
 if __name__ == '__main__':
+
     app.run()

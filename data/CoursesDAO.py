@@ -24,7 +24,10 @@ class CoursesDAO:
               """
         values = {"id_course": id_course}
         self.dal.start()
-        result = self.dal.commit(sql, values)[0]
+        result = self.dal.commit(sql, values)
+        if len(result) == 0:
+            return None
+        result = result[0]
         course = Course(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
         return course
 

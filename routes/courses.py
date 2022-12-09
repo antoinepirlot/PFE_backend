@@ -17,9 +17,10 @@ def get_one(id_course):
     id_course = int(id_course)
     if id_course < 1:
         abort(400, "No id course lower than 1")
-    # TODO 404
-    result = courses_service.get_one(id_course)
-    return result.convert_to_json()
+    course = courses_service.get_one(id_course)
+    if course is None:
+        abort(404, f"No course matching id: {id_course}")
+    return course.convert_to_json()
 
 
 

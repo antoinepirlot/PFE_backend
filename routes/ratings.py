@@ -1,5 +1,4 @@
 from flask import Blueprint, request
-from requests import HTTPError
 
 from services.RatingsService import RatingsService
 from models.Rating import Rating

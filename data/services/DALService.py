@@ -16,6 +16,7 @@ class DALService:
         self.cursor.execute(sql, values)
         self.connection.commit()
         results = self.cursor.fetchall()
+        self.cursor.close()
         self.connection.close()
         return results
 

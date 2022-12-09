@@ -15,4 +15,5 @@ app.register_blueprint(favorites.route, url_prefix="/favorites")
 
 
 if __name__ == '__main__':
+
     app.run()

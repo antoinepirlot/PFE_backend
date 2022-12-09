@@ -1,5 +1,6 @@
 from data.UsersDao import UsersDAO
 
+import bcrypt
 
 class UsersService:
     users_DAO = UsersDAO()
@@ -14,4 +15,9 @@ class UsersService:
         return self.users_DAO.getUserById(id)
 
     def singInUser(self, user):
+
+        password = user['password']
+        hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        user['password'] = hashed.decode()
+
         return self.users_DAO.singInUser(user)

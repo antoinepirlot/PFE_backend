@@ -30,7 +30,6 @@ def get_chat_room_by_id(id_room):
 def create_chat_room(id_user1, id_user2):
     return chat_rooms_service.create_chat_room(id_user1, id_user2).convert_to_json(), 201
 
-
 # #########
 # ###PUT###
 # #########

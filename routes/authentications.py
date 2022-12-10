@@ -10,13 +10,12 @@ users_service = UsersService()
 
 route = Blueprint("authentications", __name__)
 
+
 # ########
 # ##POST##
 # ########
 @route.route("/login", methods=["POST"])
 def login():
-
-
     data = request.get_json()
 
     # check body
@@ -43,4 +42,3 @@ def login():
         return "Email or password incorrect", 404
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
-

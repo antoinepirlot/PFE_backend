@@ -93,19 +93,19 @@ CREATE TABLE projet.appointments (
 );
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Dupont', 'Pierre', 'requinFR@gmail.com', 'REQUIN', 'male', '(+32)4 77 123 659', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Dupont', 'Pierre', 'requinFR@gmail.com', 'REQUIN', 'male', '(+32)4 77 123 659', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Sarrabia', 'Pablo', 'espanaP@gmail.com', 'LaRoja', 'male', '(+32)4 87 123 721', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Sarrabia', 'Pablo', 'espanaP@gmail.com', 'LaRoja', 'male', '(+32)4 87 123 721', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Putellas', 'Alexia', 'barcelonaBO@gmail.com', 'Oro', 'female', '(+32)4 89 123 144', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Putellas', 'Alexia', 'barcelonaBO@gmail.com', 'Oro', 'female', '(+32)4 89 123 144', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female', '(+32)4 75 123 449', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female', '(+32)4 75 123 449', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.levels (name)
 VALUES ('Débutant');
@@ -148,6 +148,9 @@ VALUES(1, 5, 'finished', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
 VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);
+
+INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
+VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE)
 
 INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
 VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE)

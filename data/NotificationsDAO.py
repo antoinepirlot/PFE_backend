@@ -12,7 +12,7 @@ class NotificationsDAO:
         self.dal = DALService()
         pass
 
-    def getNotificationFromUser(self, id_user):
+    def get_notification_from_user(self, id_user):
 
         sql = """SELECT *
         FROM projet.notifications 
@@ -29,4 +29,26 @@ class NotificationsDAO:
 
             resultsExportNotif.append(notif)
         return resultsExportNotif
+
+    def add_notification(self, notification):
+        connection = database.initialiseConnection()
+        cursor = connection.cursor()
+        sql = "INSERT INTO projet.notifications VALUES (DEFAULT,'%s','%s',now(),FALSE)" % (
+            notification['id_user'], notification['notification_text'])
+        try:
+
+            cursor.execute(sql)
+            connection.commit()
+
+        except (Exception, psycopg2.DatabaseError) as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise Exception from e
+            except IndexError:
+                connection.rollback()
+                print("SQL Error: %s" % str(e))
+                raise Exception from e
+        finally:
+            cursor.close()
+            connection.close()
 

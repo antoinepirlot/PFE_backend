@@ -14,7 +14,7 @@ Content-Type: application/json
 {
      "lastname": "potato",
       "firstname": "tito",
-      "email": "aaaa@gmail.com",
+      "email": "a@gmail.com",
       "pseudo": "aaaa",
       "sexe": "male",
       "phone": "0472586978",

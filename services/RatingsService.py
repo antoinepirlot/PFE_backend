@@ -2,7 +2,7 @@ from flask import abort
 from werkzeug.exceptions import NotFound
 
 from data.RatingsDAO import RatingsDAO
-from data.UsersDao import UsersDAO
+from data.UsersDAO import UsersDAO
 from data.AppointmentsDAO import AppointmentsDAO
 
 

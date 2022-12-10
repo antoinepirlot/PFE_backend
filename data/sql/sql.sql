@@ -22,7 +22,7 @@ CREATE TABLE projet.users (
 );
 
 CREATE TABLE projet.chat_rooms  (
-    id_room SERIAL PRIMARY KEY,
+    id_room varchar(36) PRIMARY KEY,
     id_user1 INTEGER NOT NULL REFERENCES projet.users(id_user),
     id_user2 INTEGER NOT NULL REFERENCES projet.users(id_user)
 );
@@ -32,7 +32,7 @@ CREATE TABLE projet.messages (
     pseudo_sender varchar(40),
     content text NOT NULL,
     creation_date DATE NOT NULL DEFAULT NOW(),
-    id_room INTEGER NOT NULL REFERENCES projet.chat_rooms(id_room)
+    id_room VARCHAR NOT NULL REFERENCES projet.chat_rooms(id_room)
 );
 
 CREATE TABLE projet.favorites (

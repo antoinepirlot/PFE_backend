@@ -18,8 +18,8 @@ class RatingsService:
         return self.ratings_DAO.get_ratings_from_teacher(id_teacher)
 
     def create_rating(self, rating):
-        self.users_DAO.getUserById(rating.id_rater)
-        self.users_DAO.getUserById(rating.id_rated)
+        self.users_DAO.get_user_by_id(rating.id_rater)
+        self.users_DAO.get_user_by_id(rating.id_rated)
         # check if a finish appointment exist
         appointment = self.appointements_DAO.get_appointments_from_teacher_and_student(rating.id_rated, rating.id_rater)
         if appointment[0].get_appointment_state() != 'finished':

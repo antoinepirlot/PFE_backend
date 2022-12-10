@@ -14,7 +14,7 @@ class UsersDAO:
         self.dal = DALService()
         pass
 
-    def getUsers(self):
+    def get_users(self):
         sql = """SELECT * FROM projet.users"""
         resultsExportUsers = []
 
@@ -28,7 +28,7 @@ class UsersDAO:
             resultsExportUsers.append(user)
         return resultsExportUsers
 
-    def getUserById(self, id_user):
+    def get_user_by_id(self, id_user):
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
                   FROM projet.users 
                   WHERE id_user = %(id_user)s;
@@ -45,7 +45,7 @@ class UsersDAO:
         except NotFound as not_found_e:
             raise not_found_e
 
-    def getUserByEmail(self, email):
+    def get_user_by_email(self, email):
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
                           FROM projet.users 
                           WHERE email = %(email)s;
@@ -62,7 +62,7 @@ class UsersDAO:
         except NotFound as not_found_e:
             raise not_found_e
 
-    def singInUser(self, user):
+    def sing_in_user(self, user):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = "INSERT INTO projet.users VALUES (DEFAULT,'%s','%s','%s','%s','%s','%s','%s')" % (

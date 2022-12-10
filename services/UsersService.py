@@ -11,23 +11,23 @@ class UsersService:
         pass
 
     def get_users(self):
-        return self.users_DAO.getUsers()
+        return self.users_DAO.get_users()
 
     def get_users_by_id(self, id):
-        return self.users_DAO.getUserById(id)
+        return self.users_DAO.get_user_by_id(id)
 
     def get_users_by_email(self, email):
-        user = self.users_DAO.getUserByEmail(email)
+        user = self.users_DAO.get_user_by_email(email)
         if user is None:
             abort(404, "User not found")
         return user
 
-    def singInUser(self, user):
+    def sing_in_user(self, user):
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()
 
-        return self.users_DAO.singInUser(user)
+        return self.users_DAO.sing_in_user(user)
 
     def logInUser(self, email, password):
 

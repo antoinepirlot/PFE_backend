@@ -12,7 +12,7 @@ class NotificationsDAO:
         self.dal = DALService()
         pass
 
-    def getNotificationFromUser(self, id_user):
+    def get_notification_from_user(self, id_user):
 
         sql = """SELECT *
         FROM projet.notifications 

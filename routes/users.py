@@ -35,6 +35,7 @@ def get_user_by_id(id_user):
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 
+
 @route.route('/<string:email>', methods=['GET'])
 def get_user_by_email(email):
     try:
@@ -52,7 +53,7 @@ def get_user_by_email(email):
 @route.route('', methods=['POST'])
 def add_user():
     try:
-        users_service.singInUser(request.json)
+        users_service.sing_in_user(request.json)
         return jsonify({'user': 'user created'}), 201
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

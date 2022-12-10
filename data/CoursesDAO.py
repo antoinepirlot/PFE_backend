@@ -66,7 +66,7 @@ class CoursesDAO:
             return None
         return _create_course_object(result)
 
-    def createOneCourse(self, course):
+    def create_one_course(self, course):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = """

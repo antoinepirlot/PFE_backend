@@ -62,6 +62,23 @@ class UsersDAO:
         except NotFound as not_found_e:
             raise not_found_e
 
+    def get_user_by_pseudo(self, pseudo):
+        sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
+                          FROM projet.users 
+                          WHERE pseudo = %(pseudo)s;
+                          """
+        try:
+            value = {"pseudo": pseudo}
+            self.dal.start()
+            result = self.dal.commit(sql, value)
+            if len(result) == 0:
+                return None
+            result = result[0]
+            user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
+            return user
+        except NotFound as not_found_e:
+            raise not_found_e
+
     def sing_in_user(self, user):
         connection = database.initialiseConnection()
         cursor = connection.cursor()

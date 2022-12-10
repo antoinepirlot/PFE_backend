@@ -1,5 +1,6 @@
 from data.UsersDAO import UsersDAO
 from flask import abort
+from werkzeug.exceptions import NotFound
 
 import bcrypt
 
@@ -22,7 +23,14 @@ class UsersService:
             abort(404, "User not found")
         return user
 
+    def get_users_by_pseudo(self, pseudo):
+        user = self.users_DAO.get_user_by_pseudo(pseudo)
+        if user is None:
+            abort(404, "User not found")
+        return user
+
     def sing_in_user(self, user):
+
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()

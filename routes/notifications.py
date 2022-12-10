@@ -22,3 +22,11 @@ def getNotificationFromUser(id_user):
         return users, 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+@route.route('', methods=['POST'])
+def add_notification():
+    try:
+        notification_service.add_notification(request.json)
+        return jsonify({'notification': 'notification created'}), 201
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500

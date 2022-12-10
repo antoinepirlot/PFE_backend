@@ -5,7 +5,7 @@ from data.services.DALService import DALService
 from models.Course import Course
 
 
-def _create_course_object(list_of_courses):
+def _create_course_object(list_of_courses, with_teacher=True):
     """
     Creates a new list of Course. It transforms tuples in Course.
     :param: list_of_courses: list of tuples
@@ -13,7 +13,10 @@ def _create_course_object(list_of_courses):
     """
     courses = []
     for course in list_of_courses:
-        courses.append(Course(course[0], course[1], course[2], course[3], course[4], course[5], course[6]))
+        if with_teacher:
+            courses.append(Course(course[0], course[1], course[2], course[3], course[4], course[5], course[6]))
+        else:
+            courses.append(Course(course[0], None, course[1], course[2], course[3], course[4], course[5]))
     return courses
 
 
@@ -55,7 +58,7 @@ class CoursesDAO:
         :return: the list of teacher's courses. If there's no courses, it returns None
         """
         sql = """
-            SELECT DISTINCT id_category, id_teacher, course_description, price_per_hour, city, country, id_level
+            SELECT DISTINCT id_category, course_description, price_per_hour, city, country, id_level
             FROM projet.courses
             WHERE id_teacher = %(id_teacher)s;
         """
@@ -64,7 +67,7 @@ class CoursesDAO:
         result = self.dal.commit(sql, values)
         if len(result) == 0:
             return None
-        return _create_course_object(result)
+        return _create_course_object(result, False)
 
     def create_one_course(self, course):
         connection = database.initialiseConnection()

@@ -10,7 +10,7 @@ class FavoritesDAO:
     def __init__(self):
         pass
 
-    def get_favorite(selfself, id_teacher, id_student):
+    def get_favorite(self, id_teacher, id_student):
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = "SELECT id_student, id_teacher FROM projet.favorites " \

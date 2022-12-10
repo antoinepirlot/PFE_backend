@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
-from routes import courses, users, ratings, favorites, authentications, notifications
+from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms
 
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ app.register_blueprint(ratings.route, url_prefix="/ratings")
 app.register_blueprint(favorites.route, url_prefix="/favorites")
 app.register_blueprint(notifications.route, url_prefix="/notifications")
 app.register_blueprint(authentications.route, url_prefix="/authentications")
+app.register_blueprint(chat_rooms.route, url_prefix="/chat_rooms")
 
 
 if __name__ == '__main__':

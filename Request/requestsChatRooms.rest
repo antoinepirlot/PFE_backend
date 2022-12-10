@@ -1,0 +1,11 @@
+### Get a chat room
+GET http://localhost:5000/chat_rooms/1/2
+Content-Type: application/json
+
+### Get a chat room
+GET http://localhost:5000/chat_rooms/getRoomById/f46e0d39-688a-4f2f-ae72-57f55298203b
+Content-Type: application/json
+
+### Create a chat room
+POST http://localhost:5000/chat_rooms/1/3
+Content-Type: application/json

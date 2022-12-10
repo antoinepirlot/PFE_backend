@@ -44,7 +44,8 @@ def create_one():
             (not isinstance(request.json['id_teacher'], int)) or request.json['id_teacher'] < 1 or \
             'course_description' not in request.get_json() or len(
         str(request.json['course_description']).strip()) == 0 or \
-            'price_per_hour' not in request.get_json() or (not isinstance(request.json['price_per_hour'], float)) or \
+            'price_per_hour' not in request.get_json() or (not isinstance(request.json['price_per_hour'], int) and
+                                                           not isinstance(request.json['price_per_hour'], float)) or \
             request.json['price_per_hour'] <= 0 or 'city' not in request.get_json() or \
             len(str(request.json['city']).strip()) == 0 or 'country' not in request.get_json() or \
             len(str(request.json['country']).strip()) == 0 or 'id_level' not in request.get_json() or \

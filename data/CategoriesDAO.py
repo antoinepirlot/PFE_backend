@@ -8,6 +8,13 @@ class CategoriesDAO:
     def __init__(self):
         pass
 
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            # No instance of CategoriesDAO class, a new one is created
+            cls.instance = super(CategoriesDAO, cls).__new__(cls)
+        # There's already an instance of CategoriesDAO class, so the existing one is returned
+        return cls.instance
+
     def get_all_categories(self):
         connection = database.initialiseConnection()
         cursor = connection.cursor()

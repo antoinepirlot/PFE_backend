@@ -151,3 +151,6 @@ VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);
 
 INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
 VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE)
+
+INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
+VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE)

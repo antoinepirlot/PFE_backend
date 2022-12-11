@@ -47,11 +47,11 @@ def create_one():
             'price_per_hour' not in request.get_json() or (not isinstance(request.json['price_per_hour'], int) and
                                                            not isinstance(request.json['price_per_hour'], float)) or \
             request.json['price_per_hour'] <= 0 or 'city' not in request.get_json() or \
-            len(str(request.json['city']).strip()) == 0 or 'country' not in request.get_json() or \
-            len(str(request.json['country']).strip()) == 0 or 'level' not in request.get_json() or \
-            len(str(request.json['level']).strip()) == 0 or str(request.json['level']) not in ["Débutant",
-                                                                                               "Intermédiaire",
-                                                                                               "Confirmé"]:
+            len(request.json['city'].strip()) == 0 or 'country' not in request.get_json() or \
+            len(request.json['country'].strip()) == 0 or 'level' not in request.get_json() or \
+            len(request.json['level'].strip()) == 0 or request.json['level'] not in ["Débutant",
+                                                                                     "Intermédiaire",
+                                                                                     "Confirmé"]:
         return "Course is not in the good format", 400
 
     new_course = Course(request.json['id_category'], request.json['id_teacher'], request.json['course_description'],

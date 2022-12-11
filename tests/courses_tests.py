@@ -12,6 +12,8 @@ class CoursesTests(unittest.TestCase):
 
         self.dal_service = DALService()
         self.dal_service.start = Mock()
+        self.dal_service.commit_transaction = Mock()
+        self.dal_service.rollback_transaction = Mock()
         self.course_from_db = [(1, 1, "Cours permettant de vous introduire le langage PHP. Aucun prérequis "
                                       "n'est nécessaire", 18.0, "Bruxelles", "Belgique", "Débutant")]
         self.course_from_db_without_id_teacher = [
@@ -39,27 +41,27 @@ class CoursesTests(unittest.TestCase):
         }
 
     def test_get_one_course_with_id_course_ok(self):
-        self.dal_service.commit = Mock(return_value=self.course_from_db)
+        self.dal_service.execute = Mock(return_value=self.course_from_db)
         response = routes.courses.get_one(1)
         self.assertEqual(200, response[1])
         self.assertEqual(self.course_json, response[0])
 
     def test_get_one_course_with_id_course_not_existing(self):
-        self.dal_service.commit = Mock(return_value=[])
+        self.dal_service.execute = Mock(return_value=[])
         try:
             routes.courses.get_one(100)
         except Exception as e:
             self.assertEqual(404, e.code)
 
     def test_get_one_course_with_id_course_lower_than_1(self):
-        self.dal_service.commit = Mock(return_value=[])
+        self.dal_service.execute = Mock(return_value=[])
         try:
             routes.courses.get_one(0)
         except Exception as e:
             self.assertEqual(400, e.code)
 
     def test_get_all_courses_from_teacher_id_ok(self):
-        self.dal_service.commit = Mock(return_value=self.course_from_db_without_id_teacher)
+        self.dal_service.execute = Mock(return_value=self.course_from_db_without_id_teacher)
         response = routes.courses.get_all_courses_from_teacher(1)
         self.assertEqual(200, response[1])
         self.assertEqual([self.course_json_without_id_teacher], response[0])
@@ -71,7 +73,7 @@ class CoursesTests(unittest.TestCase):
             self.assertEqual(400, e.code)
 
     def test_get_all_courses_from_teacher_id_not_existing(self):
-        self.dal_service.commit = Mock(return_value=[])
+        self.dal_service.execute = Mock(return_value=[])
         try:
             routes.courses.get_all_courses_from_teacher(100)
         except Exception as e:

@@ -18,8 +18,7 @@ class UsersDAO:
         sql = """SELECT * FROM projet.users"""
         resultsExportUsers = []
 
-        self.dal.start()
-        results = self.dal.commit(sql, None)
+        results = self.dal.execute(sql, None, True)
 
         for row in results:
             user = User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]),
@@ -35,15 +34,14 @@ class UsersDAO:
                   """
         try:
             value = {"id_user": id_user}
-            self.dal.start()
-            result = self.dal.commit(sql, value)
+            result = self.dal.execute(sql, value, True)
             if len(result) == 0:
-                abort(404, "User not found")
+                return None
             result = result[0]
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
-        except NotFound as not_found_e:
-            raise not_found_e
+        except Exception as e:
+            raise e
 
     def get_user_by_email(self, email):
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
@@ -52,15 +50,14 @@ class UsersDAO:
                           """
         try:
             value = {"email": email}
-            self.dal.start()
-            result = self.dal.commit(sql, value)
+            result = self.dal.execute(sql, value, True)
             if len(result) == 0:
                 return None
             result = result[0]
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
-        except NotFound as not_found_e:
-            raise not_found_e
+        except Exception as e:
+            raise e
 
     def get_user_by_pseudo(self, pseudo):
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
@@ -69,35 +66,26 @@ class UsersDAO:
                           """
         try:
             value = {"pseudo": pseudo}
-            self.dal.start()
-            result = self.dal.commit(sql, value)
+            result = self.dal.execute(sql, value, True)
             if len(result) == 0:
                 return None
             result = result[0]
             user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return user
-        except NotFound as not_found_e:
-            raise not_found_e
+        except Exception as e:
+            raise e
 
     def sing_in_user(self, user):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
         sql = "INSERT INTO projet.users VALUES (DEFAULT,'%s','%s','%s','%s','%s','%s','%s')" % (
             user['lastname'], user['firstname'], user['email'], user['pseudo'], user['sexe'], user['phone'],
             user['password'])
         try:
-
-            cursor.execute(sql)
-            connection.commit()
+            self.dal.execute(sql, None)
 
         except (Exception, psycopg2.DatabaseError) as e:
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
                 raise Exception from e
             except IndexError:
-                connection.rollback()
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()

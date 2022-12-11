@@ -32,3 +32,26 @@ class AppointmentsDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise e
+
+    def get_appointments_for_user(self, id_student):
+        sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \
+              "FROM projet.appointments" \
+              "WHERE  id_student = %(id_student)s"
+
+        try:
+            results = self.dal.execute(sql, {"id_student": id_student}, True)
+            if len(results) == 0:
+                return None
+            all_appointments = []
+            for row in results:
+                appointment = Appointment(int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), int(row[5]),
+                                          str(row[1]))
+                all_appointments.append(appointment)
+            return all_appointments
+        except (Exception, psycopg2.DatabaseError) as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise e
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise e

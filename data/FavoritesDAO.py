@@ -38,7 +38,7 @@ class FavoritesDAO:
 
     def get_favorite_teachers_from_user(self, id_student):
         sql = """
-            SELECT id_student, id_teacher 
+            SELECT id_teacher, id_student 
             FROM projet.favorites 
             WHERE id_student = %(id_student)s
         """

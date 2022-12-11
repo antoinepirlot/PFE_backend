@@ -1,16 +1,13 @@
 from flask import abort
-from werkzeug.exceptions import NotFound
 
 from data.ChatRoomsDAO import ChatRoomsDAO
 from data.services.DALService import DALService
 
 
 class ChatRoomsService:
-    _chat_rooms_DAO = ChatRoomsDAO()
-    _dal_service = DALService()
-
     def __init__(self):
-        pass
+        self._chat_rooms_DAO = ChatRoomsDAO()
+        self._dal_service = DALService()
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
@@ -20,18 +17,38 @@ class ChatRoomsService:
         return cls.instance
 
     def get_chat_room(self, id_user1, id_user2):
-        return self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
+        try:
+            self._dal_service.start()
+            results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
+            self._dal_service.commit_transaction()
+            return results
+        except Exception as e:
+            self._dal_service.rollback_transaction()
 
     def get_chat_room_by_id(self, id_room):
-        return self._chat_rooms_DAO.get_chat_room_by_id(id_room)
+        try:
+            self._dal_service.start()
+            results = self._chat_rooms_DAO.get_chat_room_by_id(id_room)
+            self._dal_service.commit_transaction()
+            return results
+        except Exception as e:
+            self._dal_service.rollback_transaction()
 
     def create_chat_room(self, id_user1, id_user2):
-        if id_user1 == id_user2:
-            abort(412, "You cannot have a chat room with yourself.")
         try:
+            self._dal_service.start()
+            # TODO use unique constraint in db and just use create chat room. If an error occur it means there's already a room
             self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
             abort(409, "You already have a chat room with this user.")
-        except NotFound as not_found_p:
+        except Exception as e:
             chat_room = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
+            return chat_room
 
-        return chat_room
+        # # TODO that's Antoine's solution :p
+        # try:
+        #     self._dal_service.start()
+        #     results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)  # if it returns error, it means it already exists
+        #     self._dal_service.commit_transaction()
+        #     return results
+        # except Exception as e:
+        #     self._dal_service.rollback_transaction()

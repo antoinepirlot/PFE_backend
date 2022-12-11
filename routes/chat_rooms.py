@@ -1,7 +1,6 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, abort
 
 from services.ChatRoomsService import ChatRoomsService
-from models.ChatRoom import ChatRoom
 
 chat_rooms_service = ChatRoomsService()
 
@@ -28,6 +27,8 @@ def get_chat_room_by_id(id_room):
 # ########
 @route.route("/<int:id_user1>/<int:id_user2>", methods=["POST"])
 def create_chat_room(id_user1, id_user2):
+    if id_user1 == id_user2:
+        abort(412, "You cannot have a chat room with yourself.")
     return chat_rooms_service.create_chat_room(id_user1, id_user2).convert_to_json(), 201
 
 # #########

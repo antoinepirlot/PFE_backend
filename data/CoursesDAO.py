@@ -40,7 +40,7 @@ class CoursesDAO:
         :return: the course matching with id_course. If there's no course, it returns None
         """
         sql = """
-                SELECT id_category, id_teacher, course_description, price_per_hour, city, country, id_level           
+                SELECT id_category, id_teacher, course_description, price_per_hour, city, country, level           
                 FROM projet.courses
                 WHERE id_course = %(id_course)s;
               """
@@ -58,7 +58,7 @@ class CoursesDAO:
         :return: the list of teacher's courses. If there's no courses, it returns None
         """
         sql = """
-            SELECT DISTINCT id_category, course_description, price_per_hour, city, country, id_level
+            SELECT DISTINCT id_category, course_description, price_per_hour, city, country, level
             FROM projet.courses
             WHERE id_teacher = %(id_teacher)s;
         """
@@ -70,18 +70,23 @@ class CoursesDAO:
         return _create_course_object(result, False)
 
     def create_one_course(self, course):
+        """
+        Create a course in the database
+        :param course: the course to add
+        :return: the created course
+        """
         connection = database.initialiseConnection()
         cursor = connection.cursor()
         sql = """
                 INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
-                id_level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
-                %(country)s, %(id_level)s) RETURNING id_course
+                level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
+                %(country)s, %(level)s) RETURNING id_course
               """
         try:
             dico_variables = {"id_category": str(course.id_category), "id_teacher": str(course.id_teacher),
                               "course_description": course.course_description,
                               "price_per_hour": str(course.price_per_hour),
-                              "city": course.city, "country": course.country, "id_level": str(course.id_level),
+                              "city": course.city, "country": course.country, "level": course.level,
                               }
             cursor.execute(sql, dico_variables)
             connection.commit()

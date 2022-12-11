@@ -48,13 +48,13 @@ def create_one():
                                                            not isinstance(request.json['price_per_hour'], float)) or \
             request.json['price_per_hour'] <= 0 or 'city' not in request.get_json() or \
             len(str(request.json['city']).strip()) == 0 or 'country' not in request.get_json() or \
-            len(str(request.json['country']).strip()) == 0 or 'id_level' not in request.get_json() or \
-            (not isinstance(request.json['id_level'], int)) or request.json['id_level'] < 1:
+            len(str(request.json['country']).strip()) == 0 or 'level' not in request.get_json() or \
+            len(str(request.json['level']).strip()) == 0:
         return "Course is not in the good format", 400
 
     new_course = Course(request.json['id_category'], request.json['id_teacher'], request.json['course_description'],
                         request.json['price_per_hour'], request.json['city'], request.json['country'],
-                        request.json['id_level'])
+                        request.json['level'])
     return courses_service.create_one_course(new_course).convert_to_json(), 201
 # #########
 # ###PUT###

@@ -27,7 +27,7 @@ def login():
         user = users_service.logInUser(data['email'], data['password'])
         payload_data = {
             "id": user['id_user'],
-            'exp': datetime.utcnow() + timedelta(minutes=10)  # expiration time
+            'exp': datetime.utcnow() + timedelta(days=5)  # expiration time
         }
 
         my_secret = os.getenv("JWT_SECRET")

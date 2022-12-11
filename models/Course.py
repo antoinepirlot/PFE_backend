@@ -1,7 +1,7 @@
 class Course:
 
-    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level):
-        self.id_course = None
+    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level, id_course=None):
+        self.id_course = id_course
         self.id_category = id_category
         self.id_teacher = id_teacher
         self.course_description = course_description

@@ -9,13 +9,15 @@ class User:
         self.phone = phone
         self.password = password
 
-    def convert_to_json(self):
-        return {"id_user": self.id_user,
+    def convert_to_json(self, with_password=True):
+        json = {"id_user": self.id_user,
                 "lastname": self.lastname,
                 "firstname": self.firstname,
                 "email": self.email,
                 "pseudo": self.pseudo,
                 "sexe": self.sexe,
                 "phone": self.phone,
-                "password": self.password
                 }
+        if with_password:
+            json['password'] = self.password
+        return json

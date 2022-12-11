@@ -3,8 +3,8 @@ import data.database as database
 
 class DALService:
     def __init__(self):
-        self._connection = None
-        self._cursor = None
+        self.connection = None
+        self.cursor = None
 
     def __new__(cls):
         if not hasattr(cls, "instance"):

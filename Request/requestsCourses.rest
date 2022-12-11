@@ -1,5 +1,8 @@
+### get all courses
+GET http://localhost:5000/courses/all
+
 ### 200 expected with a course
-GET http://localhost:5000/courses/1
+GET http://localhost:5000/courses/3
 
 ### 404 expected
 GET http://localhost:5000/courses/8000

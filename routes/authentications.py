@@ -27,18 +27,31 @@ def login():
         user = users_service.logInUser(data['email'], data['password'])
         payload_data = {
             "id": user['id_user'],
-            'exp': datetime.utcnow() + timedelta(minutes=10)  # expiration time
+            'exp': datetime.utcnow() + timedelta(days=5)  # expiration time
         }
 
         my_secret = os.getenv("JWT_SECRET")
 
         token = jwt.encode(
             payload=payload_data,
-            key=my_secret,
+            key=my_secret, algorithm="HS256"
         )
 
         return jsonify(token), 200
     except NotFound as not_found_e:
         return "Email or password incorrect", 404
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+
+@route.route('/token/<string:token>', methods=['GET'])
+def get_user_by_token(token):
+    try:
+        my_secret = os.getenv("JWT_SECRET")
+        test = jwt.decode(token, key=my_secret, algorithms="HS256")
+
+        return jsonify(test), 200
+    except NotFound as not_found_e:
+        raise not_found_e
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

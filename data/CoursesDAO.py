@@ -15,7 +15,7 @@ def _create_course_object(list_of_courses, with_teacher=True):
         if with_teacher:
             courses.append(Course(course[0], course[1], course[2], course[3], course[4], course[5], course[6]))
         else:
-            courses.append(Course(course[0], None, course[1], course[2], course[3], course[4], course[5]))
+            courses.append(Course(course[0], None, course[1], course[2], course[3], course[4], course[5], course[6]))
     return courses
 
 
@@ -70,7 +70,7 @@ class CoursesDAO:
             raise e
 
     def get_all_courses(self):
-        sql = """SELECT id_category, course_description, price_per_hour, city, country, level
+        sql = """SELECT id_category, course_description, price_per_hour, city, country, level,id_course
             FROM projet.courses"""
         try:
             result = self._dal_service.execute(sql, None, True)

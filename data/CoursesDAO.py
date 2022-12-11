@@ -69,6 +69,17 @@ class CoursesDAO:
         except Exception as e:
             raise e
 
+    def get_courses(self):
+        sql = """SELECT id_category, course_description, price_per_hour, city, country, level
+            FROM projet.courses"""
+        try:
+            result = self._dal_service.execute(sql, None, True)
+            if len(result) == 0:
+                return None
+            return _create_course_object(result, False)
+        except Exception as e:
+            raise e
+
     def create_one_course(self, course):
         """
         Create a course in the database

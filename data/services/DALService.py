@@ -27,7 +27,7 @@ class DALService:
         self.connection.close()
         return results
 
-    def commit_transaction(self, sql=None, values=None):
+    def commit_transaction(self):
         # TODO threads
         self.connection.commit()
         self.cursor.close()

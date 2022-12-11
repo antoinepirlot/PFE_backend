@@ -13,17 +13,17 @@ class CoursesTests(unittest.TestCase):
         self.dal_service = DALService()
         self.dal_service.start = Mock()
         self.course_from_db = [(1, 1, "Cours permettant de vous introduire le langage PHP. Aucun prérequis "
-                                      "n'est nécessaire", 18.0, "Bruxelles", "Belgique", 1)]
+                                      "n'est nécessaire", 18.0, "Bruxelles", "Belgique", "Débutant")]
         self.course_from_db_without_id_teacher = [
             (1, "Cours permettant de vous introduire le langage PHP. Aucun prérequis "
-                "n'est nécessaire", 18.0, "Bruxelles", "Belgique", 1)]
+                "n'est nécessaire", 18.0, "Bruxelles", "Belgique", "Débutant")]
         self.course_json = {
             "city": "Bruxelles",
             "country": "Belgique",
             "course_description": "Cours permettant de vous introduire le langage PHP. Aucun prérequis "
                                   "n'est nécessaire",
             "id_category": 1,
-            "id_level": 1,
+            "level": "Débutant",
             "id_teacher": 1,
             "price_per_hour": 18.0
         }
@@ -33,7 +33,7 @@ class CoursesTests(unittest.TestCase):
             "course_description": "Cours permettant de vous introduire le langage PHP. Aucun prérequis "
                                   "n'est nécessaire",
             "id_category": 1,
-            "id_level": 1,
+            "level": "Débutant",
             "id_teacher": None,
             "price_per_hour": 18.0
         }

@@ -15,8 +15,8 @@ POST http://localhost:5000/favorites
 Content-Type: application/json
 
 {
-  "id_student": 2,
-  "id_teacher": 2
+  "id_student": 23,
+  "id_teacher": 3
 }
 
 ### Delete a favorite teacher

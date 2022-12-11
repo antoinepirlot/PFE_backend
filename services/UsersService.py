@@ -16,43 +16,55 @@ class UsersService:
 
     def get_users(self):
         self.dal.start()
-        users = self.users_DAO.get_users()
-        self.dal.commit_transaction()
-        return users
+        try:
+            users = self.users_DAO.get_users()
+            self.dal.commit_transaction()
+            return users
+        except Exception as e:
+            self.dal.rollback_transaction()
+            raise e
 
     def get_users_by_id(self, id):
         self.dal.start()
-        user = self.users_DAO.get_user_by_id(id)
-        if user is None:
+        try:
+            user = self.users_DAO.get_user_by_id(id)
+            if user is None:
+                abort(404, "User not found")
+            self.dal.commit_transaction()
+            return user
+        except Exception as e:
             self.dal.rollback_transaction()
-            abort(404, "User not found")
-        self.dal.commit_transaction()
-        return user
+            raise e
 
     def get_users_by_email(self, email):
         self.dal.start()
-        user = self.users_DAO.get_user_by_email(email)
-        if user is None:
+        try:
+            user = self.users_DAO.get_user_by_email(email)
+            if user is None:
+                abort(404, "User not found")
+            self.dal.commit_transaction()
+            return user
+        except Exception as e:
             self.dal.rollback_transaction()
-            abort(404, "User not found")
-        self.dal.commit_transaction()
-        return user
+            raise e
 
     def get_users_by_pseudo(self, pseudo):
         self.dal.start()
-        user = self.users_DAO.get_user_by_pseudo(pseudo)
-        if user is None:
+        try:
+            user = self.users_DAO.get_user_by_pseudo(pseudo)
+            if user is None:
+                abort(404, "User not found")
+            self.dal.commit_transaction()
+            return user
+        except Exception as e:
             self.dal.rollback_transaction()
-            abort(404, "User not found")
-        self.dal.commit_transaction()
-        return user
+            raise e
 
     def sing_in_user(self, user):
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()
         self.dal.start()
-        user_created = None
         try:
             user_email = self.users_DAO.get_user_by_email(user['email'])
             if user_email is not None:

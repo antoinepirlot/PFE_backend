@@ -1,5 +1,4 @@
 from flask import abort
-from werkzeug.exceptions import NotFound
 
 from data.RatingsDAO import RatingsDAO
 from data.UsersDAO import UsersDAO

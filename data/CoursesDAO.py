@@ -71,14 +71,21 @@ class CoursesDAO:
 
     def get_all_courses(self):
         sql = """
-            SELECT id_category, id_teacher, course_description, price_per_hour, city, country, level
+            SELECT id_course, id_category, id_teacher, course_description, price_per_hour, city, country, level
              FROM projet.courses"""
 
         try:
             result = self._dal_service.execute(sql, None, True)
             if len(result) == 0:
                 return None
-            return _create_course_object(result)
+
+            courses = []
+            for course in result:
+                c = Course(course[1], course[2], course[3], course[4], course[5], course[6], course[7])
+                c.set_id_course(course[0])
+                courses.append(c)
+
+            return courses
         except Exception as e:
             raise e
 

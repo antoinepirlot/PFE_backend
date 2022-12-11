@@ -6,7 +6,6 @@ import psycopg2
 class UsersDAO:
     def __init__(self):
         self.dal = DALService()
-        pass
 
     def get_users(self):
         sql = """SELECT * FROM projet.users"""

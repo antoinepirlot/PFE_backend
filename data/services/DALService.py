@@ -40,6 +40,7 @@ class DALService:
             return results
 
     def rollback_transaction(self):
+        self.connection.rollback()
         self.cursor.close()
         self.connection.close()
 

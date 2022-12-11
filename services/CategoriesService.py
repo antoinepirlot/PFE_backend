@@ -2,13 +2,14 @@ from flask import abort
 from werkzeug.exceptions import NotFound
 
 from data.CategoriesDAO import CategoriesDAO
+from data.services.DALService import DALService
 
 
 class CategoriesService:
     categories_dao = CategoriesDAO()
 
     def __init__(self):
-        pass
+        self.dal = DALService()
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
@@ -18,4 +19,11 @@ class CategoriesService:
         return cls.instance
 
     def get_all_categories(self):
-        return self.categories_dao.get_all_categories()
+        self.dal.start()
+        try:
+            all_categories = self.categories_dao.get_all_categories()
+            self.dal.commit_transaction()
+            return all_categories
+        except Exception as e:
+            self.dal.rollback_transaction()
+            raise e

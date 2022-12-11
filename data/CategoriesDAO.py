@@ -1,12 +1,12 @@
 import psycopg2
 
-import data.database as database
+from data.services.DALService import DALService
 from models.Category import Category
 
 
 class CategoriesDAO:
     def __init__(self):
-        pass
+        self.dal = DALService()
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
@@ -16,13 +16,9 @@ class CategoriesDAO:
         return cls.instance
 
     def get_all_categories(self):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
         sql = "SELECT id_category, name FROM projet.categories "
         try:
-            cursor.execute(sql, None)
-            connection.commit()
-            results = cursor.fetchall()
+            results = self.dal.execute(sql, None, True)
             all_categories = []
             for row in results:
                 rating = Category(int(row[0]), str(row[1]))
@@ -35,6 +31,3 @@ class CategoriesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()

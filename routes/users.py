@@ -68,7 +68,8 @@ def add_user():
         users_service.sing_in_user(request.json)
         return jsonify({'user': 'user created'}), 201
     except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+        raise e
+        return jsonify({e.__class__.__name__: str(type(e))}), 500
 
 # #########
 # ###PUT###

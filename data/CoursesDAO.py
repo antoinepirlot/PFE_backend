@@ -1,6 +1,5 @@
 import psycopg2
 
-import data.database as database
 from data.services.DALService import DALService
 from models.Course import Course
 
@@ -23,7 +22,7 @@ def _create_course_object(list_of_courses, with_teacher=True):
 class CoursesDAO:
 
     def __init__(self):
-        self.dal = DALService()
+        self._dal_service = DALService()
 
     # __new__ Redefined to use singleton pattern
     def __new__(cls):
@@ -45,8 +44,7 @@ class CoursesDAO:
                 WHERE id_course = %(id_course)s;
               """
         values = {"id_course": id_course}
-        self.dal.start()
-        result = self.dal.commit(sql, values)
+        result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
             return None
         return _create_course_object(result)[0]
@@ -63,11 +61,13 @@ class CoursesDAO:
             WHERE id_teacher = %(id_teacher)s;
         """
         values = {"id_teacher": id_teacher}
-        self.dal.start()
-        result = self.dal.commit(sql, values)
-        if len(result) == 0:
-            return None
-        return _create_course_object(result, False)
+        try:
+            result = self._dal_service.execute(sql, values, True)
+            if len(result) == 0:
+                return None
+            return _create_course_object(result, False)
+        except Exception as e:
+            raise e
 
     def create_one_course(self, course):
         """
@@ -75,23 +75,23 @@ class CoursesDAO:
         :param course: the course to add
         :return: the created course
         """
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
         sql = """
                 INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
                 level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
                 %(country)s, %(level)s) RETURNING id_course
               """
+        dico_variables = {
+            "id_category": course.id_category,
+            "id_teacher": course.id_teacher,
+            "course_description": course.course_description,
+            "price_per_hour": course.price_per_hour,
+            "city": course.city,
+            "country": course.country,
+            "level": course.level,
+        }
         try:
-            dico_variables = {"id_category": str(course.id_category), "id_teacher": str(course.id_teacher),
-                              "course_description": course.course_description,
-                              "price_per_hour": str(course.price_per_hour),
-                              "city": course.city, "country": course.country, "level": course.level,
-                              }
-            cursor.execute(sql, dico_variables)
-            connection.commit()
-            results = cursor.fetchall()
-            course.set_id_course(results[0][0])
+            result = self._dal_service.execute(sql, dico_variables, True)
+            course.set_id_course(result[0][0])
             return course
         except (Exception, psycopg2.DatabaseError) as e:
             try:
@@ -100,6 +100,3 @@ class CoursesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()

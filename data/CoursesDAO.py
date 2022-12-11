@@ -69,7 +69,7 @@ class CoursesDAO:
         except Exception as e:
             raise e
 
-    def get_courses(self):
+    def get_all_courses(self):
         sql = """SELECT id_category, course_description, price_per_hour, city, country, level
             FROM projet.courses"""
         try:

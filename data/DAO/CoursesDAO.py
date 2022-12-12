@@ -128,4 +128,5 @@ class CoursesDAO:
             "level": course.level,
         }
         result = self._dal_service.execute(sql, dico_variables, True)
-        return self.get_one(result[0][0])
+        course.id_course = result[0][0]
+        return course

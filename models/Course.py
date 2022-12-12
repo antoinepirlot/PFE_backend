@@ -1,7 +1,7 @@
 class Course:
 
     def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level):
-        self.id_course = None
+        self._id_course = None
         self.id_category = id_category
         self.id_teacher = id_teacher
         self.course_description = course_description
@@ -10,8 +10,13 @@ class Course:
         self.country = country
         self.level = level
 
-    def set_id_course(self, new_id_course):
-        self.id_course = new_id_course
+    @property
+    def id_course(self):
+        return self._id_course
+
+    @id_course.setter
+    def id_course(self, id_course):
+        self._id_course = id_course
 
     def convert_to_json(self):
         json = {"id_category": self.id_category,

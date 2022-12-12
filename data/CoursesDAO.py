@@ -82,7 +82,7 @@ class CoursesDAO:
             courses = []
             for course in result:
                 c = Course(course[1], course[2], course[3], course[4], course[5], course[6], course[7])
-                c.set_id_course(course[0])
+                c.id_course(course[0])
                 courses.append(c)
 
             return courses
@@ -127,7 +127,7 @@ class CoursesDAO:
         }
         try:
             result = self._dal_service.execute(sql, dico_variables, True)
-            course.set_id_course(result[0][0])
+            course.id_course(result[0][0])
             return course
         except (Exception, psycopg2.DatabaseError) as e:
             try:

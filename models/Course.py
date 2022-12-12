@@ -1,6 +1,6 @@
 class Course:
 
-    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, id_level):
+    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level):
         self.id_course = None
         self.id_category = id_category
         self.id_teacher = id_teacher
@@ -8,7 +8,7 @@ class Course:
         self.price_per_hour = price_per_hour
         self.city = city
         self.country = country
-        self.id_level = id_level
+        self.level = level
 
     def set_id_course(self, new_id_course):
         self.id_course = new_id_course
@@ -20,7 +20,7 @@ class Course:
                 "price_per_hour": self.price_per_hour,
                 "city": self.city,
                 "country": self.country,
-                "id_level": self.id_level
+                "level": self.level
                 }
         if self.id_course is not None:
             json["id_course"] = self.id_course

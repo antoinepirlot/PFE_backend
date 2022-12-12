@@ -18,7 +18,7 @@ class DALService:
         self.cursor = self.connection.cursor()
         # TODO threads
 
-    def commit(self, sql, values):
+    def commit(self, sql, values): #TODO : delete this function
         # TODO threads
         self.cursor.execute(sql, values)
         self.connection.commit()
@@ -26,5 +26,21 @@ class DALService:
         self.cursor.close()
         self.connection.close()
         return results
+
+    def commit_transaction(self):
+        # TODO threads
+        self.connection.commit()
+        self.cursor.close()
+        self.connection.close()
+
+    def execute(self, sql, values, fetch=False):
+        self.cursor.execute(sql, values)
+        if fetch:
+            results = self.cursor.fetchall()
+            return results
+
+    def rollback_transaction(self):
+        self.cursor.close()
+        self.connection.close()
 
 # TODO rollback

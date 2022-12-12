@@ -5,11 +5,6 @@ CREATE SCHEMA projet;
 --CREATE TABLE--
 ----------------
 
-CREATE TABLE projet.levels (
-    id_level SERIAL PRIMARY KEY,
-    name varchar(30) NOT NULL UNIQUE check ( name<>'' )
-);
-
 CREATE TABLE projet.users (
     id_user SERIAL PRIMARY KEY,
     lastname varchar(100) NOT NULL check ( lastname<>'' ),
@@ -22,7 +17,7 @@ CREATE TABLE projet.users (
 );
 
 CREATE TABLE projet.chat_rooms  (
-    id_room SERIAL PRIMARY KEY,
+    id_room varchar(36) PRIMARY KEY,
     id_user1 INTEGER NOT NULL REFERENCES projet.users(id_user),
     id_user2 INTEGER NOT NULL REFERENCES projet.users(id_user)
 );
@@ -32,7 +27,7 @@ CREATE TABLE projet.messages (
     pseudo_sender varchar(40),
     content text NOT NULL,
     creation_date DATE NOT NULL DEFAULT NOW(),
-    id_room INTEGER NOT NULL REFERENCES projet.chat_rooms(id_room)
+    id_room VARCHAR NOT NULL REFERENCES projet.chat_rooms(id_room)
 );
 
 CREATE TABLE projet.favorites (
@@ -78,7 +73,7 @@ CREATE TABLE projet.courses (
     price_per_hour DOUBLE PRECISION NOT NULL,
     city varchar(70) NOT NULL check ( city<>'' ),
     country varchar(70) NOT NULL check ( country<>'' ),
-    id_level INTEGER NOT NULL REFERENCES projet.levels(id_level)
+    level varchar(30) NOT NULL check (level in ('Débutant', 'Intermédiaire', 'Confirmé'))
 );
 
 CREATE TABLE projet.appointments (
@@ -93,28 +88,19 @@ CREATE TABLE projet.appointments (
 );
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Dupont', 'Pierre', 'requinFR@gmail.com', 'REQUIN', 'male', '(+32)4 77 123 659', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Dupont', 'Pierre', 'requinFR@gmail.com', 'REQUIN', 'male', '(+32)4 77 123 659', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Sarrabia', 'Pablo', 'espanaP@gmail.com', 'LaRoja', 'male', '(+32)4 87 123 721', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Sarrabia', 'Pablo', 'espanaP@gmail.com', 'LaRoja', 'male', '(+32)4 87 123 721', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Putellas', 'Alexia', 'barcelonaBO@gmail.com', 'Oro', 'female', '(+32)4 89 123 144', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Putellas', 'Alexia', 'barcelonaBO@gmail.com', 'Oro', 'female', '(+32)4 89 123 144', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female', '(+32)4 75 123 449', 'password123'); -- TODO : change psw to hashed psw
+VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female', '(+32)4 75 123 449', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
-VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', 'password123'); -- TODO : change psw to hashed psw
-
-INSERT INTO projet.levels (name)
-VALUES ('Débutant');
-
-INSERT INTO projet.levels (name)
-VALUES ('Intermédiaire');
-
-INSERT INTO projet.levels (name)
-VALUES ('Confirmé');
+VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
 INSERT INTO projet.categories (name, color)
 VALUES ('PHP', '#FF0000');
@@ -137,11 +123,11 @@ VALUES (1, 1);
 INSERT INTO projet.teacher_skills(id_category, id_teacher)
 VALUES (2, 1);
 
-INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, id_level)
-VALUES (1,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique',1);
+INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
+VALUES (1,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique','Débutant');
 
-INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, id_level)
-VALUES (5,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique',2);
+INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
+VALUES (5,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(1, 5, 'finished', '2022-10-20', 'rue de la colline', 121);
@@ -150,4 +136,7 @@ INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
 VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);
 
 INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
-VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE)
+VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE);
+
+INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
+VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE);

@@ -1,54 +1,45 @@
 from flask import render_template, request, session, redirect, url_for
 from flask_socketio import SocketIO, join_room, leave_room, emit
-
+from services.ChatRoomsService import ChatRoomsService
+from services.UsersService import UsersService
 from app.main import app
+from flask_cors import CORS
 
-socketio = SocketIO(app, manage_session=False)
+socketio = SocketIO(app, manage_session=False, cors_allowed_origins="*")
+CORS(app)
+cors = CORS(app)
+chat_rooms_service = ChatRoomsService()
+users_service = UsersService()
 
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    return render_template('index.html')
-
-
-@app.route('/chat/room/user1/user2', methods=['GET', 'POST'])
-def chat():
-    # on check si user1 et user2 ont une room (oui -> on get la room | non -> on la crée en db)
-    if request.method == 'POST':
-        username = request.form['username']
-        room = request.form['room']
-        # Store the data in session
-        session['username'] = username
-        session['room'] = room
-        return render_template('chat.html', session=session)
-    else:
-        if session.get('username') is not None:
-            return render_template('chat.html', session=session)
-        else:
-            return redirect(url_for('index'))
+users = {}
 
 
-@socketio.on('join', namespace='/chat')
-def join(message):
-    # si user n'est pas present dans la room -> tu t'en va
-    room = session.get('room')
-    join_room(room)
-    emit('joinStatus', {'msg': session.get('username')}, room=room)
+@socketio.on('connect')
+def on_connect():
+    print('Client connected')
+    socketio.emit('my response', {'data': 'Connected'})
 
 
-@socketio.on('text', namespace='/chat')
-def text(message):
-    room = session.get('room')
-    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=room)
+@socketio.on('disconnect')
+def on_disconnect():
+    users.pop(request.sid, 'No user found')
+    socketio.emit('current_users', users)
+    print("User disconnected!\nThe users are: ", users)
 
 
-@socketio.on('left', namespace='/chat')
-def left(message):
-    room = session.get('room')
-    username = session.get('username')
-    leave_room(room)
-    session.clear()
-    emit('leftStatus', {'msg': username}, room=room)
+@socketio.on('sign_in')
+def user_sign_in(user_name, methods=['GET', 'POST']):
+    users[request.sid] = user_name['name']
+    socketio.emit('current_users', users)
+    print("New user sign in!\nThe users are: ", users)
+
+
+@socketio.on('message')
+def messaging(message, methods=['GET', 'POST']):
+    print('received message: ' + str(message))
+    message['from'] = request.sid
+    socketio.emit('message', message, room=request.sid)
+    socketio.emit('message', message, room=message['to'])
 
 
 if __name__ == '__main__':

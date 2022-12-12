@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 
-from services.FavoritesService import FavoritesService
 from models.Favorite import Favorite
+from services.FavoritesService import FavoritesService
 
 favorites_service = FavoritesService()
 
@@ -38,6 +38,8 @@ def get_most_favorites_teachers():
 @route.route("/", methods=["POST"])
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
+    if new_favorite.id_teacher == new_favorite.id_student:
+        abort(412, "You cannot add yourself to your favorites")
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
 
 

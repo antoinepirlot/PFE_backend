@@ -35,10 +35,23 @@ def get_user_by_id(id_user):
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
 
+
 @route.route('/<string:email>', methods=['GET'])
 def get_user_by_email(email):
     try:
         result = users_service.get_users_by_email(email)
+        return result.convert_to_json(), 200
+    except NotFound as not_found_e:
+        raise not_found_e
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+
+@route.route('/pseudo/<string:pseudo>', methods=['GET'])
+def get_user_by_pseudo(pseudo):
+    try:
+
+        result = users_service.get_users_by_pseudo(pseudo)
         return result.convert_to_json(), 200
     except NotFound as not_found_e:
         raise not_found_e
@@ -52,10 +65,11 @@ def get_user_by_email(email):
 @route.route('', methods=['POST'])
 def add_user():
     try:
-        users_service.singInUser(request.json)
+        users_service.sing_in_user(request.json)
         return jsonify({'user': 'user created'}), 201
     except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+        raise e
+        return jsonify({e.__class__.__name__: str(type(e))}), 500
 
 # #########
 # ###PUT###

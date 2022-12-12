@@ -18,6 +18,9 @@ class RatingsService:
         self.dal.start()
         try:
             all_ratings = self.ratings_DAO.get_ratings_from_teacher(id_teacher)
+            for rating in all_ratings:
+                rater = self.users_DAO.get_user_by_id(rating.id_rater)
+                rating.setRater(rater)
             self.dal.commit_transaction()
             return all_ratings
         except Exception as e:

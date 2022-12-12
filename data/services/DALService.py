@@ -18,6 +18,7 @@ class DALService:
 
     def start(self):
         self.connectionsStorage.connection = self.pool.getconn()
+        self.connectionsStorage.connection.autocommit = False
 
     def commit_transaction(self):
         connection = self.connectionsStorage.connection

@@ -15,17 +15,6 @@ class RatingsTests(unittest.TestCase):
         self.dal_service.start = Mock()
         self.dal_service.commit_transaction = Mock()
         self.dal_service.rollback_transaction = Mock()
-        self.categories_from_db = [
-            (
-                1,
-                "Anglais"
-            ),
-            (
-                2,
-                "Math"
-            )
-        ]
-        self.categories_json = [{'id_category': 1, 'name': 'Anglais'}, {'id_category': 2, 'name': 'Math'}]
         self.rating_json = {
             "id_rater": 1,
             "id_rated": -1,
@@ -34,7 +23,7 @@ class RatingsTests(unittest.TestCase):
         }
 
     def test_create_rating_negative_id_teacher(self):
-        self.dal_service.execute = Mock(return_value=self.categories_from_db)
+        self.dal_service.execute = Mock()
         response = self.app.post('/ratings/', data=self.rating_json)
         self.assertEqual(400, response.status_code)
 

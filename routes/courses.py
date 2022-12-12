@@ -8,18 +8,23 @@ courses_service = CoursesService()
 route = Blueprint("courses", __name__)
 
 
-
-@route.route("/", methods=["GET"])
-def get_all_courses():
-    courses = courses_service.get_all_courses()
-    if courses is None:
-        abort(404, "No courses")
-    return courses, 200
-
-
 # #########
 # ###GET###
 # #########
+
+@route.route('', methods=['GET'])
+def get_all_courses():
+    try:
+        result = courses_service.get_all_courses()
+        courses = []
+        for course in result:
+            courses.append(course.convert_to_json())
+
+        return courses, 200
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+
 @route.route("/<id_course>", methods=["GET"])
 def get_one(id_course):
     id_course = int(id_course)

@@ -1,0 +1,2 @@
+### GET AZLL APPOINTMENTS FROM A USERE
+GET http://localhost:5000/appointments/1

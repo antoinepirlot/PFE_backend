@@ -19,6 +19,16 @@ class CoursesService:
         self._dal_service.commit_transaction()
         return course.convert_to_json()
 
+    def get_all_courses(self):
+        self._dal_service.start()
+        try:
+            courses = self._courses_dao.get_all_courses()
+            self._dal_service.commit_transaction()
+            return courses
+        except Exception as e:
+            self._dal_service.rollback_transaction()
+            raise e
+
     def get_all_courses_from_teacher(self, id_teacher):
         """
         Get courses from DAO and convert them to json
@@ -29,22 +39,6 @@ class CoursesService:
         try:
             self._dal_service.start()
             courses = self._courses_dao.get_all_courses_from_teacher(id_teacher)
-            self._dal_service.commit_transaction()
-        except Exception as sql_error:  # TODO maybe psycopg2.Error
-            self._dal_service.rollback_transaction()
-        if courses is not None:
-            return convert_models_objects_to_json(courses)
-        return None
-
-    def get_all_courses(self):
-        """
-        Get courses from DAO and convert them to json
-        :return: the list of converted courses in json
-        """
-        courses = None
-        try:
-            self._dal_service.start()
-            courses = self._courses_dao.get_all_courses()
             self._dal_service.commit_transaction()
         except Exception as sql_error:  # TODO maybe psycopg2.Error
             self._dal_service.rollback_transaction()

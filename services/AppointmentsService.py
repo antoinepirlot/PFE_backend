@@ -1,4 +1,4 @@
-from data.AppointmentsDAO import AppointmentsDAO
+from data.DAO.AppointmentsDAO import AppointmentsDAO
 
 
 from data.services.DALService import DALService

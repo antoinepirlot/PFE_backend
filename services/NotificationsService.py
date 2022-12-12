@@ -1,4 +1,4 @@
-from data.NotificationsDAO import NotificationsDAO
+from data.DAO.NotificationsDAO import NotificationsDAO
 from data.services.DALService import DALService
 
 

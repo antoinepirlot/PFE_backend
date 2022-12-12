@@ -1,5 +1,9 @@
-import data.database as database
 import threading
+
+import psycopg2
+
+import data.database as database
+from Exceptions.FatalException import FatalException
 
 
 class DALService:
@@ -17,26 +21,45 @@ class DALService:
         return cls.instance
 
     def start(self):
-        self.connectionsStorage.connection = self.pool.getconn()
-        self.connectionsStorage.connection.autocommit = False
+        try:
+            self.connectionsStorage.connection = self.pool.getconn()
+            self.connectionsStorage.connection.autocommit = False
+        except Exception:
+            raise FatalException
 
     def commit_transaction(self):
-        connection = self.connectionsStorage.connection
-        connection.commit()
-        connection.cursor().close()
-        self.pool.putconn(self.connectionsStorage.connection)
+        try:
+            connection = self.connectionsStorage.connection
+            connection.commit()
+            connection.cursor().close()
+            self.pool.putconn(self.connectionsStorage.connection)
+        except Exception:
+            raise FatalException
 
     def execute(self, sql, values, fetch=False):
-        connection = self.connectionsStorage.connection
-        cursor = connection.cursor()
-        cursor.execute(sql, values)
-        if fetch:
-            results = cursor.fetchall()
-            return results
+        try:
+            connection = self.connectionsStorage.connection
+            cursor = connection.cursor()
+            cursor.execute(sql, values)
+            if fetch:
+                results = cursor.fetchall()
+                return results
+        except psycopg2.DatabaseError as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise FatalException
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise FatalException
+        except Exception:
+            raise FatalException
 
     def rollback_transaction(self):
-        connection = self.connectionsStorage.connection
-        connection.rollback()
-        cursor = connection.cursor()
-        cursor.close()
-        self.pool.putconn(self.connectionsStorage.connection)
+        try:
+            connection = self.connectionsStorage.connection
+            connection.rollback()
+            cursor = connection.cursor()
+            cursor.close()
+            self.pool.putconn(self.connectionsStorage.connection)
+        except Exception:
+            raise FatalException

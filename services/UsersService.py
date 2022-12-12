@@ -1,8 +1,7 @@
-from data.UsersDAO import UsersDAO
+import bcrypt
 from flask import abort
 
-import bcrypt
-
+from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
 
 

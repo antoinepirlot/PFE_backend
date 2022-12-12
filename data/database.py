@@ -1,7 +1,8 @@
 import os
+
 import psycopg2
-from psycopg2 import pool
 from dotenv import load_dotenv
+from psycopg2 import pool
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ def initialiseConnection():
                                                                     password=password,
                                                                     host=host,
                                                                     database=database) #TODO : put 5 connexions max
+
 
         if threaded_postgreSQL_pool:
             print("Connection pool created successfully using ThreadedConnectionPool")

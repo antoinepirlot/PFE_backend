@@ -18,9 +18,10 @@ class FavoritesDAO:
         values = {"id_student": id_student, "id_teacher": id_teacher}
         try:
             result = self._dal_service.execute(sql, values, True)
-            if result is None:
+            if len(result) == 0:
                 # TODO abort in routes
                 abort(404, "Favorite not found")
+            result = result[0]
             favorite = Favorite(int(result[0]), int(result[1]))
             return favorite
         except NotFound as not_found_e:
@@ -88,10 +89,12 @@ class FavoritesDAO:
         sql = """
             INSERT INTO projet.favorites(id_teacher, id_student)
             VALUES( %(id_teacher)s, %(id_student)s)
+            RETURNING id_teacher, id_student
         """
         values = {"id_teacher": int(favorite.id_teacher), "id_student": int(favorite.id_student)}
         try:
-            return self._dal_service.execute(sql, values, True)
+            result = self._dal_service.execute(sql, values, True)[0]
+            return Favorite(result[0], result[1])
         except (Exception, psycopg2.DatabaseError) as e:
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))

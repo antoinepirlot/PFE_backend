@@ -21,6 +21,7 @@ class FavoritesDAO:
             if len(result) == 0:
                 # TODO abort in routes
                 abort(404, "Favorite not found")
+            result = result[0]
             favorite = Favorite(int(result[0]), int(result[1]))
             return favorite
         except NotFound as not_found_e:

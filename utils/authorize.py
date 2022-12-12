@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import jsonify, request
+from flask import request, jsonify, make_response
 import jwt
 import os
 from services.UsersService import UsersService
@@ -7,23 +7,22 @@ from services.UsersService import UsersService
 users_service = UsersService()
 
 
-# Authentication decorator
-def token_required(f):
+# Authorize decorator
+def authorize(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
-        # ensure the jwt-token is passed with the headers
+        # check if token passed
         if 'Authorization' in request.headers:
             token = request.headers['Authorization']
-        if not token:  # throw error if no token provided
-            return "A valid token is missing!", 401
+        if not token:  # if not token
+            return jsonify("A valid token is missing!"), 401
         try:
-            # decode the token to obtain user id
+            # decode the token to check if the user exists
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=['HS256'])
-            current_user = UsersService.get_users_by_id(data['id'])
-        except:
-            return "Invalid token!", 401
-        # Return the user information attached to the token
-        return f(current_user, *args, **kwargs)
+            users_service.get_users_by_id(data['id'])
+        except:  # the token is invalid
+            return jsonify("Invalid token!"), 403
+        return f(*args, **kwargs)
 
     return decorator

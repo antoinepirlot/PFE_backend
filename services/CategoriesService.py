@@ -1,7 +1,4 @@
-from flask import abort
-from werkzeug.exceptions import NotFound
-
-from data.CategoriesDAO import CategoriesDAO
+from data.DAO.CategoriesDAO import CategoriesDAO
 from data.services.DALService import DALService
 
 

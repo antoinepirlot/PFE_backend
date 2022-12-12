@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock
 
 from app.main import app
-from data.CoursesDAO import CoursesDAO
+from data.DAO.CoursesDAO import CoursesDAO
 from data.services.DALService import DALService
 
 

@@ -1,4 +1,4 @@
-from data.CoursesDAO import CoursesDAO
+from data.DAO.CoursesDAO import CoursesDAO
 from data.services.DALService import DALService
 from utils.objects_modifications import convert_models_objects_to_json
 

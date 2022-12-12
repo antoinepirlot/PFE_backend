@@ -1,6 +1,6 @@
 from flask import abort
 
-from data.ChatRoomsDAO import ChatRoomsDAO
+from data.DAO.ChatRoomsDAO import ChatRoomsDAO
 from data.services.DALService import DALService
 
 

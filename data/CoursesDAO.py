@@ -42,9 +42,13 @@ class CoursesDAO:
         :return: the course matching with id_course. If there's no course, it returns None
         """
         sql = """
-                SELECT id_category, id_teacher, course_description, price_per_hour, city, country, level           
-                FROM projet.courses
-                WHERE id_course = %(id_course)s;
+                SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
+                   cat.id_category, cat.name, cat.color,
+                   u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone          
+                FROM projet.courses cou, projet.users u, projet.categories cat
+                WHERE cou.id_teacher = u.id_user
+                  AND cou.id_category = cat.id_category
+                  AND id_course = %(id_course)s;
               """
         values = {"id_course": id_course}
         result = self._dal_service.execute(sql, values, True)
@@ -78,21 +82,19 @@ class CoursesDAO:
 
     def get_all_courses(self):
         sql = """
-            SELECT id_course, id_category, id_teacher, course_description, price_per_hour, city, country, level
-             FROM projet.courses"""
+            SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
+                   cat.id_category, cat.name, cat.color,
+                   u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone
+            FROM projet.courses cou, projet.users u, projet.categories cat
+            WHERE cou.id_teacher = u.id_user
+              AND cou.id_category = cat.id_category
+        """
 
         try:
             result = self._dal_service.execute(sql, None, True)
             if len(result) == 0:
                 return None
-
-            courses = []
-            for course in result:
-                c = Course(course[1], course[2], course[3], course[4], course[5], course[6], course[7])
-                c.id_course(course[0])
-                courses.append(c)
-
-            return courses
+            return _create_course_object(result)
         except Exception as e:
             raise e
 

@@ -1,10 +1,11 @@
 class Rating:
-    def __init__(self, id_rater, id_rated, rating_text, rating_number):
+    def __init__(self, id_rater, id_rated, rating_text, rating_number, average_stars=None):
         self.id_rater = id_rater
         self.id_rated = id_rated
         self.rating_text = rating_text
         self.rating_number = rating_number
         self._rater = None
+        self.average_stars = average_stars
 
     @classmethod
     def init_rating_with_json(cls, json):

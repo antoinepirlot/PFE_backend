@@ -20,13 +20,6 @@ def on_connect():
     socketio.emit('my response', {'data': 'Connected'})
 
 
-@socketio.on('disconnect')
-def on_disconnect():
-    users.pop(request.sid, 'No user found')
-    socketio.emit('current_users', users)
-    print("User disconnected!\nThe users are: ", users)
-
-
 @socketio.on('sign_in')
 def user_sign_in(id_user1, id_user2, methods=['GET', 'POST']):
     user1 = users_service.get_users_by_id(id_user1)
@@ -44,25 +37,28 @@ def user_sign_in(id_user1, id_user2, methods=['GET', 'POST']):
 @socketio.on('join')
 def join(username, room):
     join_room(room)
-    print("on envoie le statut")
     socketio.emit('status', {'msg': username + ' vient de se connecter.'}, room=room)
 
 
 @socketio.on('left')
-def join(username):
-    room = session.get('room')
-    leave_room(room)
-    socketio.emit('status', {'msg': session.get('username') + ' vient de se déconnecter.'}, room=room)
+def left(username, room):
+    #leave_room(room)
+    #session.clear()
+    print(username, ' a quitter la conv')
+    socketio.emit('statusLeft', {'msg': username + ' vient de se déconnecter.'}, room=room)
 
 
 @socketio.on('message')
-def messaging(message, methods=['GET', 'POST']):
-    print('received message: ' + str(message))
-    message['from'] = request.sid
-    socketio.emit('message', message, room=request.sid)
-    socketio.emit('message', message, room=message['to'])
-    room = session.get('room')
-    emit('message', {'msg': session.get('username') + ":" + message['msg']}, room=room)
+def messaging(message, id_room, username, methods=['GET', 'POST']):
+    room = id_room
+    socketio.emit('message', {'msg': username + ":" + message}, room=room)
+
+
+@socketio.on('disconnect')
+def on_disconnect():
+    users.pop(request.sid, 'No user found')
+    socketio.emit('current_users', users)
+    print("User disconnected!\nThe users are: ", users)
 
 
 if __name__ == '__main__':

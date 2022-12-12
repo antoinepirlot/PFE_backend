@@ -29,14 +29,30 @@ def on_disconnect():
 
 @socketio.on('sign_in')
 def user_sign_in(id_user1, id_user2, methods=['GET', 'POST']):
-    print("id user1: ", id_user1)
-    print("id user2: ", id_user2)
+    user1 = users_service.get_users_by_id(id_user1)
+    user2 = users_service.get_users_by_id(id_user2)
+
     chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
-    print("id room avant creation : ", chat_room.id_room)
     if chat_room is None:
         chat_room = chat_rooms_service.create_chat_room(id_user1, id_user2)
-    #socketio.emit('room_id', users)
-    print("id de la room: ", chat_room.id_room)
+
+    session['username'] = user1.pseudo
+    session['room'] = chat_room.id_room
+    socketio.emit('room_id', {'room_id': chat_room.id_room, 'username1': user1.pseudo, 'username2': user2.pseudo})
+
+
+@socketio.on('join')
+def join(username, room):
+    join_room(room)
+    print("on envoie le statut")
+    socketio.emit('status', {'msg': username + ' vient de se connecter.'}, room=room)
+
+
+@socketio.on('left')
+def join(username):
+    room = session.get('room')
+    leave_room(room)
+    socketio.emit('status', {'msg': session.get('username') + ' vient de se déconnecter.'}, room=room)
 
 
 @socketio.on('message')
@@ -45,6 +61,8 @@ def messaging(message, methods=['GET', 'POST']):
     message['from'] = request.sid
     socketio.emit('message', message, room=request.sid)
     socketio.emit('message', message, room=message['to'])
+    room = session.get('room')
+    emit('message', {'msg': session.get('username') + ":" + message['msg']}, room=room)
 
 
 if __name__ == '__main__':

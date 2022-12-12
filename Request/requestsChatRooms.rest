@@ -3,9 +3,9 @@ GET http://localhost:5000/chat_rooms/1/4
 Content-Type: application/json
 
 ### Get a chat room
-GET http://localhost:5000/chat_rooms/getRoomById/f46e0d39-688a-4f2f-ae72-57f55298203b
+GET http://localhost:5000/chat_rooms/getRoomById/3ece20f6-49bc-4c35-a1a2-651c08a7df7c
 Content-Type: application/json
 
 ### Create a chat room
-POST http://localhost:5000/chat_rooms/1/4
+POST http://localhost:5000/chat_rooms/1/5
 Content-Type: application/json

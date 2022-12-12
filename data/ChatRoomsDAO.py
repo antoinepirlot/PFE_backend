@@ -78,7 +78,6 @@ class ChatRoomsDAO:
         values = {"id_room": id_room, "id_user1": id_user1, "id_user2": id_user2}
         try:
             result = self._dal_service.execute(sql, values, True)
-            print("voici le result : ", result)
             # TODO result is now a chat room, use these values from returned sql
             chat_room = ChatRoom(str(id_room), int(id_user1),
                                  int(id_user2))

@@ -127,7 +127,8 @@ class CoursesDAO:
         }
         try:
             result = self._dal_service.execute(sql, dico_variables, True)
-            course.id_course(result[0][0])
+            course.id_course = result[0][0]
+            print(course)
             return course
         except (Exception, psycopg2.DatabaseError) as e:
             try:

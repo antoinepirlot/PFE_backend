@@ -28,10 +28,15 @@ def on_disconnect():
 
 
 @socketio.on('sign_in')
-def user_sign_in(user_name, methods=['GET', 'POST']):
-    users[request.sid] = user_name['name']
-    socketio.emit('current_users', users)
-    print("New user sign in!\nThe users are: ", users)
+def user_sign_in(id_user1, id_user2, methods=['GET', 'POST']):
+    print("id user1: ", id_user1)
+    print("id user2: ", id_user2)
+    chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
+    print("id room avant creation : ", chat_room.id_room)
+    if chat_room is None:
+        chat_room = chat_rooms_service.create_chat_room(id_user1, id_user2)
+    #socketio.emit('room_id', users)
+    print("id de la room: ", chat_room.id_room)
 
 
 @socketio.on('message')

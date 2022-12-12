@@ -130,7 +130,16 @@ INSERT INTO projet.courses(id_category, id_teacher, course_description, price_pe
 VALUES (5,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(1, 5, 'finished', '2022-10-20', 'rue de la colline', 121);
+VALUES(1, 5, 'pending', '2022-10-20', 'rue de la colline', 121);
+
+INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
+VALUES(1, 1, 'accepted', '2022-10-20', 'rue de la colline', 121);
+
+INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
+VALUES(2, 1, 'canceled', '2022-10-20', 'rue de la colline', 121);
+
+INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
+VALUES(3, 1, 'pending', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
 VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);

@@ -19,6 +19,16 @@ class CoursesService:
         self._dal_service.commit_transaction()
         return course.convert_to_json()
 
+    def get_all_courses(self):
+        self._dal_service.start()
+        try:
+            courses = self._courses_dao.get_all_courses()
+            self._dal_service.commit_transaction()
+            return courses
+        except Exception as e:
+            self._dal_service.rollback_transaction()
+            raise e
+
     def get_all_courses_from_teacher(self, id_teacher):
         """
         Get courses from DAO and convert them to json

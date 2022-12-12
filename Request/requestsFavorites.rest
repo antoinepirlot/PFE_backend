@@ -1,5 +1,5 @@
 ### Get a favorite
-GET http://localhost:5000/favorites/1/3
+GET http://localhost:5000/favorites/1/23
 Content-Type: application/json
 
 ### Get all your favorite teacher

@@ -14,17 +14,20 @@ class ChatRoomsDAO:
 
     def get_chat_room(self, id_user1, id_user2):
         sql = """
-            SELECT id_room, id_user1, id_user2 FROM projet.chat_rooms 
-            WHERE (id_user1 = %(id_user1)s AND id_user2 = %(id_user2)s) 
-               OR (id_user1 =%(id_user2)s AND id_user2 = %(id_user1)s);
-        """
+                    SELECT id_room, id_user1, id_user2 FROM projet.chat_rooms 
+                    WHERE (id_user1 = %(id_user1)s AND id_user2 = %(id_user2)s) 
+                       OR (id_user1 =%(id_user2)s AND id_user2 = %(id_user1)s);
+                """
         values = {"id_user1": id_user1, "id_user2": id_user2}
         try:
-            result = self._dal_service.execute(sql, values, True)
+            result = self._dal_service.execute(sql, values, True)[0]
             if result is None:
                 # TODO move abort to route layer
                 abort(404, "Chat room not found")
-            chat_room = ChatRoom(str(result[0]), int(result[1]), int(result[2]))
+
+            chat_room = ChatRoom(result[0], result[1], result[2])
+
+            print(chat_room)
             return chat_room
         except NotFound as not_found_e:
             raise not_found_e
@@ -46,7 +49,7 @@ class ChatRoomsDAO:
         """
         values = {"id_room": id_room}
         try:
-            result = self._dal_service.execute(sql, values, True)
+            result = self._dal_service.execute(sql, values, True)[0]
             if result is None:
                 # TODO move abort to route layer
                 abort(404, "Chat room not found")
@@ -66,7 +69,7 @@ class ChatRoomsDAO:
                 raise Exception from e
 
     def create_chat_room(self, id_user1, id_user2):
-        id_room = str(uuid.uuid4())  # TODO the database should create new id automatically, so this is unnecessary
+        id_room = str(uuid.uuid4())
         sql = """
             INSERT INTO projet.chat_rooms(id_room, id_user1, id_user2)
             VALUES(%(id_room)s, %(id_user1)s, %(id_user2)s)
@@ -75,9 +78,10 @@ class ChatRoomsDAO:
         values = {"id_room": id_room, "id_user1": id_user1, "id_user2": id_user2}
         try:
             result = self._dal_service.execute(sql, values, True)
+            print("voici le result : ", result)
             # TODO result is now a chat room, use these values from returned sql
             chat_room = ChatRoom(str(id_room), int(id_user1),
-                                 int(id_user2))  # TODO id_room should be int and casting should be realized in routes layer
+                                 int(id_user2))
             return chat_room
         except (Exception, psycopg2.DatabaseError) as e:
             try:

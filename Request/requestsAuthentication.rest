@@ -6,6 +6,3 @@ Content-Type: application/json
       "email": "aa@gmail.com",
       "password": "aa"
 }
-
-### get by token
-GET http://localhost:5000/authentications/token/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImV4cCI6MTY3MDcxMzM2M30.4oJQfKyAwUJWKOiRcYzICCT2V3budyFpGQ76E-BAiqY

@@ -17,6 +17,7 @@ def initialiseConnection():
                                                                     password=password,
                                                                     host=host,
                                                                     database=database) #TODO : put 5 connexions max
+
         if threaded_postgreSQL_pool:
             print("Connection pool created successfully using ThreadedConnectionPool")
         return threaded_postgreSQL_pool

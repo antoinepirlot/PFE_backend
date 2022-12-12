@@ -36,7 +36,7 @@ class AppointmentsDAO:
     def get_appointments_for_user(self, id_student):
         sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \
               "FROM projet.appointments " \
-              "WHERE  id_student = %(id_student)s"
+              "WHERE  id_student = %(id_student)s ORDER BY appointment_state DESC, appointment_date"
 
         try:
             results = self.dal.execute(sql, {"id_student": id_student}, True)

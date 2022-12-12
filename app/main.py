@@ -1,10 +1,14 @@
-from flask import Flask, jsonify, request
-
+from flask import Flask
 from flask_cors import CORS
 
-
-from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, appointments
-
+from Exceptions.BadRequestException import BadRequestException
+from Exceptions.ConflictException import ConflictException
+from Exceptions.FatalException import FatalException
+from Exceptions.ForbiddenException import ForbiddenException
+from Exceptions.NotFoundException import NotFoundException
+from Exceptions.UnauthorizedException import UnauthorizedException
+from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, \
+    appointments
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,6 +25,36 @@ app.register_blueprint(categories.route, url_prefix="/categories")
 app.register_blueprint(appointments.route, url_prefix="/appointments")
 
 
-if __name__ == '__main__':
+# Exceptions
+@app.errorhandler(BadRequestException)
+def bad_request_exception(e):
+    return str(e), 400
 
+
+@app.errorhandler(UnauthorizedException)
+def unauthorized_exception(e):
+    return str(e), 401
+
+
+@app.errorhandler(ForbiddenException)
+def forbidden_exception(e):
+    return str(e), 403
+
+
+@app.errorhandler(NotFoundException)
+def not_found_exception(e):
+    return str(e), 404
+
+
+@app.errorhandler(ConflictException)
+def conflict_exception(e):
+    return str(e), 409
+
+
+@app.errorhandler(FatalException)
+def fatal_exception(e):
+    return str(e), 500
+
+
+if __name__ == '__main__':
     app.run()

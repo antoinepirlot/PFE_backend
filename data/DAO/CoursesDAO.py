@@ -1,5 +1,4 @@
-import psycopg2
-
+from Exceptions.NotFoundException import NotFoundException
 from data.services.DALService import DALService
 from models.Category import Category
 from models.Course import Course
@@ -53,13 +52,13 @@ class CoursesDAO:
         values = {"id_course": id_course}
         result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
-            return None
+            raise NotFoundException(f"No course matching id: {id_course}")
         return _create_course_object(result)[0]
 
     def get_all_courses_from_teacher(self, id_teacher):
         """
         Get all teacher's courses from the database.
-        :param id_teacher:  the teacher's id
+        :param: id_teacher:  the teacher's id
         :return: the list of teacher's courses. If there's no courses, it returns None
         """
         sql = """
@@ -72,47 +71,41 @@ class CoursesDAO:
               AND id_teacher = %(id_teacher)s;
         """
         values = {"id_teacher": id_teacher}
-        try:
-            result = self._dal_service.execute(sql, values, True)
-            if len(result) == 0:
-                return None
-            return _create_course_object(result)
-        except Exception as e:
-            raise e
+        result = self._dal_service.execute(sql, values, True)
+        if len(result) == 0:
+            raise NotFoundException
+        return _create_course_object(result)
 
     def get_all_courses(self):
         sql = """
-            SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
-                   cat.id_category, cat.name, cat.color,
-                   u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone
-            FROM projet.courses cou, projet.users u, projet.categories cat
-            WHERE cou.id_teacher = u.id_user
-              AND cou.id_category = cat.id_category
-        """
+                SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
+                       cat.id_category, cat.name, cat.color,
+                       u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone
+                FROM projet.courses cou, projet.users u, projet.categories cat
+                WHERE cou.id_teacher = u.id_user
+                  AND cou.id_category = cat.id_category
+            """
 
-        try:
-            result = self._dal_service.execute(sql, None, True)
-            if len(result) == 0:
-                return None
-            return _create_course_object(result)
-        except Exception as e:
-            raise e
+        result = self._dal_service.execute(sql, None, True)
+        if len(result) == 0:
+            raise NotFoundException
+        return _create_course_object(result)
 
-        # def get_all_courses(self):
-        #     """
-        #     Get courses from DAO and convert them to json
-        #     :return: the list of converted courses in json
-        #     """
-        #     courses = None
-        #     try:
-        #         self._dal_service.start()
-        #         courses = self._courses_dao.get_all_courses()
-        #         self._dal_service.commit_transaction()
-        #     except Exception as sql_error:  # TODO maybe psycopg2.Error
-        #         self._dal_service.rollback_transaction()
-        #     if courses is not None:
-        #         return convert_models_objects_to_json(courses)
-        #     return None
+    # def get_all_courses(self):
+    #     """
+    #     Get courses from DAO and convert them to json
+    #     :return: the list of converted courses in json
+    #     """
+    #     courses = None
+    #     try:
+    #         self._dal_service.start()
+    #         courses = self._courses_dao.get_all_courses()
+    #         self._dal_service.commit_transaction()
+    #     except Exception as sql_error:  # TODO maybe psycopg2.Error
+    #         self._dal_service.rollback_transaction()
+    #     if courses is not None:
+    #         return convert_models_objects_to_json(courses)
+    #     return None
 
     def create_one_course(self, course):
         """
@@ -121,10 +114,10 @@ class CoursesDAO:
         :return: the created course
         """
         sql = """
-                INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
-                level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
-                %(country)s, %(level)s) RETURNING id_course
-              """
+                    INSERT INTO projet.courses (id_category, id_teacher, course_description, price_per_hour, city, country,
+                    level) VALUES( %(id_category)s, %(id_teacher)s, %(course_description)s, %(price_per_hour)s, %(city)s,
+                    %(country)s, %(level)s) RETURNING id_course;
+                  """
         dico_variables = {
             "id_category": course.id_category,
             "id_teacher": course.id_teacher,
@@ -134,14 +127,5 @@ class CoursesDAO:
             "country": course.country,
             "level": course.level,
         }
-        try:
-            result = self._dal_service.execute(sql, dico_variables, True)
-            course.id_course = result[0][0]
-            return course
-        except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+        result = self._dal_service.execute(sql, dico_variables, True)
+        return self.get_one(result[0][0])

@@ -1,6 +1,5 @@
 from data.UsersDAO import UsersDAO
 from flask import abort
-from werkzeug.exceptions import NotFound
 
 import bcrypt
 
@@ -68,11 +67,9 @@ class UsersService:
         try:
             user_email = self.users_DAO.get_user_by_email(user['email'])
             if user_email is not None:
-                self.dal.rollback_transaction()
                 abort(409, "Cet email est déjà pris")
             user_pseudo = self.users_DAO.get_user_by_pseudo(user['pseudo'])
             if user_pseudo is not None:
-                self.dal.rollback_transaction()
                 abort(409, "Ce pseudo est déjà pris")
             self.users_DAO.sing_in_user(user)
             self.dal.commit_transaction()

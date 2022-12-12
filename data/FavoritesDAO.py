@@ -1,28 +1,27 @@
+import psycopg2
 from flask import abort
 from werkzeug.exceptions import NotFound
 
-import data.database as database
+from data.services.DALService import DALService
 from models.Favorite import Favorite
-import psycopg2
 
 
 class FavoritesDAO:
     def __init__(self):
-        pass
+        self._dal_service = DALService()
 
     def get_favorite(self, id_teacher, id_student):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "SELECT id_student, id_teacher FROM projet.favorites " \
-              "WHERE id_student = %i AND id_teacher = %i" % (
-                  id_student, id_teacher
-              )
+        sql = """
+            SELECT id_student, id_teacher FROM projet.favorites 
+            WHERE id_student = %(id_student)s AND id_teacher = %(id_teacher)s
+        """
+        values = {"id_student": id_student, "id_teacher": id_teacher}
         try:
-            cursor.execute(sql)
-            connection.commit()
-            result = cursor.fetchone()
-            if result is None:
+            result = self._dal_service.execute(sql, values, True)
+            if len(result) == 0:
+                # TODO abort in routes
                 abort(404, "Favorite not found")
+            result = result[0]
             favorite = Favorite(int(result[0]), int(result[1]))
             return favorite
         except NotFound as not_found_e:
@@ -37,24 +36,20 @@ class FavoritesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()
 
-    def get_favorite_teachers_from_user(self, id):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "SELECT id_student, id_teacher FROM projet.favorites WHERE id_student = %i" % (id)
+    def get_favorite_teachers_from_user(self, id_student):
+        sql = """
+            SELECT id_teacher, id_student 
+            FROM projet.favorites 
+            WHERE id_student = %(id_student)s
+        """
+        values = {"id_student": id_student}
         results_export_fav_teachers = []
         try:
-            cursor.execute(sql)
-            connection.commit()
-            results = cursor.fetchall()
-
+            results = self._dal_service.execute(sql, values, True)
             for row in results:
                 favorite = Favorite(int(row[0]), int(row[1]))
                 results_export_fav_teachers.append(favorite)
-
             return results_export_fav_teachers
 
         except (Exception, psycopg2.DatabaseError) as e:
@@ -65,21 +60,14 @@ class FavoritesDAO:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
 
-        finally:
-            cursor.close()
-            connection.close()
-
     def get_most_favorites_teachers(self):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "SELECT id_teacher, count(id_student) as total FROM projet.favorites " \
-              "GROUP BY id_teacher ORDER BY total DESC"
+        sql = """
+            SELECT id_teacher, count(id_student) as total FROM projet.favorites 
+            GROUP BY id_teacher ORDER BY total DESC
+        """
         results_export_fav_teachers = []
         try:
-            cursor.execute(sql)
-            connection.commit()
-            results = cursor.fetchall()
-
+            results = self._dal_service.execute(sql, [], True)
             for row in results:
                 res = {
                     "id_teacher": row[0],
@@ -97,23 +85,16 @@ class FavoritesDAO:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
 
-        finally:
-            cursor.close()
-            connection.close()
-
     def add_favorite(self, favorite):
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "INSERT INTO projet.favorites(id_teacher, id_student)" \
-              " VALUES( %(id_teacher)s, %(id_student)s)"
+        sql = """
+            INSERT INTO projet.favorites(id_teacher, id_student)
+            VALUES( %(id_teacher)s, %(id_student)s)
+            RETURNING id_teacher, id_student
+        """
+        values = {"id_teacher": int(favorite.id_teacher), "id_student": int(favorite.id_student)}
         try:
-            dico_variables = {
-                "id_teacher": int(favorite.id_teacher),
-                "id_student": int(favorite.id_student)
-            }
-            cursor.execute(sql, dico_variables)
-            connection.commit()
-            return favorite
+            result = self._dal_service.execute(sql, values, True)[0]
+            return Favorite(result[0], result[1])
         except (Exception, psycopg2.DatabaseError) as e:
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
@@ -121,23 +102,15 @@ class FavoritesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()
 
     def remove_favorite(self, favorite):
-        print(favorite)
-        connection = database.initialiseConnection()
-        cursor = connection.cursor()
-        sql = "DELETE FROM projet.favorites " \
-              "WHERE id_student = '%s' AND id_teacher = '%s'" % (
-                  favorite['id_student'], favorite['id_teacher']
-              )
-
+        sql = """
+            DELETE FROM projet.favorites 
+            WHERE id_student = %(id_student)s AND id_teacher = %(id_teacher)s
+        """
+        values = {"id_student": favorite.id_student, "id_teacher": favorite.id_teacher}
         try:
-            cursor.execute(sql)
-            connection.commit()
-            return favorite
+            return self._dal_service.execute(sql, values, True)
         except (Exception, psycopg2.DatabaseError) as e:
             print("----------")
             print(type(e))
@@ -148,6 +121,3 @@ class FavoritesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
-        finally:
-            cursor.close()
-            connection.close()

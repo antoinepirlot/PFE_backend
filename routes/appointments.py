@@ -22,3 +22,13 @@ def get_appointments(id_student):
         return appointments, 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+
+@route.route('/<int:id_course>/<int:id_student>', methods=['GET'])
+def get_appointments_for_user_of_course(id_course, id_student):
+    try:
+        result = appointments_service.get_appointments_for_user_of_course(id_course, id_student)
+
+        return result.convert_to_json(), 200
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500

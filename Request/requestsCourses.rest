@@ -1,5 +1,5 @@
 ### get all courses
-GET http://localhost:5000/courses/all
+GET http://localhost:5000/courses
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3

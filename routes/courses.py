@@ -8,20 +8,11 @@ courses_service = CoursesService()
 route = Blueprint("courses", __name__)
 
 
-
-@route.route("/", methods=["GET"])
-def get_all_courses():
-    courses = courses_service.get_all_courses()
-    if courses is None:
-        abort(404, "No courses")
-    return courses, 200
-
-
 # #########
 # ###GET###
 # #########
 
-@route.route('/all', methods=['GET'])
+@route.route('', methods=['GET'])
 def get_all_courses():
     try:
         result = courses_service.get_all_courses()

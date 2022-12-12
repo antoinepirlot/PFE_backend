@@ -1,4 +1,4 @@
-from Exceptions.NotFoundException import NotFoundException
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.services.DALService import DALService
 from models.Category import Category
 from models.Course import Course
@@ -52,7 +52,7 @@ class CoursesDAO:
         values = {"id_course": id_course}
         result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
-            raise NotFoundException(f"No course matching id: {id_course}")
+            return None
         return _create_course_object(result)[0]
 
     def get_all_courses_from_teacher(self, id_teacher):

@@ -1,4 +1,5 @@
 from Exceptions.FatalException import FatalException
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.CoursesDAO import CoursesDAO
 from data.services.DALService import DALService
 from utils.objects_modifications import convert_models_objects_to_json
@@ -15,6 +16,8 @@ class CoursesService:
         try:
             self._dal_service.start()
             course = self._courses_dao.get_one(id_course)
+            if course is None:
+                raise NotFoundException(f"No course matching id: {id_course}")
             self._dal_service.commit_transaction()
             return course.convert_to_json()
         except FatalException as e:

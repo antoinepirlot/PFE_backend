@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from Exceptions.BadRequestException import BadRequestException
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.Course import Course
 from services.CoursesService import CoursesService
 

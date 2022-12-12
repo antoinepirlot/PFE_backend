@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
 
-from Exceptions.BadRequestException import BadRequestException
-from Exceptions.ConflictException import ConflictException
 from Exceptions.FatalException import FatalException
-from Exceptions.ForbiddenException import ForbiddenException
-from Exceptions.NotFoundException import NotFoundException
-from Exceptions.UnauthorizedException import UnauthorizedException
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
+from Exceptions.WebExceptions.ConflictException import ConflictException
+from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
+from Exceptions.WebExceptions.UnauthorizedException import UnauthorizedException
 from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, \
     appointments
 

@@ -1,4 +1,3 @@
-from Exceptions.FatalException import FatalException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.CoursesDAO import CoursesDAO
 from data.services.DALService import DALService
@@ -20,7 +19,7 @@ class CoursesService:
                 raise NotFoundException(f"No course matching id: {id_course}")
             self._dal_service.commit_transaction()
             return course.convert_to_json()
-        except FatalException as e:
+        except Exception as e:
             self._dal_service.rollback_transaction()
             raise e
 
@@ -32,7 +31,7 @@ class CoursesService:
                 raise NotFoundException
             self._dal_service.commit_transaction()
             return courses
-        except FatalException as e:
+        except Exception as e:
             self._dal_service.rollback_transaction()
             raise e
 
@@ -49,7 +48,7 @@ class CoursesService:
                 raise NotFoundException
             self._dal_service.commit_transaction()
             return convert_models_objects_to_json(courses)
-        except FatalException as e:
+        except Exception as e:
             self._dal_service.rollback_transaction()
             raise e
 
@@ -59,6 +58,6 @@ class CoursesService:
             result = self._courses_dao.create_one_course(course)
             self._dal_service.commit_transaction()
             return result
-        except FatalException as e:
+        except Exception as e:
             self._dal_service.rollback_transaction()
             raise e

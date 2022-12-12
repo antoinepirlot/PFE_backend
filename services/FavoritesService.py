@@ -1,6 +1,6 @@
 from flask import abort
 
-from data.FavoritesDAO import FavoritesDAO
+from data.DAO.FavoritesDAO import FavoritesDAO
 from data.services.DALService import DALService
 
 

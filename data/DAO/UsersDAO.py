@@ -1,6 +1,7 @@
+import psycopg2
+
 from data.services.DALService import DALService
 from models.User import User
-import psycopg2
 
 
 class UsersDAO:

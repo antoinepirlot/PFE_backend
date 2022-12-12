@@ -1,10 +1,7 @@
-from flask import abort
-from werkzeug.exceptions import NotFound
+import psycopg2
 
-import data.database as database
 from data.services.DALService import DALService
 from models.Rating import Rating
-import psycopg2
 
 
 class RatingsDAO:

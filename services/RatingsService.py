@@ -1,8 +1,8 @@
 from flask import abort
 
-from data.RatingsDAO import RatingsDAO
-from data.UsersDAO import UsersDAO
-from data.AppointmentsDAO import AppointmentsDAO
+from data.DAO.AppointmentsDAO import AppointmentsDAO
+from data.DAO.RatingsDAO import RatingsDAO
+from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
 
 

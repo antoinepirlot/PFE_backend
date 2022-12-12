@@ -2,7 +2,7 @@
 GET http://localhost:5000/courses
 
 ### 200 expected
-GET http://localhost:5000/courses/teacher/1
+GET http://localhost:5000/courses/teacher/0
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3

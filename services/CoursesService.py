@@ -28,6 +28,8 @@ class CoursesService:
         try:
             self._dal_service.start()
             courses = self._courses_dao.get_all_courses()
+            if courses is None:
+                raise NotFoundException
             self._dal_service.commit_transaction()
             return courses
         except FatalException as e:
@@ -43,6 +45,8 @@ class CoursesService:
         try:
             self._dal_service.start()
             courses = self._courses_dao.get_all_courses_from_teacher(id_teacher)
+            if courses is None:
+                raise NotFoundException
             self._dal_service.commit_transaction()
             return convert_models_objects_to_json(courses)
         except FatalException as e:

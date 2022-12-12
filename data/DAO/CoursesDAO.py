@@ -73,7 +73,7 @@ class CoursesDAO:
         values = {"id_teacher": id_teacher}
         result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
-            raise NotFoundException
+            return None
         return _create_course_object(result)
 
     def get_all_courses(self):

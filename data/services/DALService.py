@@ -25,6 +25,7 @@ class DALService:
         connection.commit()
         connection.cursor().close()
         self.pool.putconn(self.connectionsStorage.connection)
+        self.connectionsStorage.connection = None
 
     def execute(self, sql, values, fetch=False):
         connection = self.connectionsStorage.connection
@@ -40,3 +41,4 @@ class DALService:
         cursor = connection.cursor()
         cursor.close()
         self.pool.putconn(self.connectionsStorage.connection)
+        self.connectionsStorage.connection = None

@@ -16,6 +16,11 @@ class RatingsService:
         self.dal = DALService()
 
     def get_ratings(self, id_teacher):
+        """
+        Get rating by the rated id (teacher).
+        :param: id_teacher: the user's id that gets a rating
+        :return: list of ratings, If there's no ratings, it returns None
+        """
         self.dal.start()
         try:
             user = self.users_DAO.get_user_by_id(id_teacher)
@@ -32,6 +37,11 @@ class RatingsService:
             raise e
 
     def create_rating(self, rating):
+        """
+        Create a rating in the database.
+        :param: rating: the rating to add
+        :return: the rating added.
+        """
         self.dal.start()
         try:
             if self.users_DAO.get_user_by_id(rating.id_rater) is None:
@@ -39,7 +49,8 @@ class RatingsService:
             if self.users_DAO.get_user_by_id(rating.id_rated) is None:
                 raise NotFoundException("The teacher rater doesn't exist")
             # check if a finish appointment exist
-            appointments = self.appointements_DAO.get_appointments_from_teacher_and_student(rating.id_rated, rating.id_rater)
+            appointments = self.appointements_DAO.get_appointments_from_teacher_and_student(rating.id_rated,
+                                                                                            rating.id_rater)
             if appointments is None:
                 raise ForbiddenException("You have no course with this teacher")
             isFinished = False

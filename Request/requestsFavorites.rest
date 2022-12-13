@@ -1,7 +1,7 @@
 ### Get a favorite
-GET http://localhost:5000/favorites/1
+GET http://localhost:5000/favorites/2
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZXhwIjoxNjcxMzc1MTI4fQ.grQKjw7KDQ6EhqEDutl7Dyzi0R_nZC447QW-oIjPr0Q
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxMzkyMDI0fQ.F7Rekrwj-o7jIbUtNacShHpr52r9DVThc8JTSz_uFRY
 
 ### Get all your favorite teacher
 GET http://localhost:5000/favorites/3
@@ -13,17 +13,16 @@ Content-Type: application/json
 
 ### Add a favorite teacher
 POST http://localhost:5000/favorites
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZXhwIjoxNjcxMzc1MTI4fQ.grQKjw7KDQ6EhqEDutl7Dyzi0R_nZC447QW-oIjPr0Q
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxMzkyMDI0fQ.F7Rekrwj-o7jIbUtNacShHpr52r9DVThc8JTSz_uFRY
 Content-Type: application/json
 
 {
   "id_student": 23,
   "id_teacher": 3
-
 }
 
 ### Delete a favorite teacher
 DELETE http://localhost:5000/favorites/1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZXhwIjoxNjcxMzc1MTI4fQ.grQKjw7KDQ6EhqEDutl7Dyzi0R_nZC447QW-oIjPr0Q
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxMzkyMDI0fQ.F7Rekrwj-o7jIbUtNacShHpr52r9DVThc8JTSz_uFRY
 
 ### ERROR ONLY ON DELETE 403 EVEN WITH TOKEN I CHECKED WITH STEFAN IF IT WORKS ELSWHERE

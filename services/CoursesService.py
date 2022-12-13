@@ -12,6 +12,11 @@ class CoursesService:
         pass
 
     def get_one(self, id_course):
+        """
+        Get one course retrieved by its id
+        :param id_course: the id of the course
+        :return: the course with the good id or Not found
+        """
         try:
             self._dal_service.start()
             course = self._courses_dao.get_one(id_course)
@@ -24,6 +29,11 @@ class CoursesService:
             raise e
 
     def get_all_courses(self, filter=None):
+        """
+        Get all courses with a filter or not
+        :param filter: by what you want to filter all courses
+        :return: all courses with the potential filter applied
+        """
         try:
             self._dal_service.start()
             courses = self._courses_dao.get_all_courses(filter)
@@ -53,6 +63,11 @@ class CoursesService:
             raise e
 
     def create_one_course(self, course):
+        """
+        create one course
+        :param course: the course we want to create
+        :return: the created course
+        """
         try:
             self._dal_service.start()
             result = self._courses_dao.create_one_course(course)

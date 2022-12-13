@@ -14,6 +14,10 @@ class Rating:
         self._rater = rater
 
     def convert_to_json(self):
+        """
+        Convert the current object into json
+        :return: a json that represents the current object
+        """
         json = {
             "id_rated": self.id_rated,
             "rating_text": self.rating_text,

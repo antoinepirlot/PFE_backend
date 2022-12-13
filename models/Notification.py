@@ -17,6 +17,10 @@ class Notification:
 
 
     def convert_to_json(self):
+        """
+        Convert the current object into json
+        :return: a json that represents the current object
+        """
         return {"id_notification": self.id_notification,
                 "id_user": self.id_user,
                 "notification_text": self.notification_text,

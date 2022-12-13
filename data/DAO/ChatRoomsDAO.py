@@ -13,13 +13,18 @@ class ChatRoomsDAO:
         self._dal_service = DALService()
 
     def get_chat_room(self, id_user1, id_user2):
+        """
+        Get the chat room of 2 users
+        :param id_user1: id of the first user
+        :param id_user2: id of the second user
+        :return: a chat room
+        """
         sql = """
             SELECT id_room, id_user1, id_user2 FROM projet.chat_rooms 
             WHERE (id_user1 = %(id_user1)s AND id_user2 = %(id_user2)s) 
                OR (id_user1 =%(id_user2)s AND id_user2 = %(id_user1)s);
         """
         values = {"id_user1": id_user1, "id_user2": id_user2}
-        #try:
         result = self._dal_service.execute(sql, values, True)[0]
         if result is None:
             return None
@@ -27,12 +32,16 @@ class ChatRoomsDAO:
         return chat_room
 
     def get_chat_room_by_id(self, id_room):
+        """
+        Get a chat room by its id
+        :param id_room: the id of the chat room
+        :return: the chat room with the good id
+        """
         sql = """
             SELECT id_room, id_user1, id_user2 FROM projet.chat_rooms 
             WHERE id_room = %(id_room)s;
         """
         values = {"id_room": id_room}
-        #try:
         result = self._dal_service.execute(sql, values, True)[0]
         if result is None:
             return None
@@ -40,6 +49,12 @@ class ChatRoomsDAO:
         return chat_room
 
     def create_chat_room(self, id_user1, id_user2):
+        """
+        Create one chat room
+        :param id_user1: id of the first user
+        :param id_user2: id of the second user
+        :return: the created chat room
+        """
         id_room = str(uuid.uuid4())
         sql = """
             INSERT INTO projet.chat_rooms(id_room, id_user1, id_user2)
@@ -47,7 +62,7 @@ class ChatRoomsDAO:
             RETURNING id_room, id_user1, id_user2
         """
         values = {"id_room": id_room, "id_user1": id_user1, "id_user2": id_user2}
-        result = self._dal_service.execute(sql, values, True)
+        self._dal_service.execute(sql, values, True)
 
         chat_room = ChatRoom(id_room, id_user1, id_user2)
         return chat_room

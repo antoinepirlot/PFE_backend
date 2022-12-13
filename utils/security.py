@@ -22,4 +22,4 @@ def prevent_xss(data):
                 # Not a string
                 new_data[attribute_name] = s
         return new_data
-    raise FatalException("Data in prevent_xss must be a str or a dict, for sub-objects it's not yet implemented")
+    return data

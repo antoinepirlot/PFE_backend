@@ -1,6 +1,12 @@
 ### get all courses
 GET http://localhost:5000/courses
 
+### get all courses with city filter
+GET http://localhost:5000/courses?city="Bruxelles"
+
+### get all courses with category filter
+GET http://localhost:5000/courses?course="Anglais"
+
 ### 200 expected
 GET http://localhost:5000/courses/teacher/0
 

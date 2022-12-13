@@ -23,7 +23,7 @@ class CoursesService:
             self._dal_service.rollback_transaction()
             raise e
 
-    def get_all_courses(self):
+    def get_all_courses(self, filter=None):
         try:
             self._dal_service.start()
             courses = self._courses_dao.get_all_courses()

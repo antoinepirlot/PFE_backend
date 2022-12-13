@@ -79,7 +79,7 @@ class CoursesDAO:
             return None
         return _create_course_object(result)
 
-    def get_all_courses(self):
+    def get_all_courses(self, filter=None):
         sql = """
                 SELECT
                    cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
@@ -89,8 +89,12 @@ class CoursesDAO:
                    projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category
                    LEFT OUTER JOIN projet.users u ON cou.id_teacher = u.id_user
                    LEFT OUTER JOIN projet.ratings ra ON u.id_user = ra.id_rated 
-                GROUP BY cou.id_course, cat.id_category, u.id_user;
+                
             """
+
+        # if(filter is not None):
+
+        sql += "GROUP BY cou.id_course, cat.id_category, u.id_user;"
 
         result = self._dal_service.execute(sql, None, True)
         if len(result) == 0:

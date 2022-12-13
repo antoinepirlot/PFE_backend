@@ -15,6 +15,10 @@ route = Blueprint("courses", __name__)
 
 @route.route('', methods=['GET'])
 def get_all_courses():
+    filter_city = request.args.get('city', default=None, type=str)
+    filter_name_course = request.args.get('course', default=None, type=str)
+    print(filter_city)
+    print(filter_name_course)
     result = courses_service.get_all_courses()
     courses = []
     for course in result:

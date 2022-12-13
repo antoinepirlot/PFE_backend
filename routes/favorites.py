@@ -15,8 +15,10 @@ route = Blueprint("favorites", __name__)
 # #########
 # ###GET###
 # #########
-@route.route('/<int:id_teacher>/<int:id_student>', methods=['GET'])
-def get_favorite(id_teacher, id_student):
+@route.route('/<int:id_teacher>', methods=['GET'])
+@authorize
+def get_favorite(id_teacher):
+    id_student = get_id_from_token(request.headers["authorization"])
     favorite = favorites_service.get_favorite(id_teacher, id_student)
     return favorite.convert_to_json()
 

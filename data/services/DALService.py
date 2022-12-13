@@ -33,6 +33,7 @@ class DALService:
             connection.commit()
             connection.cursor().close()
             self.pool.putconn(self.connectionsStorage.connection)
+            self.connectionsStorage.connection = None
         except Exception:
             raise FatalException
 
@@ -61,5 +62,6 @@ class DALService:
             cursor = connection.cursor()
             cursor.close()
             self.pool.putconn(self.connectionsStorage.connection)
+            self.connectionsStorage.connection = None
         except Exception:
             raise FatalException

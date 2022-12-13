@@ -64,6 +64,7 @@ def join(username, room):
 
 @socketio.on('left')
 def left(username, room):
+    # TODO unknown error while finishing this function but, it has no incidence for the frontend, it works just one strange error
     leave_room(room)
     session.clear()
     print(username, ' a quitter la conv')

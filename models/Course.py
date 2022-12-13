@@ -4,7 +4,8 @@ from models.User import User
 
 class Course(object):
 
-    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level):
+    def __init__(self, id_category, id_teacher, course_description, price_per_hour, city, country, level,
+                 sum_stars=None, total_tuples_stars=None):
         self._id_course = None
         self.id_category = id_category
         self.id_teacher = id_teacher
@@ -13,6 +14,8 @@ class Course(object):
         self.city = city
         self.country = country
         self.level = level
+        self.sum_stars = sum_stars
+        self.total_tuples_stars = total_tuples_stars
 
     @property
     def id_course(self):
@@ -27,7 +30,9 @@ class Course(object):
                 "price_per_hour": self.price_per_hour,
                 "city": self.city,
                 "country": self.country,
-                "level": self.level
+                "level": self.level,
+                "sum_stars": self.sum_stars,
+                "total_tuples_stars": self.total_tuples_stars
                 }
         if type(self.id_teacher) is User:
             json["teacher"] = self.id_teacher.convert_to_json()

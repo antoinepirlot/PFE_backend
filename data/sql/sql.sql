@@ -129,6 +129,15 @@ VALUES (1,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequi
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
 VALUES (5,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
 
+INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
+VALUES (4,1,'Cours d Anglais avec Browny', 25, 'Bruxelles', 'Belgique','Débutant');
+
+INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
+VALUES (2,1,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
+
+INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
+VALUES (3,1,'Cours de Python', 25, 'Bruxelles', 'Belgique','Débutant');
+
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(1, 5, 'pending', '2022-10-20', 'rue de la colline', 121);
 
@@ -139,7 +148,13 @@ INSERT INTO projet.appointments(id_course, id_student, appointment_state, appoin
 VALUES(2, 1, 'canceled', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(3, 1, 'pending', '2022-10-20', 'rue de la colline', 121);
+VALUES(3, 2, 'finished', '2022-10-20', 'rue de la colline', 121);
+
+INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
+VALUES(4, 1, 'finished', '2022-10-20', 'rue de la colline', 121);
+
+INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
+VALUES(5, 1, 'not_come', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
 VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);

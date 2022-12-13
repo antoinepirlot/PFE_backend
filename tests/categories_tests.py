@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock
-from data.CategoriesDAO import CategoriesDAO
-from data.services.DALService import DALService
-from models.Category import Category
+
 from app.main import app
+from data.DAO.CategoriesDAO import CategoriesDAO
+from data.services.DALService import DALService
 
 
 class CategoriesTests(unittest.TestCase):

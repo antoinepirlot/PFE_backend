@@ -24,6 +24,7 @@ def get_favorite(id_teacher):
 
 
 @route.route('/<int:id_user>', methods=['GET'])
+@authorize
 def get_favorites_from_user(id_user):
     all_favorites = favorites_service.get_favorites_from_user(id_user)
     all_favorites_json = []
@@ -33,6 +34,7 @@ def get_favorites_from_user(id_user):
 
 
 @route.route('/mostFavoritesTeachers', methods=['GET'])
+@authorize
 def get_most_favorites_teachers():
     all_favorites = favorites_service.get_most_favorites_teachers()
     return all_favorites

@@ -4,11 +4,14 @@ GET http://localhost:5000/users
 ### get user by id
 GET http://localhost:5000/users/1
 
+### get user by id
+GET http://localhost:5000/users/teacher/1
+
 ### get user by email
 GET http://localhost:5000/users/requinFR@gmail.com
 
 ### get user by pseudo
-GET http://localhost:5000/users/pseudo/aa
+GET http://localhost:5000/users/pseudo/REQUIN
 
 ### create new user
 POST http://localhost:5000/users
@@ -17,8 +20,8 @@ Content-Type: application/json
 {
      "lastname": "potato",
       "firstname": "tito",
-      "email": "a5444cdccdccccfccccfv@gmail.com",
-      "pseudo": "aaaaatic5fdcd",
+      "email": "a54x44cdccdccccfccccfv@gmail.com",
+      "pseudo": "aaxaaatic5fdcd",
       "sexe": "male",
       "phone": "0472586978",
       "password": "a"

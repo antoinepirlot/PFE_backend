@@ -31,3 +31,14 @@ class CategoriesDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise Exception from e
+
+    def get_all_skills_categories(self, id_user):
+        sql = "SELECT c.id_category, c.name FROM projet.categories c, projet.teacher_skills ts, projet.users u " \
+              "WHERE c.id_category = ts.id_category AND ts.id_teacher = u.id_user AND u.id_user = %(id_user)s"
+        value = {"id_user": id_user}
+        results = self.dal.execute(sql, value, True)
+        all_categories = []
+        for row in results:
+            rating = Category(int(row[0]), str(row[1]))
+            all_categories.append(rating)
+        return all_categories

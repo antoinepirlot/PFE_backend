@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import NotFound
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.UsersService import UsersService
 
@@ -34,6 +35,13 @@ def get_user_by_id(id_user):
         raise not_found_e
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+@route.route('teacher/<int:id_teacher>', methods=['GET'])
+def get_teacher_by_id(id_teacher):
+    if id_teacher is None or int(id_teacher) <= 0:
+        raise BadRequestException("ID of the teacher is not mentioned or negative")
+    result = users_service.get_teacher_by_id(id_teacher)
+    return result.convert_to_json(), 200
 
 
 @route.route('/<string:email>', methods=['GET'])

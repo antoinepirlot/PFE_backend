@@ -30,7 +30,6 @@ class CoursesService:
             courses = self._courses_dao.get_all_courses()
             if courses is None:
                 raise NotFoundException
-
             self._dal_service.commit_transaction()
             return courses
         except FatalException as e:

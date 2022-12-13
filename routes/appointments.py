@@ -22,8 +22,8 @@ def get_appointments(id_student):
 
 
 @route.route('/<int:id_course>/<int:id_student>', methods=['GET'])
-def get_appointments_for_user_of_course(id_course, id_student):
-    result = appointments_service.get_appointments_for_user_of_course(id_course, id_student)
+def get_appointment_for_user_of_course(id_course, id_student):
+    result = appointments_service.get_appointment_for_user_of_course(id_course, id_student)
 
     return result.convert_to_json()
 

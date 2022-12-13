@@ -9,6 +9,12 @@ class AppointmentsDAO:
         self.dal = DALService()
 
     def get_appointments_from_teacher_and_student(self, id_teacher, id_student):
+        """
+        Get all appointments of teacher and user, from the database.
+        :param: id_teacher:  the teacher's id
+        :param: id_student: the student's id
+        :return: the list of appointments. If there's no appointments, it returns None
+        """
         sql = "SELECT DISTINCT a.id_course, a.id_student, a.appointment_state, a.appointment_date, a.street, a.number_house, a.box_house " \
               "FROM projet.appointments a, projet.courses c " \
               "WHERE a.id_course = c.id_course AND a.id_student = %(id_student)s AND c.id_teacher = %(id_teacher)s"
@@ -24,6 +30,11 @@ class AppointmentsDAO:
         return all_appointments
 
     def get_appointments_for_user(self, id_student):
+        """
+        Get all appointments of user, from the database.
+        :param: id_student: the student's id
+        :return: the list of appointments. If there's no appointments, it returns None
+        """
         sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \
               "FROM projet.appointments " \
               "WHERE  id_student = %(id_student)s ORDER BY appointment_state DESC, appointment_date"
@@ -38,7 +49,13 @@ class AppointmentsDAO:
             all_appointments.append(appointment)
         return all_appointments
 
-    def get_appointments_for_user_of_course(self, id_course, id_student):
+    def get_appointment_for_user_of_course(self, id_course, id_student):
+        """
+        Get appointment of user and course, from the database.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :return: the appointment. If there's no appointment, it returns None
+        """
         sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \
               "FROM projet.appointments " \
               "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
@@ -52,6 +69,12 @@ class AppointmentsDAO:
         return appointment
 
     def update_appointment_state(self, id_course, id_student, appointment_state):
+        """
+        Update an appointment state, from the database.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_state: the state for the appointment
+        """
         sql = "UPDATE projet.appointments SET appointment_state = %(appointment_state)s " \
               "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
 

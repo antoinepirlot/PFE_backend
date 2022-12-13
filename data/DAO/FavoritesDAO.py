@@ -7,6 +7,12 @@ class FavoritesDAO:
         self._dal_service = DALService()
 
     def get_favorite(self, id_teacher, id_student):
+        """
+        Get the favorite retrieved by its id_teacher and id_student
+        :param id_teacher: the id of the teacher
+        :param id_student: the id of the student
+        :return: the favorite
+        """
         sql = """
             SELECT id_student, id_teacher FROM projet.favorites 
             WHERE id_student = %(id_student)s AND id_teacher = %(id_teacher)s
@@ -20,6 +26,11 @@ class FavoritesDAO:
         return favorite
 
     def get_favorite_teachers_from_user(self, id_student):
+        """
+        Get all favorites from a specific user
+        :param id: the id of the user
+        :return: list of all his favorite or None
+        """
         sql = """
             SELECT id_teacher, id_student 
             FROM projet.favorites 
@@ -36,6 +47,10 @@ class FavoritesDAO:
         return results_export_fav_teachers
 
     def get_most_favorites_teachers(self):
+        """
+        Get a list with the id teacher and its number of favorites student gives to him foreach teacher
+        :return: list with the id teacher and its number of favorites student gives to him foreach teacher
+        """
         sql = """
             SELECT id_teacher, count(id_student) as total FROM projet.favorites 
             GROUP BY id_teacher ORDER BY total DESC
@@ -53,6 +68,11 @@ class FavoritesDAO:
         return results_export_fav_teachers
 
     def add_favorite(self, favorite):
+        """
+        Create a favorite
+        :param favorite: the favorite we want to add
+        :return: the created favorite
+        """
         sql = """
             INSERT INTO projet.favorites(id_teacher, id_student)
             VALUES( %(id_teacher)s, %(id_student)s)
@@ -65,6 +85,11 @@ class FavoritesDAO:
         return Favorite(results[0][0], results[0][1])
 
     def remove_favorite(self, id_teacher, id_student):
+        """
+        Remove a favorite
+        :param id_teacher: the id of the teacher
+        :param id_student: the id of the student
+        """
         sql = """
             DELETE FROM projet.favorites 
             WHERE id_student = %(id_student)s AND id_teacher = %(id_teacher)s

@@ -11,6 +11,12 @@ class ChatRoomsService:
         self._dal_service = DALService()
 
     def get_chat_room(self, id_user1, id_user2):
+        """
+        Get the chat room of 2 users
+        :param id_user1: id of the first user
+        :param id_user2: id of the second user
+        :return: a chat room
+        """
         try:
             self._dal_service.start()
             results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
@@ -22,6 +28,11 @@ class ChatRoomsService:
             self._dal_service.rollback_transaction()
 
     def get_chat_room_by_id(self, id_room):
+        """
+        Get a chat room by its id
+        :param id_room: the id of the chat room
+        :return: the chat room with the good id
+        """
         try:
             self._dal_service.start()
             results = self._chat_rooms_DAO.get_chat_room_by_id(id_room)
@@ -33,6 +44,12 @@ class ChatRoomsService:
             self._dal_service.rollback_transaction()
 
     def create_chat_room(self, id_user1, id_user2):
+        """
+        Create one chat room
+        :param id_user1: id of the first user
+        :param id_user2: id of the second user
+        :return: the created chat room
+        """
         try:
             self._dal_service.start()
             # results = self._chat_rooms_DAO.create_chat_room(id_user1,id_user2)  # if it returns error, it means it

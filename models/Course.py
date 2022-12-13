@@ -26,6 +26,10 @@ class Course(object):
         self._id_course = id_course
 
     def convert_to_json(self):
+        """
+        Convert the current object into json
+        :return: a json that represents the current object
+        """
         json = {"course_description": self.course_description,
                 "price_per_hour": self.price_per_hour,
                 "city": self.city,

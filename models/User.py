@@ -28,6 +28,10 @@ class User:
         self._average_rating = average_rating
 
     def convert_to_json(self, with_password=True):
+        """
+        Convert the current object into json
+        :return: a json that represents the current object
+        """
         json = {"id_user": self.id_user,
                 "lastname": self.lastname,
                 "firstname": self.firstname,

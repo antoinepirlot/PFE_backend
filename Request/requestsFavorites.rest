@@ -12,10 +12,10 @@ Content-Type: application/json
 
 ### Add a favorite teacher
 POST http://localhost:5000/favorites
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZXhwIjoxNjcxMzc1MTI4fQ.grQKjw7KDQ6EhqEDutl7Dyzi0R_nZC447QW-oIjPr0Q
 Content-Type: application/json
 
 {
-  "id_student": 8,
   "id_teacher": 1
 }
 

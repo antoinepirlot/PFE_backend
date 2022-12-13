@@ -1,6 +1,7 @@
 import bcrypt
 from flask import abort
 
+from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.CategoriesDAO import CategoriesDAO
 from data.DAO.RatingsDAO import RatingsDAO
@@ -57,21 +58,19 @@ class UsersService:
                 all_ratings_counter = 0
                 for rating in all_ratings:
                     all_ratings_counter += rating.rating_number
-                user.average_rating = (all_ratings_counter/len(all_ratings))
+                user.average_rating = (all_ratings_counter / len(all_ratings))
             self.dal.commit_transaction()
             return user
         except Exception as e:
             self.dal.rollback_transaction()
             raise e
 
-
-
     def get_users_by_email(self, email):
         self.dal.start()
         try:
             user = self.users_dao.get_user_by_email(email)
             if user is None:
-                abort(404, "User not found")
+                raise NotFoundException("User not found")
             self.dal.commit_transaction()
             return user
         except Exception as e:
@@ -83,7 +82,7 @@ class UsersService:
         try:
             user = self.users_dao.get_user_by_pseudo(pseudo)
             if user is None:
-                abort(404, "User not found")
+                raise NotFoundException("User not found")
             self.dal.commit_transaction()
             return user
         except Exception as e:
@@ -98,10 +97,10 @@ class UsersService:
         try:
             user_email = self.users_dao.get_user_by_email(user['email'])
             if user_email is not None:
-                abort(409, "Cet email est déjà pris")
+                raise ConflictException("Cet email est déjà pris")
             user_pseudo = self.users_dao.get_user_by_pseudo(user['pseudo'])
             if user_pseudo is not None:
-                abort(409, "Ce pseudo est déjà pris")
+                raise ConflictException("Ce pseudo est déjà pris")
             self.users_dao.sing_in_user(user)
             self.dal.commit_transaction()
         except Exception as e:
@@ -113,7 +112,7 @@ class UsersService:
         userFound = self.get_users_by_email(email).convert_to_json()
 
         if not bcrypt.checkpw(password.encode(), userFound['password'].encode()):
-            abort(404, "Email or password incorrect")
+            raise NotFoundException("Email or password incorrect")
 
         return userFound
 
@@ -122,7 +121,7 @@ class UsersService:
         try:
             user = self.users_dao.get_user_by_id(token['id'])
             if user is None:
-                abort(404, "User not found")
+                raise NotFoundException("User not found")
             self.dal.commit_transaction()
             return user
         except Exception as e:

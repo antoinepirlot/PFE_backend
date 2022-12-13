@@ -131,7 +131,7 @@ class UsersService:
             self.dal.rollback_transaction()
             raise e
 
-    def logInUser(self, email, password):
+    def login_user(self, email, password):
         """
         Login a user.
         :param: email: the user's email.
@@ -145,20 +145,3 @@ class UsersService:
             raise NotFoundException("Email or password incorrect")
 
         return userFound
-
-    def get_users_by_token(self, token):
-        """
-        Get user by his token .
-        :param: token: the user's token
-        :return: the user, If there's no user, it returns None
-        """
-        self.dal.start()
-        try:
-            user = self.users_dao.get_user_by_id(token['id'])
-            if user is None:
-                raise NotFoundException("User not found")
-            self.dal.commit_transaction()
-            return user
-        except Exception as e:
-            self.dal.rollback_transaction()
-            raise e

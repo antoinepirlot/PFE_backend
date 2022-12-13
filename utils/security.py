@@ -18,5 +18,8 @@ def prevent_xss(data):
             s = data[attribute_name]
             if type(s) is str:
                 new_data[attribute_name] = markup.escape(s)
+            else:
+                # Not a string
+                new_data[attribute_name] = s
         return new_data
     raise FatalException("Data in prevent_xss must be a str or a dict, for sub-objects it's not yet implemented")

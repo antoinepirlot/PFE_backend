@@ -47,6 +47,7 @@ def add_favorite():
     new_favorite.id_student = get_id_from_token(request.headers["authorization"])
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
 
+
 # #########
 # ###PUT###
 # #########

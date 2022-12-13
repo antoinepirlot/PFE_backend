@@ -92,11 +92,23 @@ class CoursesDAO:
                 
             """
 
-        # if(filter is not None):
+        values = None
+
+        if (filter is not None):
+            if 'category' in filter:
+                sql += """
+                    WHERE cat.name= %(category)s
+                """
+                values = {"category": filter['category']}
+            elif 'city' in filter:
+                sql += """
+                    WHERE cou.city= %(city)s
+                """
+                values = {"city": filter['city']}
 
         sql += "GROUP BY cou.id_course, cat.id_category, u.id_user;"
 
-        result = self._dal_service.execute(sql, None, True)
+        result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
             raise NotFoundException
         return _create_course_object(result, True)

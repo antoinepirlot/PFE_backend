@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
+from Exceptions.WebExceptions.ConflictException import ConflictException
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
 from utils.authorize import authorize, get_id_from_token
@@ -21,7 +24,6 @@ def get_favorite(id_teacher):
 
 
 @route.route('/<int:id_user>', methods=['GET'])
-@authorize
 def get_favorites_from_user(id_user):
     all_favorites = favorites_service.get_favorites_from_user(id_user)
     all_favorites_json = []
@@ -31,7 +33,6 @@ def get_favorites_from_user(id_user):
 
 
 @route.route('/mostFavoritesTeachers', methods=['GET'])
-@authorize
 def get_most_favorites_teachers():
     all_favorites = favorites_service.get_most_favorites_teachers()
     return all_favorites
@@ -45,8 +46,16 @@ def get_most_favorites_teachers():
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
     new_favorite.id_student = get_id_from_token(request.headers["authorization"])
+    """
+    if new_favorite.id_teacher == new_favorite.id_student:
+        raise BadRequestException("You cannot add yourself to your favorites")
+    try:
+        result = favorites_service.get_favorite(new_favorite.id_teacher, new_favorite.id_student)
+    except NotFoundException:
+        return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
+    raise ConflictException
+    """
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
-
 
 # #########
 # ###PUT###

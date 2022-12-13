@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from werkzeug.exceptions import NotFound
 
+from models.User import User
 from services.AppointmentsService import AppointmentsService
-from utils.security import prevent_xss
 
 appointments_service = AppointmentsService()
 
@@ -29,6 +30,6 @@ def get_appointment_for_user_of_course(id_course, id_student):
 
 @route.route('/<int:id_course>/<int:id_student>/state/<string:appointment_state>', methods=['PUT'])
 def update_appointments_state(id_course, id_student, appointment_state):
-    appointments_service.update_appointments_state(id_course, id_student, prevent_xss(appointment_state))
+    appointments_service.update_appointments_state(id_course, id_student, appointment_state)
 
     return jsonify({"update done": ""})

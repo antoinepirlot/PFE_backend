@@ -2,9 +2,8 @@ from flask import Blueprint, request
 
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
-from models.Rating import Rating
 from services.RatingsService import RatingsService
-from utils.security import prevent_xss
+from models.Rating import Rating
 
 ratings_service = RatingsService()
 
@@ -41,6 +40,5 @@ def create_one():
         raise BadRequestException("Rating is not in the good format")
     if request.json['id_rated'] == request.json['id_rater']:
         raise ForbiddenException("You cannot create a rating for yourself")
-    rating = prevent_xss(request.json)
-    new_rating = Rating.init_rating_with_json(rating)
+    new_rating = Rating.init_rating_with_json(request.json)
     return ratings_service.create_rating(new_rating).convert_to_json(), 201

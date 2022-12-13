@@ -94,22 +94,6 @@ class CoursesDAO:
             raise NotFoundException
         return _create_course_object(result)
 
-    # def get_all_courses(self):
-    #     """
-    #     Get courses from DAO and convert them to json
-    #     :return: the list of converted courses in json
-    #     """
-    #     courses = None
-    #     try:
-    #         self._dal_service.start()
-    #         courses = self._courses_dao.get_all_courses()
-    #         self._dal_service.commit_transaction()
-    #     except Exception as sql_error:  # TODO maybe psycopg2.Error
-    #         self._dal_service.rollback_transaction()
-    #     if courses is not None:
-    #         return convert_models_objects_to_json(courses)
-    #     return None
-
     def create_one_course(self, course):
         """
         Create a course in the database

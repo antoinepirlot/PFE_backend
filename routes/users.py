@@ -60,9 +60,5 @@ def get_user_by_pseudo(pseudo):
 # ########
 @route.route('', methods=['POST'])
 def add_user():
-    try:
-        users_service.sing_in_user(request.json)
-        return jsonify({'user': 'user created'}), 201
-    except Exception as e:
-        raise e
-        return jsonify({e.__class__.__name__: str(type(e))}), 500
+    users_service.sing_in_user(request.json)
+    return jsonify({'user': 'user created'})

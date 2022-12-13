@@ -1,5 +1,8 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, jsonify, request
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
+from Exceptions.WebExceptions.ConflictException import ConflictException
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
 
@@ -39,8 +42,12 @@ def get_most_favorites_teachers():
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
     if new_favorite.id_teacher == new_favorite.id_student:
-        abort(412, "You cannot add yourself to your favorites")
-    return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
+        raise BadRequestException("You cannot add yourself to your favorites")
+    try:
+        result = favorites_service.get_favorite(new_favorite.id_teacher, new_favorite.id_student)
+    except NotFoundException:
+        return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
+    raise ConflictException
 
 
 # #########
@@ -50,11 +57,7 @@ def add_favorite():
 # ############
 # ###DELETE###
 # ############
-@route.route("/", methods=["DELETE"])
-def remove_favorite():
-    try:
-        print(request.json)
-        favorites_service.remove_favorite(request.json)
-        return jsonify({'favorite': 'favorite deleted'}), 201
-    except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+@route.route("/<int:id_teacher>/<int:id_student>", methods=["DELETE"])
+def remove_favorite(id_teacher, id_student):
+    favorites_service.remove_favorite(id_teacher, id_student)
+    return jsonify({'favorite': 'favorite deleted'}), 201

@@ -13,7 +13,7 @@ class UsersDAO:
         Get all users, from database.
         :return: the list of users
         """
-        sql = """SELECT * FROM projet.users"""
+        sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password FROM projet.users"""
 
         resultsExportUsers = []
         results = self.dal.execute(sql, None, True)

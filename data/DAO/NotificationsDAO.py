@@ -16,7 +16,7 @@ class NotificationsDAO:
         :return: all notifications for the user specified
         """
         sql = """
-            SELECT *
+            SELECT id_user, notification_text, id_notification, notification_date, seen
             FROM projet.notifications 
             WHERE id_user = %(id_user)s ORDER BY notification_date DESC;
         """
@@ -24,7 +24,7 @@ class NotificationsDAO:
         value = {"id_user": id_user}
         results = self._dal_service.execute(sql, value, True)
         for row in results:
-            notif = Notification(int(row[1]), str(row[2]), int(row[0]), str(row[3]), bool(row[4]))
+            notif = Notification(int(row[0]), str(row[1]), int(row[2]), str(row[3]), bool(row[4]))
             results_export_notif.append(notif)
         return results_export_notif
 

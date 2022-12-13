@@ -7,6 +7,7 @@ import os
 import utils.authorize
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.UsersService import UsersService
+from utils.authorize import get_id_from_token, authorize
 
 users_service = UsersService()
 
@@ -41,10 +42,9 @@ def login():
     return jsonify(token)
 
 
-@route.route('/token/<string:token>', methods=['GET'])
-def get_user_by_token(token):
-    my_secret = os.getenv("JWT_SECRET")
-    id_user = utils.authorize.get_id_from_token(token)
-    # infoToken = jwt.decode(token, key=my_secret, algorithms="HS256")
+@route.route('/', methods=['GET'])
+@authorize
+def get_user_by_token():
+    id_user = get_id_from_token(request.headers["Authorization"])
     result = users_service.get_users_by_id(id_user)
     return result.convert_to_json()

@@ -18,11 +18,11 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-     "lastname": "potato",
-      "firstname": "tito",
-      "email": "a54x44cdccdccccfccccfv@gmail.com",
-      "pseudo": "aaxaaatic5fdcd",
-      "sexe": "male",
-      "phone": "0472586978",
-      "password": "a"
+  "lastname": "potato",
+  "firstname": "tito",
+  "email": "<script></script>@gmail.com",
+  "pseudo": "<script>",
+  "sexe": "male",
+  "phone": "0472586978",
+  "password": "a"
 }

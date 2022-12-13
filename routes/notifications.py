@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, jsonify, request
 
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
-from services.NotificationsService import NotificationsService
 from models.Notification import Notification
+from services.NotificationsService import NotificationsService
+from utils.security import prevent_xss
 
 notification_service = NotificationsService()
 
@@ -23,6 +24,12 @@ def get_notifications_from_user(id_user):
 
 @route.route('', methods=['POST'])
 def add_notification():
-    notification = Notification(int(request.json['id_user']), str(request.json['notification_text']))
+    json = request.json
+    if json is None \
+            or (json["id_user"] is None or type(json["id_user"]) is not int) \
+            and (json["notification_text"] is None or type(json["notification_text"]) is not str
+                 or len(json["notification_text"]) == 0):
+        raise BadRequestException("Wrong id_user in notification")
+    notification = Notification(json['id_user'], prevent_xss(json['notification_text']))
     notification_service.add_notification(notification)
     return jsonify({'notification': 'notification created'}), 201

@@ -82,7 +82,7 @@ class AppointmentsDAO:
 
         try:
 
-            self.dal.execute(sql, {"id_course": id_course, "id_student": id_student, "appointment_state": appointment_state}, True)
+            self.dal.execute(sql, {"id_course": int(id_course), "id_student": int(id_student), "appointment_state": str(appointment_state)})
 
         except (Exception, psycopg2.DatabaseError) as e:
             try:

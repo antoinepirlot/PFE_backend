@@ -79,7 +79,7 @@ class CoursesDAO:
             return None
         return _create_course_object(result)
 
-    def get_all_courses(self, filter=None):
+    def get_all_courses(self, filter):
         sql = """
                 SELECT
                    cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
@@ -94,15 +94,15 @@ class CoursesDAO:
 
         values = None
 
-        if (filter is not None):
-            if 'category' in filter:
+        if filter is not None:
+            if 'course' in filter:
                 sql += """
-                    WHERE cat.name= %(category)s
+                    WHERE LOWER(cat.name)= LOWER(%(course)s)
                 """
-                values = {"category": filter['category']}
+                values = {"course": filter['course']}
             elif 'city' in filter:
                 sql += """
-                    WHERE cou.city= %(city)s
+                    WHERE LOWER(cou.city)= LOWER(%(city)s)
                 """
                 values = {"city": filter['city']}
 

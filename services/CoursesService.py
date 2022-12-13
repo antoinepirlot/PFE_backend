@@ -26,7 +26,7 @@ class CoursesService:
     def get_all_courses(self, filter=None):
         try:
             self._dal_service.start()
-            courses = self._courses_dao.get_all_courses()
+            courses = self._courses_dao.get_all_courses(filter)
             if courses is None:
                 raise NotFoundException
             self._dal_service.commit_transaction()

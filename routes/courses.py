@@ -17,9 +17,12 @@ route = Blueprint("courses", __name__)
 def get_all_courses():
     filter_city = request.args.get('city', default=None, type=str)
     filter_name_course = request.args.get('course', default=None, type=str)
-    print(filter_city)
-    print(filter_name_course)
-    result = courses_service.get_all_courses()
+    object_search = None
+    if filter_city is not None:
+        object_search = {"city": filter_city}
+    elif filter_name_course is not None:
+        object_search = {"course": filter_name_course}
+    result = courses_service.get_all_courses(object_search)
     courses = []
     for course in result:
         courses.append(course.convert_to_json())

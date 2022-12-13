@@ -22,7 +22,6 @@ class NotificationsDAO:
         for row in results:
             print(type(row[2]))
             notif = Notification(int(row[0]), int(row[1]), str(row[2]), str(row[3]), bool(row[4]))
-
             results_export_notif.append(notif)
         return results_export_notif
 
@@ -30,14 +29,6 @@ class NotificationsDAO:
         sql = """
             INSERT INTO projet.notifications VALUES (DEFAULT,'%(id_user)s','%(text)s',now(),FALSE) 
         """
+
         values = {"id_user": notification["id_user"], "text": notification["notification_text"]}
-        try:
-            self._dal_service.execute(sql, values)
-        except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                self._dal_service.rollback_transaction()
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+        self._dal_service.execute(sql, values)

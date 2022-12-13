@@ -39,6 +39,6 @@ def update_appointments_state(id_course, id_student, appointment_state):
     try:
         appointments_service.update_appointments_state(id_course, id_student, appointment_state)
 
-        return jsonify({"update done"}), 200
+        return jsonify({"update done": ""}), 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500

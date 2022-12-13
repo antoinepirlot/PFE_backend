@@ -72,11 +72,3 @@ def create_one():
                         request.json['price_per_hour'], request.json['city'], request.json['country'],
                         request.json['level'])
     return courses_service.create_one_course(new_course).convert_to_json(), 201
-# #########
-# ###PUT###
-# #########
-
-
-# ############
-# ###DELETE###
-# ############

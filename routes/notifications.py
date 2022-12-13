@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.NotificationsService import NotificationsService
 from models.Notification import Notification
 
@@ -18,6 +19,7 @@ def get_notifications_from_user(id_user):
     for notification in result:
         notifications.append(notification.convert_to_json())
     return notifications, 200
+
 
 
 @route.route('', methods=['POST'])

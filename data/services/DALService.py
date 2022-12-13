@@ -46,6 +46,7 @@ class DALService:
                 results = cursor.fetchall()
                 return results
         except psycopg2.DatabaseError as e:
+            print("iciiiii")
             try:
                 print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
                 raise FatalException

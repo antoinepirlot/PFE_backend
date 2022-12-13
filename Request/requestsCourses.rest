@@ -27,7 +27,7 @@ Content-Type: application/json
   "id_category": 1,
   "id_teacher": 1,
   "course_description": "Ce cours est pour ceux qui connaissent déjà les bases en PHP",
-  "price_per_hour" : 20.5,
+  "price_per_hour" : 2030.5,
   "city" : "Paris",
   "country": "France",
   "level": "Débutant"

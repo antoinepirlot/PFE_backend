@@ -16,6 +16,10 @@ class CategoriesService:
         return cls.instance
 
     def get_all_categories(self):
+        '''
+        Get all categories
+        :return: all categories
+        '''
         self.dal.start()
         try:
             all_categories = self.categories_dao.get_all_categories()

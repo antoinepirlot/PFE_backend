@@ -15,7 +15,7 @@ route = Blueprint("favorites", __name__)
 # #########
 # ###GET###
 # #########
-@route.route('/<int:id_teacher>', methods=['GET'])
+@route.route('/one/<int:id_teacher>', methods=['GET'])
 @authorize
 def get_favorite(id_teacher):
     id_student = get_id_from_token(request.headers["authorization"])
@@ -48,7 +48,7 @@ def get_most_favorites_teachers():
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
     new_favorite.id_student = get_id_from_token(request.headers["authorization"])
-
+    """
     if new_favorite.id_teacher == new_favorite.id_student:
         raise BadRequestException("You cannot add yourself to your favorites")
     try:
@@ -56,7 +56,8 @@ def add_favorite():
     except NotFoundException:
         return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
     raise ConflictException
-
+    """
+    return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
 
 # #########
 # ###PUT###

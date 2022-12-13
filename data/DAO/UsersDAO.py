@@ -26,16 +26,13 @@ class UsersDAO:
                   FROM projet.users 
                   WHERE id_user = %(id_user)s;
                   """
-        try:
-            value = {"id_user": id_user}
-            result = self.dal.execute(sql, value, True)
-            if len(result) == 0:
-                return None
-            result = result[0]
-            user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
-            return user
-        except Exception as e:
-            raise e
+        value = {"id_user": id_user}
+        result = self.dal.execute(sql, value, True)
+        if len(result) == 0:
+            return None
+        result = result[0]
+        user = User(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
+        return user
 
     def get_user_by_email(self, email):
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password

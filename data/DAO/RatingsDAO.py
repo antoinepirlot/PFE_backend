@@ -40,12 +40,10 @@ class RatingsDAO:
     def get_ratings_from_teacher(self, id_teacher):
         sql = "SELECT id_rater, id_rated, rating_text, rating_number FROM projet.ratings WHERE id_rated = %(id_teacher)s "
 
-        try:
-            results = self.dal.execute(sql, {"id_teacher": id_teacher}, True)
-            all_ratings = []
-            for row in results:
-                rating = Rating(int(row[0]), int(row[1]), str(row[2]), int(row[3]))
-                all_ratings.append(rating)
-            return all_ratings
-        except (Exception, psycopg2.DatabaseError) as e:
-            raise FatalException
+        results = self.dal.execute(sql, {"id_teacher": id_teacher}, True)
+        all_ratings = []
+        for row in results:
+            rating = Rating(int(row[0]), int(row[1]), str(row[2]), int(row[3]))
+            all_ratings.append(rating)
+        return all_ratings
+

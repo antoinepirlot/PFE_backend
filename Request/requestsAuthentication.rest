@@ -8,5 +8,5 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5000/authentications/token
+GET http://localhost:5000/authentications
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxMzk1ODQ0fQ.GE8dUhORrCInbo1aG5JSD33Q3vqgmtaV4O60SnirkSc

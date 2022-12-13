@@ -18,7 +18,7 @@ route = Blueprint("authentications", __name__)
 # #######
 # ##GET##
 # #######
-@route.route('/token/', methods=['GET'])
+@route.route('/', methods=['GET'])
 @authorize
 def get_user_by_token():
     id_user = utils.authorize.get_id_from_token(request.headers["authorization"])

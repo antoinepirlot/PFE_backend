@@ -79,7 +79,7 @@ class CoursesDAO:
             return None
         return _create_course_object(result)
 
-    def get_all_courses(self, filter):
+    def get_all_courses(self, filter=None):
         sql = """
                 SELECT
                    cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,

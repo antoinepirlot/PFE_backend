@@ -21,7 +21,6 @@ def get_notifications_from_user(id_user):
     return notifications, 200
 
 
-
 @route.route('', methods=['POST'])
 def add_notification():
     notification = Notification(int(request.json['id_user']), str(request.json['notification_text']))

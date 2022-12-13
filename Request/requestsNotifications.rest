@@ -6,6 +6,6 @@ POST http://localhost:5000/notifications
 Content-Type: application/json
 
 {
-     "id_user": 1,
+     "id_user": 6,
      "notification_text": "tu es un barjo la macque"
 }

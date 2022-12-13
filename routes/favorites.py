@@ -5,9 +5,11 @@ from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
+from services.UsersService import UsersService
 from utils.authorize import authorize, get_id_from_token
 
 favorites_service = FavoritesService()
+users_service = UsersService()
 
 route = Blueprint("favorites", __name__)
 
@@ -28,7 +30,8 @@ def get_favorites_from_user(id_user):
     all_favorites = favorites_service.get_favorites_from_user(id_user)
     all_favorites_json = []
     for favorite in all_favorites:
-        all_favorites_json.append(favorite.convert_to_json())
+        user = users_service.get_users_by_id(favorite.id_teacher)
+        all_favorites_json.append({"teacher_username": user.pseudo})
     return all_favorites_json
 
 
@@ -56,6 +59,7 @@ def add_favorite():
     raise ConflictException
     """
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
+
 
 # #########
 # ###PUT###

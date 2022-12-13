@@ -61,6 +61,6 @@ def add_favorite():
 @route.route("/<int:id_teacher>", methods=["DELETE"])
 @authorize
 def remove_favorite(id_teacher):
-    id_student = get_id_from_token(request.headers)
+    id_student = get_id_from_token(request.headers["authorization"])
     favorites_service.remove_favorite(id_teacher, id_student)
     return jsonify({'favorite': 'favorite deleted'}), 201

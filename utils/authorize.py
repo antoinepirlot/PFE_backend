@@ -21,7 +21,8 @@ def authorize(f):
             token = request.headers['Authorization']
         if not token:  # if not token
             raise BadRequestException("A valid token is missing!")
-        get_id_from_token(token)
+        id_in_token = get_id_from_token(token)
+        users_service.get_users_by_id(id_in_token)
         return f(*args, **kwargs)
 
     return decorator
@@ -31,6 +32,6 @@ def get_id_from_token(token):
     try:
         # decode the token to check if the user exists
         data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=['HS256'])
-        users_service.get_users_by_id(data['id'])
+        return data["id"]
     except Exception:  # the token is invalid
         raise ForbiddenException("Invalid token!")

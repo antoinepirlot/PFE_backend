@@ -15,12 +15,12 @@ POST http://localhost:5000/favorites
 Content-Type: application/json
 
 {
-  "id_student": 2,
+  "id_student": 8,
   "id_teacher": 1
 }
 
 ### Delete a favorite teacher
 DELETE http://localhost:5000/favorites/1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxMzI0ODU5fQ.uKok27238qdQDsN7tfl-7viVzEqvkyoH4slHPW1h6kA
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZXhwIjoxNjcxMzc1MTI4fQ.grQKjw7KDQ6EhqEDutl7Dyzi0R_nZC447QW-oIjPr0Q
 
 ### ERROR ONLY ON DELETE 403 EVEN WITH TOKEN I CHECKED WITH STEFAN IF IT WORKS ELSWHERE

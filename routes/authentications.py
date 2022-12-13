@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import NotFound
 import os
 
+import utils.authorize
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.UsersService import UsersService
 
@@ -43,8 +44,7 @@ def login():
 @route.route('/token/<string:token>', methods=['GET'])
 def get_user_by_token(token):
     my_secret = os.getenv("JWT_SECRET")
-    infoToken = jwt.decode(token, key=my_secret, algorithms="HS256")
-
-    result = users_service.get_users_by_token(infoToken)
-
+    id_user = utils.authorize.get_id_from_token(token)
+    # infoToken = jwt.decode(token, key=my_secret, algorithms="HS256")
+    result = users_service.get_users_by_id(id_user)
     return result.convert_to_json()

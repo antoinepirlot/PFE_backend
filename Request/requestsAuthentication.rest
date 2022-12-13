@@ -6,3 +6,6 @@ Content-Type: application/json
       "email": "requinFR@gmail.com",
       "password": "password123"
 }
+
+###
+GET http://localhost:5000/authentications/token/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxMzg2MjI4fQ.ODEOCvOBAqIoxYBOg5KALfrlPRrPJWE-_MAozHUd5a8

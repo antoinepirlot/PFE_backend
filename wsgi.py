@@ -16,7 +16,6 @@ users = {}
 
 @socketio.on('connect')
 def on_connect():
-    print('Client connected')
     socketio.emit('my response', {'data': 'Connected'})
 
 
@@ -42,8 +41,8 @@ def join(username, room):
 
 @socketio.on('left')
 def left(username, room):
-    #leave_room(room)
-    #session.clear()
+    leave_room(room)
+    session.clear()
     print(username, ' a quitter la conv')
     socketio.emit('statusLeft', {'msg': username + ' vient de se déconnecter.'}, room=room)
 
@@ -58,7 +57,7 @@ def messaging(message, id_room, username, methods=['GET', 'POST']):
 def on_disconnect():
     users.pop(request.sid, 'No user found')
     socketio.emit('current_users', users)
-    print("User disconnected!\nThe users are: ", users)
+    #print("User disconnected!\nThe users are: ", users)
 
 
 if __name__ == '__main__':

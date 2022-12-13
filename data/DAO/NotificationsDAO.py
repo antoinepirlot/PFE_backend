@@ -34,4 +34,3 @@ class NotificationsDAO:
         """
         values = {"id_user": notification.id_user, "text": str(notification.notification_text)}
         self._dal_service.execute(sql, values)
-

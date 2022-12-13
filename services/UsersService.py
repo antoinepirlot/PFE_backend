@@ -120,7 +120,7 @@ class UsersService:
     def get_users_by_token(self, token):
         self.dal.start()
         try:
-            user = self.users_DAO.get_user_by_id(token['id'])
+            user = self.users_dao.get_user_by_id(token['id'])
             if user is None:
                 abort(404, "User not found")
             self.dal.commit_transaction()

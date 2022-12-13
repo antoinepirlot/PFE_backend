@@ -17,17 +17,20 @@ class CategoriesDAO:
 
     def get_all_categories(self):
         sql = "SELECT id_category, name FROM projet.categories "
-        try:
-            results = self.dal.execute(sql, None, True)
-            all_categories = []
-            for row in results:
-                rating = Category(int(row[0]), str(row[1]))
-                all_categories.append(rating)
-            return all_categories
-        except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+        results = self.dal.execute(sql, None, True)
+        all_categories = []
+        for row in results:
+            rating = Category(int(row[0]), str(row[1]))
+            all_categories.append(rating)
+        return all_categories
+
+    def get_all_skills_categories(self, id_user):
+        sql = "SELECT c.id_category, c.name FROM projet.categories c, projet.teacher_skills ts, projet.users u " \
+              "WHERE c.id_category = ts.id_category AND ts.id_teacher = u.id_user AND u.id_user = %(id_user)s"
+        value = {"id_user": id_user}
+        results = self.dal.execute(sql, value, True)
+        all_categories = []
+        for row in results:
+            rating = Category(int(row[0]), str(row[1]))
+            all_categories.append(rating)
+        return all_categories

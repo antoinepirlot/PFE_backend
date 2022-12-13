@@ -20,4 +20,7 @@ Content-Type: application/json
 }
 
 ### Delete a favorite teacher
-DELETE http://localhost:5000/favorites/1/2
+DELETE http://localhost:5000/favorites/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxMzI0ODU5fQ.uKok27238qdQDsN7tfl-7viVzEqvkyoH4slHPW1h6kA
+
+### ERROR ONLY ON DELETE 403 EVEN WITH TOKEN I CHECKED WITH STEFAN IF IT WORKS ELSWHERE

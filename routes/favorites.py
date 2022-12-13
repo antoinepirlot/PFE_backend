@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
+from utils.authorize import authorize, get_id_from_token
 
 favorites_service = FavoritesService()
 
@@ -57,7 +58,9 @@ def add_favorite():
 # ############
 # ###DELETE###
 # ############
-@route.route("/<int:id_teacher>/<int:id_student>", methods=["DELETE"])
-def remove_favorite(id_teacher, id_student):
+@route.route("/<int:id_teacher>", methods=["DELETE"])
+@authorize
+def remove_favorite(id_teacher):
+    id_student = get_id_from_token(request.headers)
     favorites_service.remove_favorite(id_teacher, id_student)
     return jsonify({'favorite': 'favorite deleted'}), 201

@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
+from utils.authorize import authorize, get_id_from_token
 
 favorites_service = FavoritesService()
 
@@ -14,8 +15,10 @@ route = Blueprint("favorites", __name__)
 # #########
 # ###GET###
 # #########
-@route.route('/<int:id_teacher>/<int:id_student>', methods=['GET'])
-def get_favorite(id_teacher, id_student):
+@route.route('/<int:id_teacher>', methods=['GET'])
+@authorize
+def get_favorite(id_teacher):
+    id_student = get_id_from_token(request.headers["authorization"])
     favorite = favorites_service.get_favorite(id_teacher, id_student)
     return favorite.convert_to_json()
 
@@ -39,8 +42,11 @@ def get_most_favorites_teachers():
 # ##POST##
 # ########
 @route.route("/", methods=["POST"])
+@authorize
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
+    new_favorite.id_student = get_id_from_token(request.headers["authorization"])
+
     if new_favorite.id_teacher == new_favorite.id_student:
         raise BadRequestException("You cannot add yourself to your favorites")
     try:
@@ -57,7 +63,9 @@ def add_favorite():
 # ############
 # ###DELETE###
 # ############
-@route.route("/<int:id_teacher>/<int:id_student>", methods=["DELETE"])
-def remove_favorite(id_teacher, id_student):
+@route.route("/<int:id_teacher>", methods=["DELETE"])
+@authorize
+def remove_favorite(id_teacher):
+    id_student = get_id_from_token(request.headers["authorization"])
     favorites_service.remove_favorite(id_teacher, id_student)
     return jsonify({'favorite': 'favorite deleted'}), 201

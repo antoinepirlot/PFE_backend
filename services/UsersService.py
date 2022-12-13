@@ -19,6 +19,10 @@ class UsersService:
         pass
 
     def get_users(self):
+        """
+        Get all users, from database.
+        :return: the list of users
+        """
         self.dal.start()
         try:
             users = self.users_dao.get_users()
@@ -29,6 +33,11 @@ class UsersService:
             raise e
 
     def get_users_by_id(self, id):
+        """
+        Get user by his id .
+        :param: id_user: the user's id
+        :return: the user, If there's no user, it returns None
+        """
         self.dal.start()
         try:
             user = self.users_dao.get_user_by_id(id)
@@ -66,6 +75,11 @@ class UsersService:
             raise e
 
     def get_users_by_email(self, email):
+        """
+        Get user by his email .
+        :param: email: the user's email
+        :return: the user, If there's no user, it returns None
+        """
         self.dal.start()
         try:
             user = self.users_dao.get_user_by_email(email)
@@ -78,6 +92,11 @@ class UsersService:
             raise e
 
     def get_users_by_pseudo(self, pseudo):
+        """
+        Get user by his pseudo .
+        :param: pseudo: the user's pseudo
+        :return: the user, If there's no user, it returns None
+        """
         self.dal.start()
         try:
             user = self.users_dao.get_user_by_pseudo(pseudo)
@@ -90,6 +109,11 @@ class UsersService:
             raise e
 
     def sing_in_user(self, user):
+        """
+        Create a user in the database.
+        :param: user: the user to add
+        """
+
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()
@@ -108,6 +132,12 @@ class UsersService:
             raise e
 
     def logInUser(self, email, password):
+        """
+        Login a user.
+        :param: email: the user's email.
+        :param: password: the user's email.
+        :return: the user found.
+        """
 
         userFound = self.get_users_by_email(email).convert_to_json()
 
@@ -117,6 +147,11 @@ class UsersService:
         return userFound
 
     def get_users_by_token(self, token):
+        """
+        Get user by his token .
+        :param: token: the user's token
+        :return: the user, If there's no user, it returns None
+        """
         self.dal.start()
         try:
             user = self.users_dao.get_user_by_id(token['id'])

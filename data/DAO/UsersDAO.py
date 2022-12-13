@@ -9,6 +9,10 @@ class UsersDAO:
         self.dal = DALService()
 
     def get_users(self):
+        """
+        Get all users, from database.
+        :return: the list of users
+        """
         sql = """SELECT * FROM projet.users"""
 
         resultsExportUsers = []
@@ -21,6 +25,11 @@ class UsersDAO:
         return resultsExportUsers
 
     def get_user_by_id(self, id_user):
+        """
+        Get user by his id .
+        :param: id_user: the user's id
+        :return: the user, If there's no user, it returns None
+        """
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
                   FROM projet.users 
                   WHERE id_user = %(id_user)s;
@@ -35,6 +44,11 @@ class UsersDAO:
         return user
 
     def get_user_by_email(self, email):
+        """
+        Get user by his email .
+        :param: email: the user's email
+        :return: the user, If there's no user, it returns None
+        """
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
                           FROM projet.users 
                           WHERE email = %(email)s;
@@ -49,6 +63,11 @@ class UsersDAO:
         return user
 
     def get_user_by_pseudo(self, pseudo):
+        """
+        Get user by his pseudo .
+        :param: pseudo: the user's pseudo
+        :return: the user, If there's no user, it returns None
+        """
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password
                               FROM projet.users 
                               WHERE pseudo = %(pseudo)s;
@@ -63,6 +82,10 @@ class UsersDAO:
         return user
 
     def sing_in_user(self, user):
+        """
+        Create a user in the database.
+        :param: user: the user to add
+        """
         sql = "INSERT INTO projet.users VALUES (DEFAULT,'%s','%s','%s','%s','%s','%s','%s')" % (
             user['lastname'], user['firstname'], user['email'], user['pseudo'], user['sexe'], user['phone'],
             user['password'])

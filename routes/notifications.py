@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.NotificationsService import NotificationsService
 from models.Notification import Notification
 
@@ -13,6 +14,9 @@ route = Blueprint("notification", __name__)
 # #########
 @route.route('/<int:id_user>', methods=['GET'])
 def get_notification_from_user(id_user):
+    if id_user is None or int(id_user) <= 0:
+        raise BadRequestException("ID of the user is not mentioned or negative")
+
     result = notification_service.get_notification_from_user(id_user)
     users = []
     for user in result:

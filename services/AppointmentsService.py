@@ -30,3 +30,12 @@ class AppointmentsService:
         except Exception as e:
             self.dal.rollback_transaction()
             raise e
+
+    def update_appointments_state(self, id_course, id_student, appointment_state):
+        self.dal.start()
+        try:
+            self.appointments_DAO.update_appointment_state(id_course, id_student, appointment_state)
+            self.dal.commit_transaction()
+        except Exception as e:
+            self.dal.rollback_transaction()
+            raise e

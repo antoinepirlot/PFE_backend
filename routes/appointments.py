@@ -32,3 +32,13 @@ def get_appointments_for_user_of_course(id_course, id_student):
         return result.convert_to_json(), 200
     except Exception as e:
         return jsonify({e.__class__.__name__: e.args[0]}), 500
+
+
+@route.route('/<int:id_course>/<int:id_student>/state/<string:appointment_state>', methods=['PUT'])
+def update_appointments_state(id_course, id_student, appointment_state):
+    try:
+        appointments_service.update_appointments_state(id_course, id_student, appointment_state)
+
+        return jsonify({"update done"}), 200
+    except Exception as e:
+        return jsonify({e.__class__.__name__: e.args[0]}), 500

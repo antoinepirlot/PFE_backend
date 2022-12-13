@@ -75,3 +75,19 @@ class AppointmentsDAO:
             except IndexError:
                 print("SQL Error: %s" % str(e))
                 raise e
+
+    def update_appointment_state(self, id_course, id_student, appointment_state):
+        sql = "UPDATE projet.appointments SET appointment_state = %(appointment_state)s " \
+              "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
+
+        try:
+
+            self.dal.execute(sql, {"id_course": id_course, "id_student": id_student, "appointment_state": appointment_state}, True)
+
+        except (Exception, psycopg2.DatabaseError) as e:
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise e
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise e

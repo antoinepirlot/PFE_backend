@@ -48,9 +48,11 @@ def login():
 def get_user_by_token(token):
     try:
         my_secret = os.getenv("JWT_SECRET")
-        test = jwt.decode(token, key=my_secret, algorithms="HS256")
+        infoToken = jwt.decode(token, key=my_secret, algorithms="HS256")
 
-        return jsonify(test), 200
+        result = users_service.get_users_by_token(infoToken)
+
+        return result.convert_to_json(), 200
     except NotFound as not_found_e:
         raise not_found_e
     except Exception as e:

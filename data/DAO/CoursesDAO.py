@@ -5,7 +5,7 @@ from models.Course import Course
 from models.User import User
 
 
-def _create_course_object(list_of_courses):
+def _create_course_object(list_of_courses, handle_stars=False):
     """
     Creates a new list of Course. It transforms tuples in Course. //!\\ Be careful with order in sql query
     :param: list_of_courses: list of tuples
@@ -15,7 +15,10 @@ def _create_course_object(list_of_courses):
     for course in list_of_courses:
         teacher = User(course[9], course[10], course[11], course[12], course[13], course[14], course[15], None)
         category = Category(course[6], course[7], course[8])
-        c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5])
+        if handle_stars:
+            c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5], course[16], course[17])
+        else:
+            c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5])
         c.id_course = course[0]
         courses.append(c)
     return courses
@@ -92,7 +95,7 @@ class CoursesDAO:
         result = self._dal_service.execute(sql, None, True)
         if len(result) == 0:
             raise NotFoundException
-        return _create_course_object(result)
+        return _create_course_object(result, True)
 
     def create_one_course(self, course):
         """

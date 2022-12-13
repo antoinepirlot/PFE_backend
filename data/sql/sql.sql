@@ -148,7 +148,7 @@ INSERT INTO projet.appointments(id_course, id_student, appointment_state, appoin
 VALUES(2, 1, 'canceled', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(3, 1, 'pending', '2022-10-20', 'rue de la colline', 121);
+VALUES(3, 2, 'finished', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(4, 1, 'finished', '2022-10-20', 'rue de la colline', 121);

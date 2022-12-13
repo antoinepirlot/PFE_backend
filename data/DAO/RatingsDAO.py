@@ -1,5 +1,6 @@
 import psycopg2
 
+from Exceptions.FatalException import FatalException
 from data.services.DALService import DALService
 from models.Rating import Rating
 
@@ -21,12 +22,7 @@ class RatingsDAO:
             self.dal.execute(sql, dico_variables)
             return rating
         except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+            raise FatalException
 
     def get_rating_by_id_rater_and_id_rated(self, id_rater, id_rated):
         sql = "SELECT id_rater, id_rated, rating_text, rating_number FROM projet.ratings " \
@@ -39,12 +35,7 @@ class RatingsDAO:
             rating = Rating(int(result[0]), int(result[1]), str(result[2]), int(result[3]))
             return rating
         except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+            raise FatalException
 
     def get_ratings_from_teacher(self, id_teacher):
         sql = "SELECT id_rater, id_rated, rating_text, rating_number FROM projet.ratings WHERE id_rated = %(id_teacher)s "
@@ -57,9 +48,4 @@ class RatingsDAO:
                 all_ratings.append(rating)
             return all_ratings
         except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise Exception from e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise Exception from e
+            raise FatalException

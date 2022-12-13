@@ -13,10 +13,11 @@ def initialiseConnection():
         password = os.getenv("PASSWORD")
         host = os.getenv("HOST")
         database = os.getenv("DATABASE")
-        threaded_postgreSQL_pool = psycopg2.pool.ThreadedConnectionPool(1, 5, user=user,
-                                                                    password=password,
-                                                                    host=host,
-                                                                    database=database)
+        threaded_postgreSQL_pool = psycopg2.pool.ThreadedConnectionPool(1, 1, user=user,
+                                                                        password=password,
+                                                                        host=host,
+                                                                        database=database)  # TODO : put 5 connexions max
+
         if threaded_postgreSQL_pool:
             print("Connection pool created successfully using ThreadedConnectionPool")
         return threaded_postgreSQL_pool
@@ -24,6 +25,3 @@ def initialiseConnection():
         print("DATABASE NOT CONNECTED")
         print("CONNECTION Error: %s" % str(e))
         return None
-
-
-

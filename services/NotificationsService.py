@@ -27,7 +27,7 @@ class NotificationsService:
     def add_notification(self, notification):
         """
         Add a notification for a user
-        :param notification: the notification to add
+        :param notification: object notification with id_user and notification text
         """
         try:
             self._dal_service.start()

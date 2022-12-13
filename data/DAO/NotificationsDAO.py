@@ -29,6 +29,10 @@ class NotificationsDAO:
         return results_export_notif
 
     def add_notification(self, notification):
+        """
+        Add a notification for a user
+        :param notification: object notification with id_user and notification text
+        """
         sql = """
             INSERT INTO projet.notifications VALUES (DEFAULT,%(id_user)s,%(text)s,now(),FALSE) 
         """

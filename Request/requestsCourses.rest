@@ -1,5 +1,20 @@
+### get all courses
+GET http://localhost:5000/courses
+
+### get all courses with city filter
+GET http://localhost:5000/courses?city=Bruxelles
+
+### get all courses with category filter
+GET http://localhost:5000/courses?course=Anglais
+
+### 200 expected
+GET http://localhost:5000/courses/teacher/0
+
 ### 200 expected with a course
-GET http://localhost:5000/courses/1
+GET http://localhost:5000/courses/3
+
+### 404 expected
+GET http://localhost:5000/courses/8000
 
 ### 400 expected because id is lower than 1
 GET http://localhost:5000/courses/0
@@ -12,8 +27,8 @@ Content-Type: application/json
   "id_category": 1,
   "id_teacher": 1,
   "course_description": "Ce cours est pour ceux qui connaissent déjà les bases en PHP",
-  "price_per_hour" : 20.5,
+  "price_per_hour" : 2030.5,
   "city" : "Paris",
   "country": "France",
-  "id_level": 2
+  "level": "Débutant"
 }

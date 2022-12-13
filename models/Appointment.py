@@ -12,6 +12,10 @@ class Appointment:
         return self.appointment_state
 
     def convert_to_json(self):
+        """
+        Convert the current object into json
+        :return: a json that represents the current object
+        """
         return {
             "id_course": self.id_course,
             "id_student": self.id_student,

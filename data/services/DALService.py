@@ -1,30 +1,68 @@
-import data.services.database as database
+import threading
+
+import psycopg2
+
+import data.database as database
+from Exceptions.FatalException import FatalException
 
 
 class DALService:
+
     def __init__(self):
-        self.connection = None
-        self.cursor = None
+        pass
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
             # No instance of DALService class, a new one is created
             cls.instance = super(DALService, cls).__new__(cls)
+            cls.pool = database.initialiseConnection()
+            cls.connectionsStorage = threading.local()
         # There's already an instance of DALService class, so the existing one is returned
         return cls.instance
 
     def start(self):
-        self.connection = database.initialiseConnection()
-        self.cursor = self.connection.cursor()
-        # TODO threads
+        try:
+            self.connectionsStorage.connection = self.pool.getconn()
+            self.connectionsStorage.connection.autocommit = False
+        except Exception:
+            raise FatalException
 
-    def commit(self, sql, values):
-        # TODO threads
-        self.cursor.execute(sql, values)
-        self.connection.commit()
-        results = self.cursor.fetchall()
-        self.cursor.close()
-        self.connection.close()
-        return results
+    def commit_transaction(self):
+        try:
+            connection = self.connectionsStorage.connection
+            connection.commit()
+            connection.cursor().close()
+            self.pool.putconn(self.connectionsStorage.connection)
+            self.connectionsStorage.connection = None
+        except Exception:
+            raise FatalException
 
-# TODO rollback
+    def execute(self, sql, values, fetch=False):
+        try:
+            connection = self.connectionsStorage.connection
+            cursor = connection.cursor()
+            cursor.execute(sql, values)
+            if fetch:
+                results = cursor.fetchall()
+                return results
+        except psycopg2.DatabaseError as e:
+            print("iciiiii")
+            try:
+                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
+                raise FatalException
+            except IndexError:
+                print("SQL Error: %s" % str(e))
+                raise FatalException
+        except Exception:
+            raise FatalException
+
+    def rollback_transaction(self):
+        try:
+            connection = self.connectionsStorage.connection
+            connection.rollback()
+            cursor = connection.cursor()
+            cursor.close()
+            self.pool.putconn(self.connectionsStorage.connection)
+            self.connectionsStorage.connection = None
+        except Exception:
+            raise FatalException

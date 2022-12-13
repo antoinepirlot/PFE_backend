@@ -13,7 +13,6 @@ class AppointmentsDAO:
               "FROM projet.appointments a, projet.courses c " \
               "WHERE a.id_course = c.id_course AND a.id_student = %(id_student)s AND c.id_teacher = %(id_teacher)s"
 
-<<<<<<< HEAD
         results = self.dal.execute(sql, {"id_teacher": id_teacher, "id_student": id_student}, True)
         if len(results) == 0:
             return None
@@ -23,25 +22,6 @@ class AppointmentsDAO:
                                       str(row[6]))
             all_appointments.append(appointment)
         return all_appointments
-=======
-        try:
-            results = self.dal.execute(sql, {"id_teacher": id_teacher, "id_student": id_student}, True)
-            if len(results) == 0:
-                return None
-            all_appointments = []
-            for row in results:
-                appointment = Appointment(int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), int(row[5]),
-                                          str(row[6]))
-                all_appointments.append(appointment)
-            return all_appointments
-        except (Exception, psycopg2.DatabaseError) as e:
-            try:
-                print("SQL Error [%d]: %s" % (e.args[0], e.args[1]))
-                raise e
-            except IndexError:
-                print("SQL Error: %s" % str(e))
-                raise e
->>>>>>> 319ef7fe52a3b26d08020075ff732f53a3bd802d
 
     def get_appointments_for_user(self, id_student):
         sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \

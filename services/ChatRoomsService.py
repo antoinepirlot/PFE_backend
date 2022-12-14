@@ -8,8 +8,16 @@ from data.services.DALService import DALService
 
 class ChatRoomsService:
     def __init__(self):
-        self._chat_rooms_DAO = ChatRoomsDAO()
-        self._dal_service = DALService()
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            # No instance of ChatRoomsService class, a new one is created
+            cls._dal = DALService()
+            cls._chat_rooms_DAO = ChatRoomsDAO()
+            cls.instance = super(ChatRoomsService, cls).__new__(cls)
+        # There's already an instance of CategoriesService class, so the existing one is returned
+        return cls.instance
 
     def get_chat_room(self, id_user1, id_user2):
         """
@@ -19,14 +27,15 @@ class ChatRoomsService:
         :return: a chat room
         """
         try:
-            self._dal_service.start()
+            self._dal.start()
             results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
             if results is None:
                 raise NotFoundException()
-            self._dal_service.commit_transaction()
+            self._dal.commit_transaction()
             return results
         except Exception as e:
-            self._dal_service.rollback_transaction()
+            self._dal.rollback_transaction()
+            raise e
 
     def get_chat_room_by_id(self, id_room):
         """
@@ -35,14 +44,15 @@ class ChatRoomsService:
         :return: the chat room with the good id
         """
         try:
-            self._dal_service.start()
+            self._dal.start()
             results = self._chat_rooms_DAO.get_chat_room_by_id(id_room)
             if results is None:
                 raise NotFoundException()
-            self._dal_service.commit_transaction()
+            self._dal.commit_transaction()
             return results
         except Exception as e:
-            self._dal_service.rollback_transaction()
+            self._dal.rollback_transaction()
+            raise e
 
     def create_chat_room(self, id_user1, id_user2):
         """
@@ -52,7 +62,7 @@ class ChatRoomsService:
         :return: the created chat room
         """
         try:
-            self._dal_service.start()
+            self._dal.start()
             # results = self._chat_rooms_DAO.create_chat_room(id_user1,id_user2)  # if it returns error, it means it
             # already exists
             """ dont want to work
@@ -62,10 +72,11 @@ class ChatRoomsService:
             """
 
             results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
-            self._dal_service.commit_transaction()
+            self._dal.commit_transaction()
             return results
         except Exception as e:
-            self._dal_service.rollback_transaction()
+            self._dal.rollback_transaction()
+            raise e
 
         # # TODO that's Antoine's solution :p
         # try:

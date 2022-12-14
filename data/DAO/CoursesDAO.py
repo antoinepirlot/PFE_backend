@@ -85,6 +85,12 @@ class CoursesDAO:
         :param filter: by what you want to filter all courses
         :return: all courses with the potential filter applied
         """
+        filter_match_table_db = {
+            "course": "cat.name",
+            "description": "cou.description",
+            "city": "cou.city"
+        }
+
         sql = """
                 SELECT
                    cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,

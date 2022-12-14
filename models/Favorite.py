@@ -25,6 +25,6 @@ class Favorite:
         :return: a json that represents the current object
         """
         return {
-            "id_teacher": self.id_teacher,
-            "id_student": self.id_student,
+            "id_teacher": self._id_teacher,
+            "id_student": self._id_student,
         }

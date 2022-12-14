@@ -7,8 +7,10 @@ GET http://localhost:5000/courses?course=&description=
 ### get all courses with category filter
 GET http://localhost:5000/courses?course=Anglais
 
-### 200 expected
-GET http://localhost:5000/courses/teacher/1
+###
+GET http://localhost:5000/courses/teacher
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxNDEyOTEzfQ.1TWgqQLKa5o10v3HnIa2l0aSMqYHklnAiRiQUsq3X90
+
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3

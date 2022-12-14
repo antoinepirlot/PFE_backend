@@ -64,7 +64,7 @@ class CoursesService:
             if courses is None:
                 raise NotFoundException
             self._dal_service.commit_transaction()
-            return convert_models_objects_to_json(courses)
+            return courses
         except Exception as e:
             self._dal_service.rollback_transaction()
             raise e

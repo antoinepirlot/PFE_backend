@@ -65,19 +65,22 @@ class CoursesDAO:
         :return: the list of teacher's courses. If there's no courses, it returns None
         """
         sql = """
-            SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
-                   cat.id_category, cat.name,
-                   u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone
-            FROM projet.courses cou, projet.users u, projet.categories cat
-            WHERE cou.id_teacher = u.id_user
-              AND cou.id_category = cat.id_category
-              AND id_teacher = %(id_teacher)s;
+            SELECT
+                   cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
+                   cat.id_category, cat.name, cat.color,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
+                   COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
+                FROM 
+                   projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category
+                   LEFT OUTER JOIN projet.users u ON cou.id_teacher = u.id_user
+                   LEFT OUTER JOIN projet.ratings ra ON u.id_user = ra.id_rated 
+                WHERE id_teacher = %(id_teacher)s
+                GROUP BY cou.id_course, cat.id_category, u.id_user;
         """
         values = {"id_teacher": id_teacher}
         result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:
-            return None
-        return _create_course_object(result)
+            raise NotFoundException
+        return _create_course_object(result, True)
 
     def get_all_courses(self, filter=None):
         """

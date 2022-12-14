@@ -4,11 +4,18 @@ from data.services.DALService import DALService
 
 
 class AppointmentsService:
-    appointments_DAO = AppointmentsDAO()
-    dal = DALService()
 
     def __init__(self):
         pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of AppointmentsService class, a new one is created
+            cls._appointments_DAO = AppointmentsDAO()
+            cls._dal = DALService()
+            cls._instance = super(AppointmentsService, cls).__new__(cls)
+        # There's already an instance of AppointmentsService class, so the existing one is returned
+        return cls._instance
 
     def get_appointments_for_user(self, id_student):
         """
@@ -16,10 +23,16 @@ class AppointmentsService:
         :param: id_student: the student's id
         :return: the list of appointments. If there's no appointments, it returns None
         """
-        self.dal.start()
-        users = self.appointments_DAO.get_appointments_for_user(id_student)
-        self.dal.commit_transaction()
-        return users
+        try:
+            self._dal.start()
+            users = self._appointments_DAO.get_appointments_for_user(id_student)
+            self._dal.commit_transaction()
+            return users
+        except Exception as e:
+            self._dal.rollback_transaction()
+            raise e
+
+
 
     def get_appointment_for_user_of_course(self, id_course, id_student):
         """
@@ -28,11 +41,15 @@ class AppointmentsService:
         :param: id_student: the student's id
         :return: the appointment. If there's no appointment, it returns None
         """
-        self.dal.start()
+        try:
+            self._dal.start()
+            appointment = self._appointments_DAO.get_appointment_for_user_of_course(id_course, id_student)
+            self._dal.commit_transaction()
+            return appointment
+        except Exception as e:
+            self._dal.rollback_transaction()
+            raise e
 
-        appointment = self.appointments_DAO.get_appointment_for_user_of_course(id_course, id_student)
-        self.dal.commit_transaction()
-        return appointment
 
     def update_appointments_state(self, id_course, id_student, appointment_state):
         """
@@ -41,10 +58,13 @@ class AppointmentsService:
         :param: id_student: the student's id
         :param: appointment_state: the state for the appointment
         """
-        self.dal.start()
-
-        self.appointments_DAO.update_appointment_state(id_course, id_student, appointment_state)
-        self.dal.commit_transaction()
+        try:
+            self._dal.start()
+            self._appointments_DAO.update_appointment_state(id_course, id_student, appointment_state)
+            self._dal.commit_transaction()
+        except Exception as e:
+            self._dal.rollback_transaction()
+            raise e
 
     def create_appointements(self, id_course, id_student, appointment_date, street, number_house, box_house):
         """
@@ -56,11 +76,15 @@ class AppointmentsService:
         :param: number_house: number_house for the appointment
         :param: box_house: box_house for the appointment
         """
-        self.dal.start()
-        result = self.appointments_DAO.create_appointement(id_course, id_student, appointment_date, street,
-                                                           number_house, box_house)
-        self.dal.commit_transaction()
-        return result
+        try:
+            self._dal.start()
+            result = self._appointments_DAO.create_appointement(id_course, id_student, appointment_date, street,
+                                                               number_house, box_house)
+            self._dal.commit_transaction()
+            return result
+        except Exception as e:
+            self._dal.rollback_transaction()
+            raise e
 
     def create_appointements_without_box_house(self, id_course, id_student, appointment_date, street, number_house):
         """
@@ -71,9 +95,13 @@ class AppointmentsService:
         :param: street: the street for the appointment
         :param: number_house: number_house for the appointment
         """
-        self.dal.start()
-        result = self.appointments_DAO.create_appointement_without_box_house(id_course, id_student, appointment_date,
-                                                                             street,
-                                                                             number_house)
-        self.dal.commit_transaction()
-        return result
+        try:
+            self._dal.start()
+            result = self._appointments_DAO.create_appointement_without_box_house(id_course, id_student, appointment_date,
+                                                                                 street,
+                                                                                 number_house)
+            self._dal.commit_transaction()
+            return result
+        except Exception as e:
+            self._dal.rollback_transaction()
+            raise e

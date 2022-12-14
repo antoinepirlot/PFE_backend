@@ -29,30 +29,25 @@ class RatingsTests(unittest.TestCase):
             "rating_text": "bof comme prof j'ai pas vrmt apprécié",
             "rating_number": 3
         }
-        self.all_appointments = [
-            {
-                "appointment_date": "2022-10-20",
-                "appointment_state": "canceled",
-                "box_house": "None",
-                "id_course": 1,
-                "id_student": 1,
-                "number_house": 121,
-                "street": "rue de la colline"
-            }
-        ]
-        self.student = [(1, "Dupont","Pierre", "requinFR@gmail.com", "REQUIN", "male", "(+32)4 77 123 659", "motDePasse")]
-        self.teacher = [(2, "Dupré", "Pedro", "Pedro@gmail.com", "Pedro", "male","(+32)4 77 444 659", "motDePasse2" )]
+        self.empty_list = []
+        self.all_appointments = [(1, 1, "finished", "2022-10-20", "rue de la colline", 121, None)]
+        self.student = [(1, "Dupont", "Pierre", "requinFR@gmail.com", "REQUIN", "male", "(+32)4 77 123 659",
+                         "motDePasse")]
+        self.teacher = [(2, "Dupré", "Pedro", "Pedro@gmail.com", "Pedro", "male", "(+32)4 77 444 659", "motDePasse2")]
 
     def test_create_rating_negative_id_teacher(self):
         self.dal_service.execute = Mock()
         response = self.app.post('/ratings/', json=self.rating_json)
         self.assertEqual(400, response.status_code)
 
-    def test_create_rating(self):
-        self.dal_service.execute = Mock(side_effect=[self.student, self.teacher, self.all_appointments])
-        #self.users_dao.get_user_by_id = Mock(return_value="user")
-        response = self.app.post('/ratings/', json=self.correct_rating_json)
+    def test_create_rating_all_good(self):
+        self.dal_service.execute = Mock(side_effect=[self.student,
+                                                     self.teacher,
+                                                     self.all_appointments,
+                                                     self.empty_list,
+                                                     None])
 
+        response = self.app.post('/ratings/', json=self.correct_rating_json)
         self.assertEqual(201, response.status_code)
 
 

@@ -22,6 +22,12 @@ def get_notifications_from_user(id_user):
 
 @route.route('', methods=['POST'])
 def add_notification():
-    notification = Notification(int(request.json['id_user']), str(request.json['notification_text']))
+    print(request.json['chat_link'])
+    if request.json['chat_link'] is None:
+        notification = Notification(int(request.json['id_user']), str(request.json['notification_text']))
+    else:
+        notification = Notification(int(request.json['id_user']), str(request.json['notification_text']), None, None,
+                                    None, str(request.json['chat_link']))
+
     notification_service.add_notification(notification)
     return jsonify({'notification': 'notification created'}), 201

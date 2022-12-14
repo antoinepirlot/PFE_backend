@@ -29,8 +29,17 @@ class NotificationsDAO:
         return results_export_notif
 
     def add_notification(self, notification):
-        sql = """
-            INSERT INTO projet.notifications VALUES (DEFAULT,%(id_user)s,%(text)s,now(),FALSE) 
-        """
-        values = {"id_user": notification.id_user, "text": str(notification.notification_text)}
-        self._dal_service.execute(sql, values)
+        print("chat link", notification.chat_link)
+        if notification.chat_link is None:
+            sql = """
+                        INSERT INTO projet.notifications VALUES (DEFAULT,%(id_user)s,%(text)s,now(),FALSE,DEFAULT) 
+                    """
+            values = {"id_user": notification.id_user, "text": str(notification.notification_text)}
+            self._dal_service.execute(sql, values)
+        else:
+            sql = """
+                            INSERT INTO projet.notifications VALUES (DEFAULT,%(id_user)s,%(text)s,now(),FALSE,%(chat_link)s) 
+                        """
+
+            values = {"id_user": notification.id_user, "text": str(notification.notification_text), "chat_link": str(notification.chat_link)}
+            self._dal_service.execute(sql, values)

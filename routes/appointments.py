@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import NotFound
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.AppointmentsService import AppointmentsService
 
@@ -31,5 +32,35 @@ def get_appointment_for_user_of_course(id_course, id_student):
 @route.route('/<int:id_course>/<int:id_student>/state/<string:appointment_state>', methods=['PUT'])
 def update_appointments_state(id_course, id_student, appointment_state):
     appointments_service.update_appointments_state(id_course, id_student, appointment_state)
-
     return jsonify({"update done": ""})
+
+
+# #########
+# ###POST##
+# #########
+@route.route("/", methods=['POST'])
+def create_one_appointement():
+    # check body is not empty
+    if 'id_course' not in request.get_json() or (not isinstance(request.json['id_course'], int)) or \
+            request.json['id_course'] < 1 or 'id_student' not in request.get_json() or \
+            (not isinstance(request.json['id_student'], int)) or request.json['id_student'] < 1 or \
+            'appointment_date' not in request.get_json() or len(
+        str(request.json['appointment_date']).strip()) == 0 or \
+            'street' not in request.get_json() or len(
+        str(request.json['street']).strip()) == 0 or \
+            'number_house' not in request.get_json() or (not isinstance(request.json['number_house'], int) and
+                                                         not isinstance(request.json['number_house'], float)) or \
+            request.json['number_house'] <= 0:
+        return BadRequestException("Appointement is not in the good format")
+
+    if 'box_house' not in request.json:
+        return appointments_service.create_appointements_without_box_house(request.json['id_course'],
+                                                                           request.json['id_student'],
+                                                                           request.json['appointment_date'],
+                                                                           request.json['street'], request.json[
+                                                                               'number_house']).convert_to_json(), 201
+
+    return appointments_service.create_appointements(request.json['id_course'], request.json['id_student'],
+                                                     request.json['appointment_date'],
+                                                     request.json['street'], request.json['number_house'],
+                                                     request.json['box_house']).convert_to_json(), 201

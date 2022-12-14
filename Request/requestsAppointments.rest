@@ -4,5 +4,17 @@ GET http://localhost:5000/appointments/1
 ### GET appointment where course id is 1 & user id is 1
 GET http://localhost:5000/appointments/1/1
 
+### POST a new appointment
+POST http://localhost:5000/appointments/
+Content-Type: application/json
+
+{
+  "id_course": 4,
+  "id_student": 6,
+  "appointment_date": "2022-10-20",
+  "street" : "Avenue des champs ellysés",
+  "number_house" : 12
+}
+
 ### PUT update appointment where course id is 1 & user id is 1
 PUT http://localhost:5000/appointments//1/state/pending

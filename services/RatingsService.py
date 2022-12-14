@@ -52,6 +52,7 @@ class RatingsService:
         """
         try:
             self._dal_service.start()
+            print(rating.id_rated)
             if self._users_DAO.get_user_by_id(rating.id_rater) is None:
                 raise NotFoundException("The student rater doesn't exist")
             if self._users_DAO.get_user_by_id(rating.id_rated) is None:

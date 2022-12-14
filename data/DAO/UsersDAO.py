@@ -45,6 +45,8 @@ class UsersDAO:
 
         value = {"id_user": id_user}
         result = self._dal.execute(sql, value, True)
+        print("haha")
+        print(result)
         if len(result) == 0:
             return None
         result = result[0]

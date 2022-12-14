@@ -6,7 +6,7 @@ from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
 
 
-class RatingsTests(unittest.TestCase):
+class UsersTests(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
         self.users_dao = UsersDAO()

@@ -7,8 +7,17 @@ from data.services.DALService import DALService
 class FavoritesService:
 
     def __init__(self):
-        self._favorites_DAO = FavoritesDAO()
-        self._dal_service = DALService()
+
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of FavoritesService class, a new one is created
+            cls._dal_service = DALService()
+            cls._favorites_DAO = FavoritesDAO()
+            cls._instance = super(FavoritesService, cls).__new__(cls)
+        # There's already an instance of FavoritesService class, so the existing one is returned
+        return cls._instance
 
     def get_favorite(self, id_teacher, id_student):
         """

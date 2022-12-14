@@ -10,7 +10,6 @@ from utils.objects_modifications import convert_models_objects_to_json
 
 class CoursesService:
 
-
     def __init__(self):
         pass
 
@@ -25,7 +24,6 @@ class CoursesService:
             cls._instance = super(CoursesService, cls).__new__(cls)
         # There's already an instance of CoursesService class, so the existing one is returned
         return cls._instance
-
 
     def get_one(self, id_course):
         """

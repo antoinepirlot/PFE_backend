@@ -55,8 +55,7 @@ CREATE TABLE projet.notifications (
 
 CREATE TABLE projet.categories (
     id_category SERIAL PRIMARY KEY,
-    name varchar(100) NOT NULL UNIQUE check ( name<>'' ),
-    color varchar(30) NOT NULL DEFAULT '#FFFFFF' check ( color<>'' )
+    name varchar(100) NOT NULL UNIQUE check ( name<>'' )
 );
 
 CREATE TABLE projet.teacher_skills (
@@ -102,20 +101,41 @@ VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female',
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
 VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
-INSERT INTO projet.categories (name, color)
-VALUES ('PHP', '#FF0000');
+INSERT INTO projet.categories (name)
+VALUES ('Anglais');
 
-INSERT INTO projet.categories (name, color)
-VALUES ('Java', '#00FF00');
+INSERT INTO projet.categories (name)
+VALUES ('Arabe');
 
-INSERT INTO projet.categories (name, color)
-VALUES ('Python', '#0000FF');
+INSERT INTO projet.categories (name)
+VALUES ('Dessin');
 
-INSERT INTO projet.categories (name, color)
-VALUES ('Anglais', '#0BB616');
+INSERT INTO projet.categories (name)
+VALUES ('Espagnol');
 
-INSERT INTO projet.categories (name, color)
-VALUES ('Math', '#F403FF');
+INSERT INTO projet.categories (name)
+VALUES ('Finance');
+
+INSERT INTO projet.categories (name)
+VALUES ('Java');
+
+INSERT INTO projet.categories (name)
+VALUES ('Math');
+
+INSERT INTO projet.categories (name)
+VALUES ('Musique');
+
+INSERT INTO projet.categories (name)
+VALUES ('PHP');
+
+INSERT INTO projet.categories (name)
+VALUES ('Physique');
+
+INSERT INTO projet.categories (name)
+VALUES ('Piano');
+
+INSERT INTO projet.categories (name)
+VALUES ('Python');
 
 INSERT INTO projet.teacher_skills(id_category, id_teacher)
 VALUES (1, 1);
@@ -124,19 +144,19 @@ INSERT INTO projet.teacher_skills(id_category, id_teacher)
 VALUES (2, 1);
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (1,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique','Débutant');
+VALUES (9,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (5,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
+VALUES (7,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (4,1,'Cours d Anglais avec Browny', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (1,1,'Cours d Anglais avec Browny', 25, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (2,1,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (9,1,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (3,1,'Cours de Python', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (12,1,'Cours de Python', 25, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(1, 5, 'pending', '2022-10-20', 'rue de la colline', 121);

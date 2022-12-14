@@ -1,9 +1,8 @@
 class Category:
 
-    def __init__(self, id_category, name, color=None):
+    def __init__(self, id_category, name):
         self.id_category = id_category
         self.name = name
-        self.color = color
 
     def convert_to_json(self):
         """

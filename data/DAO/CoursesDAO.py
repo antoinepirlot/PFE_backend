@@ -13,10 +13,10 @@ def _create_course_object(list_of_courses, handle_stars=False):
     """
     courses = []
     for course in list_of_courses:
-        teacher = User(course[9], course[10], course[11], course[12], course[13], course[14], course[15], None)
-        category = Category(course[6], course[7], course[8])
+        teacher = User(course[8], course[9], course[10], course[11], course[12], course[13], course[14], None)
+        category = Category(course[6], course[7])
         if handle_stars:
-            c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5], course[16], course[17])
+            c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5], course[15], course[16])
         else:
             c = Course(category, teacher, course[1], course[2], course[3], course[4], course[5])
         c.id_course = course[0]
@@ -45,7 +45,7 @@ class CoursesDAO:
         """
         sql = """
                 SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
-                   cat.id_category, cat.name, cat.color,
+                   cat.id_category, cat.name,
                    u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone          
                 FROM projet.courses cou, projet.users u, projet.categories cat
                 WHERE cou.id_teacher = u.id_user
@@ -66,7 +66,7 @@ class CoursesDAO:
         """
         sql = """
             SELECT cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
-                   cat.id_category, cat.name, cat.color,
+                   cat.id_category, cat.name,
                    u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone
             FROM projet.courses cou, projet.users u, projet.categories cat
             WHERE cou.id_teacher = u.id_user
@@ -94,7 +94,7 @@ class CoursesDAO:
         sql = """
                 SELECT
                    cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
-                   cat.id_category, cat.name, cat.color,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
+                   cat.id_category, cat.name,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
                    COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
                 FROM 
                    projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category

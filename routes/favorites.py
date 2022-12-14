@@ -49,6 +49,8 @@ def get_most_favorites_teachers():
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
     new_favorite.id_student = get_id_from_token(request.headers["authorization"])
+    if new_favorite.id_teacher is new_favorite.id_student:
+        raise BadRequestException("You can't add yourself in your favorites")
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
 
 

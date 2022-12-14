@@ -23,6 +23,7 @@ class UsersService:
             cls._instance = super(UsersService, cls).__new__(cls)
         # There's already an instance of DALService class, so the existing one is returned
         return cls._instance
+
     def get_users(self):
         """
         Get all users, from database.

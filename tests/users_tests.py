@@ -35,11 +35,16 @@ class UsersTests(unittest.TestCase):
             "sexe": "male"
         }
 
-    def test_user_by_email(self):
+    def test_user_by_email_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
         response = self.app.get('/users/requinFR@gmail.com')
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.user_json, response.get_json())
+
+    def test_user_by_email_non_existing_email(self):
+        self.dal_service.execute = Mock(return_value=[])
+        response = self.app.get('/users/noexists@gmail.com')
+        self.assertEqual(404, response.status_code)
 
 
 if __name__ == '__main__':

@@ -55,7 +55,7 @@ class RatingsService:
                 raise ForbiddenException("You have no course with this teacher")
             isFinished = False
             for appointment in appointments:
-                if appointment.get_appointment_state() == 'finished':
+                if appointment.appointment_state == 'finished':
                     isFinished = True
             if not isFinished:
                 raise ForbiddenException("You have not finished the course with this teacher")

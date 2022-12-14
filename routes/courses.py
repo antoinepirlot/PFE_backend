@@ -18,13 +18,21 @@ route = Blueprint("courses", __name__)
 @route.route('', methods=['GET'])
 def get_all_courses():
     filter_city = prevent_xss(request.args.get('city', default=None, type=str))
+    filter_description = request.args.get('description', default=None, type=str)
     filter_name_course = prevent_xss(request.args.get('course', default=None, type=str))
-    object_search = None
-    if filter_city is not None:
-        object_search = {"city": filter_city}
-    elif filter_name_course is not None:
-        object_search = {"course": filter_name_course}
-    result = courses_service.get_all_courses(object_search)
+
+    search_filters = []
+    if filter_city and filter_city.strip():
+        search_filters.append({"city": filter_city})
+    if filter_description and filter_description.strip():
+        search_filters.append({"description": filter_description})
+    if filter_name_course and filter_name_course.strip():
+        search_filters.append({"course": filter_name_course})
+
+    print(search_filters)
+    if len(search_filters) == 0:
+        search_filters = None
+    result = courses_service.get_all_courses(search_filters)
     courses = []
     for course in result:
         courses.append(course.convert_to_json())

@@ -6,7 +6,15 @@ from models.Appointment import Appointment
 
 class AppointmentsDAO:
     def __init__(self):
-        self.dal = DALService()
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of AppointmentsDAO class, a new one is created
+            cls._dal = DALService()
+            cls._instance = super(AppointmentsDAO, cls).__new__(cls)
+        # There's already an instance of AppointmentsDAO class, so the existing one is returned
+        return cls._instance
 
     def get_appointments_from_teacher_and_student(self, id_teacher, id_student):
         """
@@ -19,7 +27,7 @@ class AppointmentsDAO:
               "FROM projet.appointments a, projet.courses c " \
               "WHERE a.id_course = c.id_course AND a.id_student = %(id_student)s AND c.id_teacher = %(id_teacher)s"
 
-        results = self.dal.execute(sql, {"id_teacher": id_teacher, "id_student": id_student}, True)
+        results = self._dal.execute(sql, {"id_teacher": id_teacher, "id_student": id_student}, True)
         if len(results) == 0:
             return None
         all_appointments = []
@@ -39,7 +47,7 @@ class AppointmentsDAO:
               "FROM projet.appointments " \
               "WHERE  id_student = %(id_student)s ORDER BY appointment_state DESC, appointment_date"
 
-        results = self.dal.execute(sql, {"id_student": id_student}, True)
+        results = self._dal.execute(sql, {"id_student": id_student}, True)
         if len(results) == 0:
             return None
         all_appointments = []
@@ -60,7 +68,7 @@ class AppointmentsDAO:
               "FROM projet.appointments " \
               "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
 
-        result = self.dal.execute(sql, {"id_course": id_course, "id_student": id_student}, True)
+        result = self._dal.execute(sql, {"id_course": id_course, "id_student": id_student}, True)
         if len(result) == 0:
             return None
         result = result[0]
@@ -78,5 +86,5 @@ class AppointmentsDAO:
         sql = "UPDATE projet.appointments SET appointment_state = %(appointment_state)s " \
               "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
 
-        self.dal.execute(sql, {"id_course": int(id_course), "id_student": int(id_student),
+        self._dal.execute(sql, {"id_course": int(id_course), "id_student": int(id_student),
                                "appointment_state": str(appointment_state)})

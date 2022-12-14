@@ -7,7 +7,15 @@ from models.Rating import Rating
 
 class RatingsDAO:
     def __init__(self):
-        self.dal = DALService()
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of RatingsDAO class, a new one is created
+            cls._dal = DALService()
+            cls._instance = super(RatingsDAO, cls).__new__(cls)
+        # There's already an instance of RatingsDAO class, so the existing one is returned
+        return cls._instance
 
     def create_one_rating(self, rating):
         """
@@ -24,7 +32,7 @@ class RatingsDAO:
                               "id_rater": int(rating.id_rater),
                               "id_rated": int(rating.id_rated)
                               }
-            self.dal.execute(sql, dico_variables)
+            self._dal.execute(sql, dico_variables)
             return rating
         except (Exception, psycopg2.DatabaseError) as e:
             raise FatalException
@@ -39,7 +47,7 @@ class RatingsDAO:
         sql = "SELECT id_rater, id_rated, rating_text, rating_number FROM projet.ratings " \
               "WHERE id_rater = %(id_rater)s AND id_rated = %(id_rated)s"
         try:
-            result = self.dal.execute(sql, {"id_rater": id_rater, "id_rated": id_rated}, True)
+            result = self._dal.execute(sql, {"id_rater": id_rater, "id_rated": id_rated}, True)
             if len(result) == 0:
                 return None
             result = result[0]
@@ -57,7 +65,7 @@ class RatingsDAO:
 
         sql = "SELECT id_rater, id_rated, rating_text, rating_number FROM projet.ratings WHERE id_rated = %(id_teacher)s "
 
-        results = self.dal.execute(sql, {"id_teacher": id_teacher}, True)
+        results = self._dal.execute(sql, {"id_teacher": id_teacher}, True)
         all_ratings = []
         for row in results:
             rating = Rating(int(row[0]), int(row[1]), str(row[2]), int(row[3]))

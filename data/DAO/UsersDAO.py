@@ -10,10 +10,10 @@ class UsersDAO:
 
     def __new__(cls):
         if not hasattr(cls, "_instance"):
-            # No instance of DALService class, a new one is created
+            # No instance of UsersDAO class, a new one is created
             cls._dal = DALService()
             cls._instance = super(UsersDAO, cls).__new__(cls)
-        # There's already an instance of DALService class, so the existing one is returned
+        # There's already an instance of UsersDAO class, so the existing one is returned
         return cls._instance
 
     def get_users(self):

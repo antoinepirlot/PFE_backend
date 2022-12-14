@@ -1,3 +1,4 @@
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.AppointmentsDAO import AppointmentsDAO
 
 from data.services.DALService import DALService
@@ -26,6 +27,8 @@ class AppointmentsService:
         try:
             self._dal.start()
             users = self._appointments_DAO.get_appointments_for_user(id_student)
+            if users is None:
+                raise NotFoundException
             self._dal.commit_transaction()
             return users
         except Exception as e:

@@ -50,7 +50,7 @@ class CoursesDAO:
                    cat.id_category, cat.name,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
                    COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
                 FROM 
-                   projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category
+                    projet.courses cou LEFT OUTER JOIN projet.categories cat ON cou.id_category = cat.id_category
                    LEFT OUTER JOIN projet.users u ON cou.id_teacher = u.id_user
                    LEFT OUTER JOIN projet.ratings ra ON u.id_user = ra.id_rated 
                 WHERE id_course = %(id_course)s
@@ -74,7 +74,7 @@ class CoursesDAO:
                    cat.id_category, cat.name,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
                    COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
                 FROM 
-                   projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category
+                    projet.courses cou LEFT OUTER JOIN projet.categories cat ON cou.id_category = cat.id_category
                    LEFT OUTER JOIN projet.users u ON cou.id_teacher = u.id_user
                    LEFT OUTER JOIN projet.ratings ra ON u.id_user = ra.id_rated 
                 WHERE id_teacher = %(id_teacher)s
@@ -104,7 +104,7 @@ class CoursesDAO:
                    cat.id_category, cat.name,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
                    COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
                 FROM 
-                   projet.categories cat LEFT OUTER JOIN projet.courses cou ON cou.id_category = cat.id_category
+                    projet.courses cou LEFT OUTER JOIN projet.categories cat ON cou.id_category = cat.id_category
                    LEFT OUTER JOIN projet.users u ON cou.id_teacher = u.id_user
                    LEFT OUTER JOIN projet.ratings ra ON u.id_user = ra.id_rated 
                 

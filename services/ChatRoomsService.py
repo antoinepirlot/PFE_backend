@@ -2,6 +2,7 @@ from flask import abort
 from werkzeug.exceptions import NotFound
 
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
+from Exceptions.WebExceptions.ConflictException import ConflictException
 from data.DAO.ChatRoomsDAO import ChatRoomsDAO
 from data.services.DALService import DALService
 
@@ -30,7 +31,7 @@ class ChatRoomsService:
             self._dal.start()
             results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
             if results is None:
-                raise NotFoundException()
+               return None
             self._dal.commit_transaction()
             return results
         except Exception as e:
@@ -70,8 +71,10 @@ class ChatRoomsService:
                 self._dal_service.rollback_transaction()
                 abort(409, "You already have a chat room with this user.")
             """
+            results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
+            if results is None:
+                results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
 
-            results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
             self._dal.commit_transaction()
             return results
         except Exception as e:

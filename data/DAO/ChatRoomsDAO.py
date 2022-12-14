@@ -33,10 +33,10 @@ class ChatRoomsDAO:
                OR (id_user1 =%(id_user2)s AND id_user2 = %(id_user1)s);
         """
         values = {"id_user1": id_user1, "id_user2": id_user2}
-        result = self._dal.execute(sql, values, True)[0]
-        if result is None:
+        result = self._dal.execute(sql, values, True)
+        if len(result) == 0:
             return None
-        chat_room = ChatRoom(result[0], result[1], result[2])
+        chat_room = ChatRoom(result[0][0], result[0][1], result[0][2])
         return chat_room
 
     def get_chat_room_by_id(self, id_room):
@@ -51,9 +51,9 @@ class ChatRoomsDAO:
         """
         values = {"id_room": id_room}
         result = self._dal.execute(sql, values, True)[0]
-        if result is None:
+        if len(result) == 0:
             return None
-        chat_room = ChatRoom(result[0], result[1], result[2])
+        chat_room = ChatRoom(result[0][0], result[0][1], result[0][2])
         return chat_room
 
     def create_chat_room(self, id_user1, id_user2):

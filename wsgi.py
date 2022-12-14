@@ -24,9 +24,10 @@ def user_sign_in(id_user1, id_user2, methods=['GET', 'POST']):
     user1 = users_service.get_users_by_id(id_user1)
     user2 = users_service.get_users_by_id(id_user2)
 
-    chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
-    if chat_room is None:
-        chat_room = chat_rooms_service.create_chat_room(id_user1, id_user2)
+    #chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
+    #if chat_room is None:
+
+    chat_room = chat_rooms_service.create_chat_room(id_user1, id_user2)
 
     session['username'] = user1.pseudo
     session['room'] = chat_room.id_room

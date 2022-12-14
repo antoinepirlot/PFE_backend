@@ -3,6 +3,7 @@ from werkzeug.exceptions import NotFound
 
 from services.ChatRoomsService import ChatRoomsService
 
+from Exceptions.WebExceptions.NotFoundException import NotFoundException
 chat_rooms_service = ChatRoomsService()
 
 route = Blueprint("chat_rooms", __name__)
@@ -13,19 +14,18 @@ route = Blueprint("chat_rooms", __name__)
 # #########
 @route.route('/<int:id_user1>/<int:id_user2>', methods=['GET'])
 def get_chat_room(id_user1, id_user2):
-    try:
-        chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
-        return chat_room.convert_to_json(), 200
-    except NotFound as not_found_e:
-        raise not_found_e
-    except Exception as e:
-        return jsonify({e.__class__.__name__: e.args[0]}), 500
+    chat_room = chat_rooms_service.get_chat_room(id_user1, id_user2)
+    if chat_room is None:
+        raise NotFoundException
+    return chat_room.convert_to_json(), 201
+
+
 
 
 @route.route('/getRoomById/<id_room>', methods=['GET'])
 def get_chat_room_by_id(id_room):
     chat_room = chat_rooms_service.get_chat_room_by_id(id_room)
-    return chat_room.convert_to_json()
+    return chat_room.convert_to_json(), 201
 
 
 # ########

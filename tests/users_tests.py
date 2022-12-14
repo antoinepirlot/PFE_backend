@@ -24,6 +24,24 @@ class UsersTests(unittest.TestCase):
              '(+32)4 77 123 659',
              '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO')
         ]
+        self.all_users_from_db = [
+            (1,
+             'Dupont',
+             'Pierre',
+             'requinFR@gmail.com',
+             'REQUIN',
+             'male',
+             '(+32)4 77 123 659',
+             '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'),
+            (2,
+             'Griezi',
+             'Pablo',
+             'picpic@gmail.com',
+             'pab',
+             'male',
+             '(+32)4 77 143 659',
+             '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO')
+        ]
         self.user_json = {
             "email": "requinFR@gmail.com",
             "firstname": "Pierre",
@@ -32,6 +50,16 @@ class UsersTests(unittest.TestCase):
             "password": "$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO",
             "phone": "(+32)4 77 123 659",
             "pseudo": "REQUIN",
+            "sexe": "male"
+        }
+        self.user2_json = {
+            "email": "picpic@gmail.com",
+            "firstname": "Pablo",
+            "id_user": 2,
+            "lastname": "Griezi",
+            "password": "$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO",
+            "phone": "(+32)4 77 143 659",
+            "pseudo": "pab",
             "sexe": "male"
         }
 
@@ -56,6 +84,12 @@ class UsersTests(unittest.TestCase):
         self.dal_service.execute = Mock(return_value=[])
         response = self.app.get('/users/idUser=100')
         self.assertEqual(404, response.status_code)
+
+    def test_get_users_ok(self):
+        self.dal_service.execute = Mock(return_value=self.all_users_from_db)
+        response = self.app.get('/users')
+        self.assertEqual(200, response.status_code)
+        self.assertEqual([self.user_json, self.user2_json], response.get_json())
 
 if __name__ == '__main__':
     unittest.main()

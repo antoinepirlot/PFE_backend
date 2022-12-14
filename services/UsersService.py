@@ -123,8 +123,8 @@ class UsersService:
         password = user['password']
         hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         user['password'] = hashed.decode()
-        self._dal.start()
         try:
+            self._dal.start()
             user_email = self._users_dao.get_user_by_email(user['email'])
             if user_email is not None:
                 raise ConflictException("Cet email est déjà pris")

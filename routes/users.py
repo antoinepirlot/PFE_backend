@@ -43,7 +43,7 @@ def get_teacher_by_id(id_teacher):
 @route.route('/<string:email>', methods=['GET'])
 def get_user_by_email(email):
     if email is None or str(email).strip() == 0:
-        raise BadRequestException("email is not mentioned or empthy")
+        raise BadRequestException("email is not mentioned or empty")
     email = prevent_xss(email)
     result = users_service.get_users_by_email(email)
     return result.convert_to_json()
@@ -52,7 +52,7 @@ def get_user_by_email(email):
 @route.route('/pseudo/<string:pseudo>', methods=['GET'])
 def get_user_by_pseudo(pseudo):
     if pseudo is None or str(pseudo).strip() == 0:
-        raise BadRequestException("pseudo is not mentioned or empthy")
+        raise BadRequestException("pseudo is not mentioned or empty")
     pseudo = prevent_xss(pseudo)
     result = users_service.get_users_by_pseudo(pseudo)
     return result.convert_to_json()
@@ -65,4 +65,4 @@ def get_user_by_pseudo(pseudo):
 def add_user():
     json = prevent_xss(request.json)
     users_service.sing_in_user(json)
-    return jsonify({'user': 'user created'})
+    return jsonify({'user': 'user created'}), 201

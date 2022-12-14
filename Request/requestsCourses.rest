@@ -2,7 +2,7 @@
 GET http://localhost:5000/courses
 
 ### get all courses with city filter
-GET http://localhost:5000/courses?course=&description=
+GET http://localhost:5000/courses?city=&course=&description=
 
 ### get all courses with category filter
 GET http://localhost:5000/courses?course=Anglais

@@ -6,7 +6,15 @@ from models.User import User
 
 class UsersDAO:
     def __init__(self):
-        self.dal = DALService()
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of UsersDAO class, a new one is created
+            cls._dal = DALService()
+            cls._instance = super(UsersDAO, cls).__new__(cls)
+        # There's already an instance of UsersDAO class, so the existing one is returned
+        return cls._instance
 
     def get_users(self):
         """
@@ -16,7 +24,7 @@ class UsersDAO:
         sql = """SELECT id_user, lastname, firstname, email, pseudo, sexe, phone, password FROM projet.users"""
 
         resultsExportUsers = []
-        results = self.dal.execute(sql, None, True)
+        results = self._dal.execute(sql, None, True)
 
         for row in results:
             user = User(int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]),
@@ -36,7 +44,7 @@ class UsersDAO:
                   """
 
         value = {"id_user": id_user}
-        result = self.dal.execute(sql, value, True)
+        result = self._dal.execute(sql, value, True)
         if len(result) == 0:
             return None
         result = result[0]
@@ -55,7 +63,7 @@ class UsersDAO:
                           """
 
         value = {"email": email}
-        result = self.dal.execute(sql, value, True)
+        result = self._dal.execute(sql, value, True)
         if len(result) == 0:
             return None
         result = result[0]
@@ -74,7 +82,7 @@ class UsersDAO:
                               """
 
         value = {"pseudo": pseudo}
-        result = self.dal.execute(sql, value, True)
+        result = self._dal.execute(sql, value, True)
         if len(result) == 0:
             return None
         result = result[0]
@@ -90,4 +98,4 @@ class UsersDAO:
             user['lastname'], user['firstname'], user['email'], user['pseudo'], user['sexe'], user['phone'],
             user['password'])
 
-        self.dal.execute(sql, None)
+        self._dal.execute(sql, None)

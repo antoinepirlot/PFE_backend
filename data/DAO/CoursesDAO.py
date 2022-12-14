@@ -27,15 +27,16 @@ def _create_course_object(list_of_courses, handle_stars=False):
 class CoursesDAO:
 
     def __init__(self):
-        self._dal_service = DALService()
+        pass
 
     # __new__ Redefined to use singleton pattern
     def __new__(cls):
-        if not hasattr(cls, "instance"):
+        if not hasattr(cls, "_instance"):
             # No instance of CoursesDAO class, a new one is created
-            cls.instance = super(CoursesDAO, cls).__new__(cls)
+            cls._dal = DALService()
+            cls._instance = super(CoursesDAO, cls).__new__(cls)
         # There's already an instance of CoursesDAO class, so the existing one is returned
-        return cls.instance
+        return cls._instance
 
     def get_one(self, id_course):
         """
@@ -56,7 +57,7 @@ class CoursesDAO:
                 GROUP BY cou.id_course, cat.id_category, u.id_user;
               """
         values = {"id_course": id_course}
-        result = self._dal_service.execute(sql, values, True)
+        result = self._dal.execute(sql, values, True)
         if len(result) == 0:
             return None
         return _create_course_object(result, True)[0]
@@ -80,7 +81,7 @@ class CoursesDAO:
                 GROUP BY cou.id_course, cat.id_category, u.id_user;
         """
         values = {"id_teacher": id_teacher}
-        result = self._dal_service.execute(sql, values, True)
+        result = self._dal.execute(sql, values, True)
         if len(result) == 0:
             raise NotFoundException
         return _create_course_object(result, True)
@@ -127,7 +128,7 @@ class CoursesDAO:
         sql += "GROUP BY cou.id_course, cat.id_category, u.id_user;"
 
 
-        result = self._dal_service.execute(sql, values, True)
+        result = self._dal.execute(sql, values, True)
         if len(result) == 0:
             raise NotFoundException
         return _create_course_object(result, True)
@@ -152,6 +153,6 @@ class CoursesDAO:
             "country": course.country,
             "level": course.level,
         }
-        result = self._dal_service.execute(sql, dico_variables, True)
+        result = self._dal.execute(sql, dico_variables, True)
         course.id_course = result[0][0]
         return course

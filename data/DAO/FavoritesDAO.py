@@ -39,8 +39,6 @@ class FavoritesDAO:
         values = {"id_student": id_student}
         results_export_fav_teachers = []
         results = self._dal_service.execute(sql, values, True)
-        if len(results) == 0:
-            return None
         for row in results:
             favorite = Favorite(int(row[0]), int(row[1]))
             results_export_fav_teachers.append(favorite)

@@ -82,12 +82,12 @@ class CoursesDAO:
     def get_all_courses(self, filter=None):
         """
         Get all courses with a filter or not
-        :param filter: by what you want to filter all courses
+        :param filter: by what you want to filter all courses (here for course category, course description, city)
         :return: all courses with the potential filter applied
         """
         filter_match_table_db = {
             "course": "cat.name",
-            "description": "cou.description",
+            "description": "cou.course_description",
             "city": "cou.city"
         }
 
@@ -103,21 +103,23 @@ class CoursesDAO:
                 
             """
 
-        values = None
+        values = {}
 
+        number_of_filter = 0
         if filter is not None:
-            if 'course' in filter:
-                sql += """
-                    WHERE LOWER(cat.name)= LOWER(%(course)s)
-                """
-                values = {"course": filter['course']}
-            elif 'city' in filter:
-                sql += """
-                    WHERE LOWER(cou.city)= LOWER(%(city)s)
-                """
-                values = {"city": filter['city']}
+            for filter_objet in filter:
+                key_filter = list(filter_objet.keys())[0]
+                name_field = filter_match_table_db[key_filter]
+                value_filter = list(filter_objet.values())[0]
+                if number_of_filter == 0:
+                    sql += f"""WHERE LOWER({name_field}) LIKE LOWER(%({number_of_filter})s) """
+                else:
+                    sql += f"""AND LOWER({name_field}) LIKE LOWER(%({number_of_filter})s) """
+                values.update({f'{number_of_filter}': '%'+value_filter+'%'})
+                number_of_filter += 1
 
         sql += "GROUP BY cou.id_course, cat.id_category, u.id_user;"
+
 
         result = self._dal_service.execute(sql, values, True)
         if len(result) == 0:

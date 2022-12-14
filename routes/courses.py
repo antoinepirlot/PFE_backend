@@ -30,7 +30,6 @@ def get_all_courses():
     print(search_filters)
     if len(search_filters) == 0:
         search_filters = None
-    search_filters = None
     result = courses_service.get_all_courses(search_filters)
     courses = []
     for course in result:

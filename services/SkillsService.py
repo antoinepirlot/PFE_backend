@@ -3,11 +3,18 @@ from data.services.DALService import DALService
 
 
 class SkillsService:
-    _skills_dao = SkillsDAO()
-    _dal_service = DALService()
 
     def __init__(self):
         pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of SkillsService class, a new one is created
+            cls._skills_dao = SkillsDAO()
+            cls._dal_service = DALService()
+            cls._instance = super(SkillsService, cls).__new__(cls)
+        # There's already an instance of SkillsService class, so the existing one is returned
+        return cls._instance
 
     def add_notification(self, skill):
         """

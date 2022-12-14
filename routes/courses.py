@@ -20,11 +20,11 @@ def get_all_courses():
     filter_name_course = request.args.get('course', default=None, type=str)
 
     search_filters = []
-    if filter_city is not None:
+    if filter_city and filter_city.strip():
         search_filters.append({"city": filter_city})
-    if filter_description is not None:
+    if filter_description and filter_description.strip():
         search_filters.append({"description": filter_description})
-    if filter_name_course is not None:
+    if filter_name_course and filter_name_course.strip():
         search_filters.append({"course": filter_name_course})
 
     print(search_filters)

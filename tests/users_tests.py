@@ -91,5 +91,16 @@ class UsersTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual([self.user_json, self.user2_json], response.get_json())
 
+    def test_get_users_by_pseudo_ok(self):
+        self.dal_service.execute = Mock(return_value=self.user_from_db)
+        response = self.app.get('/users/pseudo/REQUIN')
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(self.user_json, response.get_json())
+
+    def test_get_users_by_pseudo_non_existing_pseudo(self):
+        self.dal_service.execute = Mock(return_value=[])
+        response = self.app.get('/users/pseudo/RENARD_FUTE')
+        self.assertEqual(404, response.status_code)
+
 if __name__ == '__main__':
     unittest.main()

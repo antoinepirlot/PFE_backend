@@ -9,14 +9,23 @@ from utils.objects_modifications import convert_models_objects_to_json
 
 
 class CoursesService:
-    _courses_dao = CoursesDAO()
-    users_dao = UsersDAO()
-    categories_dao = CategoriesDAO()
-    skills_dao = SkillsDAO()
-    _dal_service = DALService()
+
 
     def __init__(self):
         pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of CoursesService class, a new one is created
+            cls._dal_service = DALService()
+            cls._courses_dao = CoursesDAO()
+            cls._users_dao = UsersDAO()
+            cls._categories_dao = CategoriesDAO()
+            cls._skills_dao = SkillsDAO()
+            cls._instance = super(CoursesService, cls).__new__(cls)
+        # There's already an instance of CoursesService class, so the existing one is returned
+        return cls._instance
+
 
     def get_one(self, id_course):
         """
@@ -79,10 +88,10 @@ class CoursesService:
             self._dal_service.start()
 
             ##check if teacher got the skill, if not add it
-            user = self.users_dao.get_user_by_id(course.id_teacher)
+            user = self._users_dao.get_user_by_id(course.id_teacher)
             if user is None:
                 raise NotFoundException("User not found")
-            all_skills = self.categories_dao.get_all_skills_categories(course.id_teacher)
+            all_skills = self._categories_dao.get_all_skills_categories(course.id_teacher)
             user.skills = all_skills
             bool = False
             for s in all_skills:
@@ -91,7 +100,7 @@ class CoursesService:
 
             if not bool:  # if false we add the skill to the teacher
                 skill = Skill(course.id_category, course.id_teacher)
-                self.skills_dao.add_skill(skill)
+                self._skills_dao.add_skill(skill)
 
             result = self._courses_dao.create_one_course(course)
             self._dal_service.commit_transaction()

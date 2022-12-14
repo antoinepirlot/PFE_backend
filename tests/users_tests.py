@@ -46,6 +46,16 @@ class UsersTests(unittest.TestCase):
         response = self.app.get('/users/noexists@gmail.com')
         self.assertEqual(404, response.status_code)
 
+    def test_get_user_by_id_ok(self):
+        self.dal_service.execute = Mock(return_value=self.user_from_db)
+        response = self.app.get('/users/idUser=1')
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(self.user_json, response.get_json())
+
+    def test_get_user_by_id_non_exisiting_id(self):
+        self.dal_service.execute = Mock(return_value=[])
+        response = self.app.get('/users/idUser=100')
+        self.assertEqual(404, response.status_code)
 
 if __name__ == '__main__':
     unittest.main()

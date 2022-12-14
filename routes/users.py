@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.UsersService import UsersService
 from utils.security import prevent_xss
+from utils.authorize import authorize
 
 users_service = UsersService()
 
@@ -33,6 +34,7 @@ def get_user_by_id(id_user):
 
 
 @route.route('teacher/<int:id_teacher>', methods=['GET'])
+@authorize
 def get_teacher_by_id(id_teacher):
     if id_teacher is None or int(id_teacher) <= 0:
         raise BadRequestException("ID of the teacher is not mentioned or negative")

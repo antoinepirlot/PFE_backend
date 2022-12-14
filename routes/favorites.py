@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from Exceptions.WebExceptions.ConflictException import ConflictException
+from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from models.Favorite import Favorite
 from services.FavoritesService import FavoritesService
@@ -21,6 +22,10 @@ route = Blueprint("favorites", __name__)
 @authorize
 def get_favorite(id_teacher):
     id_student = get_id_from_token(request.headers["authorization"])
+    if id_teacher is id_student:
+      raise ForbiddenException(
+        "It's your profile, you don't have a like for yourself"
+      )
     favorite = favorites_service.get_favorite(id_teacher, id_student)
     return favorite.convert_to_json()
 
@@ -49,15 +54,8 @@ def get_most_favorites_teachers():
 def add_favorite():
     new_favorite = Favorite.init_favorite_with_json(request.json)
     new_favorite.id_student = get_id_from_token(request.headers["authorization"])
-    """
-    if new_favorite.id_teacher == new_favorite.id_student:
-        raise BadRequestException("You cannot add yourself to your favorites")
-    try:
-        result = favorites_service.get_favorite(new_favorite.id_teacher, new_favorite.id_student)
-    except NotFoundException:
-        return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
-    raise ConflictException
-    """
+    if new_favorite.id_teacher is new_favorite.id_student:
+        raise BadRequestException("You can't add yourself in your favorites")
     return favorites_service.add_favorite(new_favorite).convert_to_json(), 201
 
 
@@ -71,6 +69,6 @@ def add_favorite():
 @route.route("/<int:id_teacher>", methods=["DELETE"])
 @authorize
 def remove_favorite(id_teacher):
-    id_student = get_id_from_token(request.headers["authorization"])
-    favorites_service.remove_favorite(id_teacher, id_student)
-    return jsonify({'favorite': 'favorite deleted'}), 201
+  id_student = get_id_from_token(request.headers["authorization"])
+  favorites_service.remove_favorite(id_teacher, id_student)
+  return jsonify({'favorite': 'favorite deleted'}), 201

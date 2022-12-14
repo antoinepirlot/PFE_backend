@@ -1,3 +1,4 @@
+from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.FavoritesDAO import FavoritesDAO
 from data.services.DALService import DALService
@@ -68,6 +69,9 @@ class FavoritesService:
         """
         try:
             self._dal_service.start()
+            result = self._favorites_DAO.get_favorite(favorite.id_teacher, favorite.id_student)
+            if result is not None:
+                raise ConflictException("You already like this profile")
             result = self._favorites_DAO.add_favorite(favorite)
             self._dal_service.commit_transaction()
             return result

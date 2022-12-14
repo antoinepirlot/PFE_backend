@@ -61,9 +61,6 @@ class Course(object):
     def total_tuples_stars(self):
         return self._total_tuples_stars
 
-
-
-
     def convert_to_json(self):
         """
         Convert the current object into json
@@ -85,7 +82,6 @@ class Course(object):
             json["category"] = self._id_category.convert_to_json()
         else:
             json["id_category"] = self._id_category
-
-        if self.id_course is not None:
-            json["id_course"] = self.id_course
+        if self._id_course is not None:
+            json["id_course"] = self._id_course
         return json

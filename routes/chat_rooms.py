@@ -36,11 +36,3 @@ def create_chat_room(id_user1, id_user2):
     if id_user1 == id_user2:
         abort(412, "You cannot have a chat room with yourself.")
     return chat_rooms_service.create_chat_room(id_user1, id_user2).convert_to_json(), 201
-
-# #########
-# ###PUT###
-# #########
-
-# ############
-# ###DELETE###
-# ############

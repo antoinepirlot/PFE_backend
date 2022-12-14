@@ -45,3 +45,35 @@ class AppointmentsService:
 
         self.appointments_DAO.update_appointment_state(id_course, id_student, appointment_state)
         self.dal.commit_transaction()
+
+    def create_appointements(self, id_course, id_student, appointment_date, street, number_house, box_house):
+        """
+        Create a new appointment.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_date: the date for the appointment
+        :param: street: the street for the appointment
+        :param: number_house: number_house for the appointment
+        :param: box_house: box_house for the appointment
+        """
+        self.dal.start()
+        result = self.appointments_DAO.create_appointement(id_course, id_student, appointment_date, street,
+                                                           number_house, box_house)
+        self.dal.commit_transaction()
+        return result
+
+    def create_appointements_without_box_house(self, id_course, id_student, appointment_date, street, number_house):
+        """
+        Create a new appointment without the parameter box_house.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_date: the date for the appointment
+        :param: street: the street for the appointment
+        :param: number_house: number_house for the appointment
+        """
+        self.dal.start()
+        result = self.appointments_DAO.create_appointement_without_box_house(id_course, id_student, appointment_date,
+                                                                             street,
+                                                                             number_house)
+        self.dal.commit_transaction()
+        return result

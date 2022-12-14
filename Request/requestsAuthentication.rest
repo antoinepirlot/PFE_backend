@@ -10,4 +10,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/authentications
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxMzg2MjI4fQ.ODEOCvOBAqIoxYBOg5KALfrlPRrPJWE-_MAozHUd5a8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDkwMjQ0fQ.afWr7Gy7ARoO7Z9Wgr-tP2tSvv9M7pVGgxoJ3hJkK0k

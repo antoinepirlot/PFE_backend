@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.UsersService import UsersService
 from utils.security import prevent_xss
+from utils.authorize import authorize
 
 users_service = UsersService()
 
@@ -15,6 +16,7 @@ route = Blueprint("users", __name__)
 # ###GET###
 # #########
 @route.route('', methods=['GET'])
+@authorize
 def get_users():
     result = users_service.get_users()
     users = []
@@ -25,6 +27,7 @@ def get_users():
 
 
 @route.route('/<int:id_user>', methods=['GET'])
+@authorize
 def get_user_by_id(id_user):
     if id_user is None or int(id_user) <= 0:
         raise BadRequestException("ID of the user is not mentioned or negative")
@@ -33,6 +36,7 @@ def get_user_by_id(id_user):
 
 
 @route.route('teacher/<int:id_teacher>', methods=['GET'])
+@authorize
 def get_teacher_by_id(id_teacher):
     if id_teacher is None or int(id_teacher) <= 0:
         raise BadRequestException("ID of the teacher is not mentioned or negative")
@@ -41,6 +45,7 @@ def get_teacher_by_id(id_teacher):
 
 
 @route.route('/<string:email>', methods=['GET'])
+@authorize
 def get_user_by_email(email):
     if email is None or str(email).strip() == 0:
         raise BadRequestException("email is not mentioned or empty")
@@ -50,6 +55,7 @@ def get_user_by_email(email):
 
 
 @route.route('/pseudo/<string:pseudo>', methods=['GET'])
+@authorize
 def get_user_by_pseudo(pseudo):
     if pseudo is None or str(pseudo).strip() == 0:
         raise BadRequestException("pseudo is not mentioned or empty")

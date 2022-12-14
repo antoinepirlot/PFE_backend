@@ -8,7 +8,7 @@ GET http://localhost:5000/courses?city=&course=&description=
 GET http://localhost:5000/courses?course=Anglais
 
 ### 200 expected
-GET http://localhost:5000/courses/teacher/0
+GET http://localhost:5000/courses/teacher/1
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3

@@ -4,6 +4,7 @@ from unittest.mock import Mock
 from app.main import app
 from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
+from models.User import User
 
 
 class UsersTests(unittest.TestCase):
@@ -114,9 +115,22 @@ class UsersTests(unittest.TestCase):
     def test_add_users_ok(self):
         self.dal_service.execute = Mock(side_effect=[[], [], []])
         response = self.app.post('/users', json=self.new_user)
-        print(response)
         self.assertEqual(201, response.status_code)
 
+    def test_add_users_with_pseudo_already_taken(self):
+        user_json_paola = {
+            "email": "pieuvre@gmail.com",
+            "firstname": "Paola",
+            "id_user": 15,
+            "lastname": "Richi",
+            "password": "$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO",
+            "phone": "(+32)4 15 123 659",
+            "pseudo": "REQUIN",
+            "sexe": "female"
+        }
+        self.dal_service.execute = Mock(side_effect=[[], self.user_from_db])
+        response = self.app.post('/users', json=user_json_paola)
+        self.assertEqual(409, response.status_code)
 
 
 if __name__ == '__main__':

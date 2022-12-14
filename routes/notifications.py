@@ -27,10 +27,9 @@ def add_notification():
     json = prevent_xss(request.json)
     print(json['chat_link'])
     if json['chat_link'] is None:
-        notification = Notification(int(json['id_user']), str(json['notification_text']))
+        notification = Notification(int(json['id_user']), str(json['notification_text']), None)
     else:
-        notification = Notification(int(json['id_user']), str(json['notification_text']), None, None,
-                                    None, str(json['chat_link']))
+        notification = Notification(int(json['id_user']), str(json['notification_text']), str(json['chat_link']))
 
     notification_service.add_notification(notification)
     return jsonify({'notification': 'notification created'}), 201

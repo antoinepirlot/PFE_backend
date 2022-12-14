@@ -16,6 +16,7 @@ route = Blueprint("users", __name__)
 # ###GET###
 # #########
 @route.route('', methods=['GET'])
+@authorize
 def get_users():
     result = users_service.get_users()
     users = []
@@ -44,6 +45,7 @@ def get_teacher_by_id(id_teacher):
 
 
 @route.route('/<string:email>', methods=['GET'])
+@authorize
 def get_user_by_email(email):
     if email is None or str(email).strip() == 0:
         raise BadRequestException("email is not mentioned or empty")
@@ -53,6 +55,7 @@ def get_user_by_email(email):
 
 
 @route.route('/pseudo/<string:pseudo>', methods=['GET'])
+@authorize
 def get_user_by_pseudo(pseudo):
     if pseudo is None or str(pseudo).strip() == 0:
         raise BadRequestException("pseudo is not mentioned or empty")

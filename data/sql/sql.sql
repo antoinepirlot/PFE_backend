@@ -42,7 +42,8 @@ CREATE TABLE projet.notifications (
     id_user INTEGER NOT NULL REFERENCES projet.users(id_user),
     notification_text varchar(255) NOT NULL check ( notification_text<>'' ),
     notification_date TIMESTAMP NOT NULL DEFAULT NOW(),
-    seen BOOLEAN NOT NULL DEFAULT false
+    seen BOOLEAN NOT NULL DEFAULT false,
+    chat_link VARCHAR(100)
 );
 
 CREATE TABLE projet.categories (

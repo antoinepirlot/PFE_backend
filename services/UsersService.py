@@ -11,11 +11,18 @@ from data.services.DALService import DALService
 
 class UsersService:
     def __init__(self):
-        self._users_dao = UsersDAO()
-        self._categories_dao = CategoriesDAO()
-        self._ratings_dao = RatingsDAO()
-        self._dal = DALService()
+        pass
 
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of DALService class, a new one is created
+            cls._users_dao = UsersDAO()
+            cls._categories_dao = CategoriesDAO()
+            cls._ratings_dao = RatingsDAO()
+            cls._dal = DALService()
+            cls._instance = super(UsersService, cls).__new__(cls)
+        # There's already an instance of DALService class, so the existing one is returned
+        return cls._instance
     def get_users(self):
         """
         Get all users, from database.

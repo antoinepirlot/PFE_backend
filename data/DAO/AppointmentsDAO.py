@@ -88,3 +88,57 @@ class AppointmentsDAO:
 
         self._dal.execute(sql, {"id_course": int(id_course), "id_student": int(id_student),
                                "appointment_state": str(appointment_state)})
+
+    def create_appointement(self, id_course, id_student, appointment_date, street, number_house, box_house):
+        """
+        Create a new appointment.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_date: the date for the appointment
+        :param: street: the street for the appointment
+        :param: number_house: number_house for the appointment
+        :param: box_house: box_house for the appointment
+        """
+        sql = """
+              INSERT INTO projet.appointments (id_course, id_student, appointment_state, appointment_date, 
+              street, number_house, box_house) VALUES ( %(id_course)s, %(id_student)s, DEFAULT, %(appointment_date)s,
+              %(street)s, %(number_house)s, %(box_house)s )
+              """
+        dico_variables = {
+            "id_course": id_course,
+            "id_student": id_student,
+            "appointment_date": appointment_date,
+            "street": street,
+            "number_house": number_house,
+            "box_house": box_house,
+        }
+        self._dal.execute(sql, dico_variables, False)
+        appointment = Appointment(int(id_course), int(id_student), 'pending', str(appointment_date), str(street),
+                                  int(number_house), str(box_house))
+        return appointment
+
+    def create_appointement_without_box_house(self, id_course, id_student, appointment_date, street, number_house):
+        """
+        Create a new appointment without the parameter box_house.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_date: the date for the appointment
+        :param: street: the street for the appointment
+        :param: number_house: number_house for the appointment
+        """
+        sql = """
+              INSERT INTO projet.appointments (id_course, id_student, appointment_state, appointment_date, 
+              street, number_house, box_house) VALUES ( %(id_course)s, %(id_student)s, DEFAULT, %(appointment_date)s,
+              %(street)s, %(number_house)s, DEFAULT)
+              """
+        dico_variables = {
+            "id_course": id_course,
+            "id_student": id_student,
+            "appointment_date": appointment_date,
+            "street": street,
+            "number_house": number_house
+        }
+        self._dal.execute(sql, dico_variables, False)
+        appointment = Appointment(int(id_course), int(id_student), 'pending', str(appointment_date), str(street),
+                                  int(number_house), None)
+        return appointment

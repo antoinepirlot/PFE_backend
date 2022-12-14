@@ -8,6 +8,7 @@ import utils.authorize
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.UsersService import UsersService
 from utils.authorize import get_id_from_token, authorize
+from utils.security import prevent_xss
 
 users_service = UsersService()
 
@@ -25,7 +26,7 @@ def login():
     if 'email' not in data or len(str(data['email']).strip()) == 0 or \
             'password' not in data or len(str(data['password']).strip()) == 0:
         raise BadRequestException("Login object is not in the good format")
-
+    data = prevent_xss(data)
     user = users_service.logInUser(data['email'], data['password'])
     payload_data = {
         "id": user['id_user'],

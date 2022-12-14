@@ -43,7 +43,8 @@ CREATE TABLE projet.notifications (
     notification_text varchar(255) NOT NULL check ( notification_text<>'' ),
     notification_date TIMESTAMP NOT NULL DEFAULT NOW(),
     seen BOOLEAN NOT NULL DEFAULT false,
-    chat_link varchar(100) DEFAULT ' '
+    chat_link VARCHAR(100)
+
 );
 
 CREATE TABLE projet.categories (

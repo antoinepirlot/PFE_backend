@@ -76,6 +76,7 @@ class FavoritesDAO:
             VALUES( %(id_teacher)s, %(id_student)s)
             RETURNING id_teacher, id_student
         """
+
         values = {"id_teacher": int(favorite.id_teacher), "id_student": int(favorite.id_student)}
         results = self._dal_service.execute(sql, values, True)
         if len(results) == 0:

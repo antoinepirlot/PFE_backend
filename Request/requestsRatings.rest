@@ -1,8 +1,10 @@
 ### Get ratings from a teacher
 GET http://localhost:5000/ratings?id_teacher=1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDkzOTY3fQ.wEB1jyvoubUY_SQXKpStocFfwpcqQQ8LR5ZyGqcHg-U
 
 ### Create a rating
 POST http://localhost:5000/ratings
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDkzOTY3fQ.wEB1jyvoubUY_SQXKpStocFfwpcqQQ8LR5ZyGqcHg-U
 Content-Type: application/json
 
 {

@@ -11,13 +11,13 @@ class ChatRoomsService:
         pass
 
     def __new__(cls):
-        if not hasattr(cls, "instance"):
+        if not hasattr(cls, "_instance"):
             # No instance of ChatRoomsService class, a new one is created
             cls._dal = DALService()
             cls._chat_rooms_DAO = ChatRoomsDAO()
-            cls.instance = super(ChatRoomsService, cls).__new__(cls)
+            cls._instance = super(ChatRoomsService, cls).__new__(cls)
         # There's already an instance of CategoriesService class, so the existing one is returned
-        return cls.instance
+        return cls._instance
 
     def get_chat_room(self, id_user1, id_user2):
         """

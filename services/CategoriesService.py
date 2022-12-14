@@ -8,13 +8,13 @@ class CategoriesService:
         pass
 
     def __new__(cls):
-        if not hasattr(cls, "instance"):
+        if not hasattr(cls, "_instance"):
             # No instance of CategoriesService class, a new one is created
             cls._dal = DALService()
             cls._categories_dao = CategoriesDAO()
-            cls.instance = super(CategoriesService, cls).__new__(cls)
+            cls._instance = super(CategoriesService, cls).__new__(cls)
         # There's already an instance of CategoriesService class, so the existing one is returned
-        return cls.instance
+        return cls._instance
 
     def get_all_categories(self):
         """

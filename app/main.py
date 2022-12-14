@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, session
 from flask_cors import CORS
+from flask_socketio import join_room, leave_room, SocketIO
 
 from Exceptions.FatalException import FatalException
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
@@ -9,9 +10,19 @@ from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from Exceptions.WebExceptions.UnauthorizedException import UnauthorizedException
 from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, \
     appointments
+from services.ChatRoomsService import ChatRoomsService
+from services.UsersService import UsersService
+
+chat_rooms_service = ChatRoomsService()
+users_service = UsersService()
 
 app = Flask(__name__)
 cors = CORS(app)
+socketio = SocketIO(app, manage_session=False, cors_allowed_origins="*")
+
+app.debug = True
+app.config['SECRET_KEY'] = 'secret'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 # Routes
 app.register_blueprint(courses.route, url_prefix="/courses")

@@ -1,4 +1,5 @@
 from flask import abort
+from werkzeug.exceptions import NotFound
 
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.ChatRoomsDAO import ChatRoomsDAO
@@ -64,8 +65,7 @@ class ChatRoomsService:
             self._dal_service.commit_transaction()
             return results
         except Exception as e:
-            chat_room = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
-            return chat_room
+            self._dal_service.rollback_transaction()
 
         # # TODO that's Antoine's solution :p
         # try:

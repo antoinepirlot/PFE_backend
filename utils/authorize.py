@@ -2,7 +2,7 @@ import os
 from functools import wraps
 
 import jwt
-from flask import request
+from flask import request, g
 
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
@@ -22,7 +22,8 @@ def authorize(f):
         if not token:  # if not token
             raise BadRequestException("A valid token is missing!")
         id_in_token = get_id_from_token(token)
-        users_service.get_users_by_id(id_in_token)
+        user = users_service.get_users_by_id(id_in_token).convert_to_json(False)
+        g.user = user
         return f(*args, **kwargs)
 
     return decorator

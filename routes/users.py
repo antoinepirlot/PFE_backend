@@ -4,6 +4,7 @@ from werkzeug.exceptions import NotFound
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.UsersService import UsersService
+from utils.security import prevent_xss
 
 users_service = UsersService()
 
@@ -43,6 +44,7 @@ def get_teacher_by_id(id_teacher):
 def get_user_by_email(email):
     if email is None or str(email).strip() == 0:
         raise BadRequestException("email is not mentioned or empthy")
+    email = prevent_xss(email)
     result = users_service.get_users_by_email(email)
     return result.convert_to_json()
 
@@ -51,6 +53,7 @@ def get_user_by_email(email):
 def get_user_by_pseudo(pseudo):
     if pseudo is None or str(pseudo).strip() == 0:
         raise BadRequestException("pseudo is not mentioned or empthy")
+    pseudo = prevent_xss(pseudo)
     result = users_service.get_users_by_pseudo(pseudo)
     return result.convert_to_json()
 
@@ -60,5 +63,6 @@ def get_user_by_pseudo(pseudo):
 # ########
 @route.route('', methods=['POST'])
 def add_user():
-    users_service.sing_in_user(request.json)
+    json = prevent_xss(request.json)
+    users_service.sing_in_user(json)
     return jsonify({'user': 'user created'})

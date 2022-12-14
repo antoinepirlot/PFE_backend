@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.Course import Course
@@ -52,6 +52,7 @@ def get_one(id_course):
 def get_all_courses_from_teacher():
     id_teacher = get_id_from_token(request.headers["Authorization"])
     print(id_teacher)
+    print(g.user)
     if id_teacher < 1:
         raise BadRequestException("No id teacher lower than 1")
     result = courses_service.get_all_courses_from_teacher(id_teacher)

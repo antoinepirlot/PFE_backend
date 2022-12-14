@@ -9,7 +9,7 @@ GET http://localhost:5000/courses?course=Anglais
 
 ###
 GET http://localhost:5000/courses/teacher
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxNDEyOTEzfQ.1TWgqQLKa5o10v3HnIa2l0aSMqYHklnAiRiQUsq3X90
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM
 
 
 ### 200 expected with a course

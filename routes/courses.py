@@ -4,6 +4,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.Course import Course
 from services.CoursesService import CoursesService
 from utils.authorize import authorize, get_id_from_token
+from utils.security import prevent_xss
 
 courses_service = CoursesService()
 
@@ -16,8 +17,8 @@ route = Blueprint("courses", __name__)
 
 @route.route('', methods=['GET'])
 def get_all_courses():
-    filter_city = request.args.get('city', default=None, type=str)
-    filter_name_course = request.args.get('course', default=None, type=str)
+    filter_city = prevent_xss(request.args.get('city', default=None, type=str))
+    filter_name_course = prevent_xss(request.args.get('course', default=None, type=str))
     object_search = None
     if filter_city is not None:
         object_search = {"city": filter_city}
@@ -73,8 +74,8 @@ def create_one():
                                                                                      "Intermédiaire",
                                                                                      "Confirmé"]:
         return BadRequestException("Course is not in the good format")
-
-    new_course = Course(request.json['id_category'], request.json['id_teacher'], request.json['course_description'],
-                        request.json['price_per_hour'], request.json['city'], request.json['country'],
-                        request.json['level'])
+    json = prevent_xss(request.json)
+    new_course = Course(json['id_category'], json['id_teacher'], json['course_description'],
+                        json['price_per_hour'], json['city'], json['country'],
+                        json['level'])
     return courses_service.create_one_course(new_course).convert_to_json(), 201

@@ -34,7 +34,9 @@ class RatingsService:
             user = self._users_DAO.get_user_by_id(id_teacher)
             if user is None:
                 raise NotFoundException("User not found")
+            print("he ho")
             all_ratings = self._ratings_DAO.get_ratings_from_teacher(id_teacher)
+            print("he ho")
             for rating in all_ratings:
                 rater = self._users_DAO.get_user_by_id(rating.id_rater)
                 rating.setRater(rater)

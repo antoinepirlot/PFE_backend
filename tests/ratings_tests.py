@@ -29,10 +29,18 @@ class RatingsTests(unittest.TestCase):
             "rating_text": "bof comme prof j'ai pas vrmt apprécié",
             "rating_number": 3
         }
+        self.correct_rating_from_db = [(1, 2, "bof comme prof j'ai pas vrmt apprécié", 3)]
         self.empty_list = []
         self.all_appointments = [(1, 1, "finished", "2022-10-20", "rue de la colline", 121, None)]
         self.student = [(1, "Dupont", "Pierre", "requinFR@gmail.com", "REQUIN", "male", "(+32)4 77 123 659",
                          "motDePasse")]
+        self.student_json = {'email': 'requinFR@gmail.com',
+                             'firstname': 'Pierre',
+                             'id_user': 1,
+                             'lastname': 'Dupont',
+                             'phone': '(+32)4 77 123 659',
+                             'pseudo': 'REQUIN',
+                             'sexe': 'male'}
         self.teacher = [(2, "Dupré", "Pedro", "Pedro@gmail.com", "Pedro", "male", "(+32)4 77 444 659", "motDePasse2")]
 
     def test_create_rating_negative_id_teacher(self):
@@ -49,6 +57,19 @@ class RatingsTests(unittest.TestCase):
 
         response = self.app.post('/ratings/', json=self.correct_rating_json)
         self.assertEqual(201, response.status_code)
+
+    def test_get_ratings_from_teacher_success(self):
+
+        correct_rating_json_with_rater = [{
+            "rater": self.student_json,
+            "id_rated": 2,
+            "rating_text": "bof comme prof j'ai pas vrmt apprécié",
+            "rating_number": 3
+        }]
+        self.dal_service.execute = Mock(side_effect=[self.teacher, self.correct_rating_from_db, self.student])
+        response = self.app.get('/ratings/', query_string={'id_teacher': 2})
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(correct_rating_json_with_rater, response.get_json())
 
 
 if __name__ == '__main__':

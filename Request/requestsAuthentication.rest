@@ -1,0 +1,13 @@
+### login user
+POST http://localhost:5000/authentications/login
+Content-Type: application/json
+
+{
+      "email": "a@gmail.com",
+      "password": "a"
+}
+
+
+###
+GET http://localhost:5000/authentications
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxMzg2MjI4fQ.ODEOCvOBAqIoxYBOg5KALfrlPRrPJWE-_MAozHUd5a8

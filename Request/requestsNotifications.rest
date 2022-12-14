@@ -1,0 +1,11 @@
+### Get ratings from a teacher
+GET http://localhost:5000/notifications/1
+
+### add new notification for id_use 1
+POST http://localhost:5000/notifications
+Content-Type: application/json
+
+{
+     "id_user": 6,
+     "notification_text": "tu es un barjo la macque"
+}

@@ -1,0 +1,13 @@
+### Get ratings from a teacher
+GET http://localhost:5000/ratings?id_teacher=1
+
+### Create a rating
+POST http://localhost:5000/ratings
+Content-Type: application/json
+
+{
+     "id_rater": 2,
+      "id_rated": 1,
+      "rating_text": "bof comme prof j'ai pas vrmt apprécié",
+      "rating_number": 3
+}

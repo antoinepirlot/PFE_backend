@@ -71,10 +71,9 @@ class ChatRoomsService:
                 self._dal_service.rollback_transaction()
                 abort(409, "You already have a chat room with this user.")
             """
-            if self._chat_rooms_DAO.get_chat_room(id_user1, id_user2) is not None:
-                raise ConflictException
-
-            results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
+            results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
+            if results is None:
+                results = self._chat_rooms_DAO.create_chat_room(id_user1, id_user2)
 
             self._dal.commit_transaction()
             return results

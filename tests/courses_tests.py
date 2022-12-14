@@ -96,6 +96,12 @@ class CoursesTests(unittest.TestCase):
             }
         ]
 
+    def test_get_all_courses(self):
+        self.dal_service.execute = Mock(return_value=self.course_from_teacher_from_db)
+        response = self.app.get("courses")
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(self.courses_from_teacher_json, response.get_json())
+
     def test_get_one_course_with_id_course_ok(self):
         self.dal_service.execute = Mock(return_value=self.course_from_db)
         response = self.app.get("courses/1")

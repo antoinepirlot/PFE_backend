@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.Course import Course
 from services.CoursesService import CoursesService
+from utils.authorize import authorize, get_id_from_token
 
 courses_service = CoursesService()
 
@@ -38,12 +39,17 @@ def get_one(id_course):
     return course, 200
 
 
-@route.route("/teacher/<id_teacher>", methods=["GET"])
-def get_all_courses_from_teacher(id_teacher):
-    id_teacher = int(id_teacher)
+@route.route("/teacher", methods=["GET"])
+@authorize
+def get_all_courses_from_teacher():
+    id_teacher = get_id_from_token(request.headers["Authorization"])
+    print(id_teacher)
     if id_teacher < 1:
         raise BadRequestException("No id teacher lower than 1")
-    courses = courses_service.get_all_courses_from_teacher(id_teacher)
+    result = courses_service.get_all_courses_from_teacher(id_teacher)
+    courses = []
+    for course in result:
+        courses.append(course.convert_to_json())
     return courses, 200
 
 

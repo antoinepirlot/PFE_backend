@@ -25,6 +25,11 @@ def get_notifications_from_user(id_user):
 @route.route('', methods=['POST'])
 def add_notification():
     json = prevent_xss(request.json)
-    notification = Notification(int(json['id_user']), str(json['notification_text']))
+    print(json['chat_link'])
+    if json['chat_link'] is None:
+        notification = Notification(int(json['id_user']), str(json['notification_text']), None)
+    else:
+        notification = Notification(int(json['id_user']), str(json['notification_text']), str(json['chat_link']))
+
     notification_service.add_notification(notification)
     return jsonify({'notification': 'notification created'}), 201

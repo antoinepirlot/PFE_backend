@@ -20,7 +20,7 @@ class AppointmentsDAO:
             all_appointments = []
             for row in results:
                 appointment = Appointment(int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), int(row[5]),
-                                          str(row[7]))
+                                          str(row[6]))
                 all_appointments.append(appointment)
             return all_appointments
         except (Exception, psycopg2.DatabaseError) as e:

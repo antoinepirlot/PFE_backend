@@ -1,11 +1,18 @@
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
+from data.DAO.CategoriesDAO import CategoriesDAO
 from data.DAO.CoursesDAO import CoursesDAO
+from data.DAO.SkillsDAO import SkillsDAO
+from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
+from models.Skill import Skill
 from utils.objects_modifications import convert_models_objects_to_json
 
 
 class CoursesService:
     _courses_dao = CoursesDAO()
+    users_dao = UsersDAO()
+    categories_dao = CategoriesDAO()
+    skills_dao = SkillsDAO()
     _dal_service = DALService()
 
     def __init__(self):
@@ -70,6 +77,22 @@ class CoursesService:
         """
         try:
             self._dal_service.start()
+
+            ##check if teacher got the skill, if not add it
+            user = self.users_dao.get_user_by_id(course.id_teacher)
+            if user is None:
+                raise NotFoundException("User not found")
+            all_skills = self.categories_dao.get_all_skills_categories(course.id_teacher)
+            user.skills = all_skills
+            bool = False
+            for s in all_skills:
+                if s.id_category == course.id_category:
+                    bool = True
+
+            if not bool:  # if false we add the skill to the teacher
+                skill = Skill(course.id_category, course.id_teacher)
+                self.skills_dao.add_skill(skill)
+
             result = self._courses_dao.create_one_course(course)
             self._dal_service.commit_transaction()
             return result

@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, request, abort
 
+from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.NotificationsService import NotificationsService
 from models.Notification import Notification
+from utils.security import prevent_xss
 
 notification_service = NotificationsService()
 
@@ -22,12 +24,13 @@ def get_notifications_from_user(id_user):
 
 @route.route('', methods=['POST'])
 def add_notification():
-    print(request.json['chat_link'])
-    if request.json['chat_link'] is None:
-        notification = Notification(int(request.json['id_user']), str(request.json['notification_text']))
+    json = prevent_xss(request.json)
+    print(json['chat_link'])
+    if json['chat_link'] is None:
+        notification = Notification(int(json['id_user']), str(json['notification_text']))
     else:
-        notification = Notification(int(request.json['id_user']), str(request.json['notification_text']), None, None,
-                                    None, str(request.json['chat_link']))
+        notification = Notification(int(json['id_user']), str(json['notification_text']), None, None,
+                                    None, str(json['chat_link']))
 
     notification_service.add_notification(notification)
     return jsonify({'notification': 'notification created'}), 201

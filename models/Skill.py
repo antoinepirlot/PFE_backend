@@ -1,16 +1,15 @@
-class Category:
-
-    def __init__(self, id_category, name):
+class Skill:
+    def __init__(self, id_category, id_teacher):
         self._id_category = id_category
-        self._name = name
+        self._id_teacher = id_teacher
 
     @property
     def id_category(self):
         return self._id_category
 
     @property
-    def name(self):
-        return self._name
+    def id_teacher(self):
+        return self._id_teacher
 
     def convert_to_json(self):
         """
@@ -18,6 +17,6 @@ class Category:
         :return: a json that represents the current object
         """
         return {
-            "id_category": self.id_category,
-            "name": self.name
+            "id_category": self._id_category,
+            "id_teacher": self._id_teacher,
         }

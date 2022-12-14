@@ -4,6 +4,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
 from services.RatingsService import RatingsService
 from models.Rating import Rating
+from utils.security import prevent_xss
 
 ratings_service = RatingsService()
 
@@ -40,5 +41,5 @@ def create_one():
         raise BadRequestException("Rating is not in the good format")
     if request.json['id_rated'] == request.json['id_rater']:
         raise ForbiddenException("You cannot create a rating for yourself")
-    new_rating = Rating.init_rating_with_json(request.json)
+    new_rating = Rating.init_rating_with_json(prevent_xss(request.json))
     return ratings_service.create_rating(new_rating).convert_to_json(), 201

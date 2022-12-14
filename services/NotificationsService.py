@@ -3,11 +3,18 @@ from data.services.DALService import DALService
 
 
 class NotificationsService:
-    _notifications_dao = NotificationsDAO()
-    _dal_service = DALService()
 
     def __init__(self):
         pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of NotificationsService class, a new one is created
+            cls._dal_service = DALService()
+            cls._notifications_dao = NotificationsDAO()
+            cls._instance = super(NotificationsService, cls).__new__(cls)
+        # There's already an instance of NotificationsService class, so the existing one is returned
+        return cls._instance
 
     def get_notifications_from_user(self, id_user):
         """
@@ -27,7 +34,7 @@ class NotificationsService:
     def add_notification(self, notification):
         """
         Add a notification for a user
-        :param notification: the notification to add
+        :param notification: object notification with id_user and notification text
         """
         try:
             self._dal_service.start()

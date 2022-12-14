@@ -7,7 +7,15 @@ from models.Notification import Notification
 class NotificationsDAO:
 
     def __init__(self):
-        self._dal_service = DALService()
+        pass
+
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            # No instance of NotificationsDAO class, a new one is created
+            cls._dal = DALService()
+            cls._instance = super(NotificationsDAO, cls).__new__(cls)
+        # There's already an instance of NotificationsDAO class, so the existing one is returned
+        return cls._instance
 
     def get_notifications_from_user(self, id_user):
         """
@@ -16,19 +24,20 @@ class NotificationsDAO:
         :return: all notifications for the user specified
         """
         sql = """
-            SELECT *
+            SELECT id_user, notification_text, id_notification, notification_date, seen
             FROM projet.notifications 
             WHERE id_user = %(id_user)s ORDER BY notification_date DESC;
         """
         results_export_notif = []
         value = {"id_user": id_user}
-        results = self._dal_service.execute(sql, value, True)
+        results = self._dal.execute(sql, value, True)
         for row in results:
-            notif = Notification(int(row[1]), str(row[2]), int(row[0]), str(row[3]), bool(row[4]))
+            notif = Notification(int(row[0]), str(row[1]), int(row[2]), str(row[3]), bool(row[4]))
             results_export_notif.append(notif)
         return results_export_notif
 
     def add_notification(self, notification):
+
         print("chat link", notification.chat_link)
         if notification.chat_link is None:
             sql = """
@@ -43,3 +52,4 @@ class NotificationsDAO:
 
             values = {"id_user": notification.id_user, "text": str(notification.notification_text), "chat_link": str(notification.chat_link)}
             self._dal_service.execute(sql, values)
+

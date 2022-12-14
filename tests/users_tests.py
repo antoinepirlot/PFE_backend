@@ -62,6 +62,15 @@ class UsersTests(unittest.TestCase):
             "pseudo": "pab",
             "sexe": "male"
         }
+        self.new_user = {
+             "lastname": "Feuille",
+              "firstname": "Jean",
+              "email": "a256@gmail.com",
+              "pseudo": "a256",
+              "sexe": "male",
+              "phone": "0477555978",
+              "password": "a256"
+        }
 
     def test_user_by_email_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
@@ -101,6 +110,14 @@ class UsersTests(unittest.TestCase):
         self.dal_service.execute = Mock(return_value=[])
         response = self.app.get('/users/pseudo/RENARD_FUTE')
         self.assertEqual(404, response.status_code)
+
+    def test_add_users_ok(self):
+        self.dal_service.execute = Mock(side_effect=[[], [], []])
+        response = self.app.post('/users', json=self.new_user)
+        print(response)
+        self.assertEqual(201, response.status_code)
+
+
 
 if __name__ == '__main__':
     unittest.main()

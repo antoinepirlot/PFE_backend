@@ -22,14 +22,6 @@ CREATE TABLE projet.chat_rooms  (
     id_user2 INTEGER NOT NULL REFERENCES projet.users(id_user)
 );
 
-CREATE TABLE projet.messages (
-    id_message SERIAL PRIMARY KEY,
-    pseudo_sender varchar(40),
-    content text NOT NULL,
-    creation_date DATE NOT NULL DEFAULT NOW(),
-    id_room VARCHAR NOT NULL REFERENCES projet.chat_rooms(id_room)
-);
-
 CREATE TABLE projet.favorites (
     id_teacher INTEGER NOT NULL REFERENCES projet.users(id_user),
     id_student INTEGER NOT NULL REFERENCES projet.users(id_user),

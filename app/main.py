@@ -10,11 +10,6 @@ from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from Exceptions.WebExceptions.UnauthorizedException import UnauthorizedException
 from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, \
     appointments
-from services.ChatRoomsService import ChatRoomsService
-from services.UsersService import UsersService
-
-chat_rooms_service = ChatRoomsService()
-users_service = UsersService()
 
 app = Flask(__name__)
 cors = CORS(app)

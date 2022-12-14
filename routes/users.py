@@ -26,6 +26,7 @@ def get_users():
 
 
 @route.route('/<int:id_user>', methods=['GET'])
+@authorize
 def get_user_by_id(id_user):
     if id_user is None or int(id_user) <= 0:
         raise BadRequestException("ID of the user is not mentioned or negative")

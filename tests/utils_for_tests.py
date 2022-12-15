@@ -13,7 +13,7 @@ def get_good_token(id):
         "id": id,
         'exp': datetime.utcnow() + timedelta(days=5)  # expiration time
     }
-    my_secret = "test"
+    my_secret = os.getenv("JWT_SECRET")
     token = jwt.encode(
         payload=payload_data,
         key=my_secret, algorithm="HS256"

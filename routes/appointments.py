@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.AppointmentsService import AppointmentsService
 from utils.security import prevent_xss
+from utils.authorize import authorize
 
 appointments_service = AppointmentsService()
 
@@ -15,6 +16,7 @@ route = Blueprint("appointments", __name__)
 # ###GET###
 # #########
 @route.route('/<int:id_student>', methods=['GET'])
+@authorize
 def get_appointments(id_student):
     result = appointments_service.get_appointments_for_user(id_student)
     appointments = []

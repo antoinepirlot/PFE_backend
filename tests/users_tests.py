@@ -1,10 +1,28 @@
+import os
 import unittest
+from datetime import datetime, timedelta
 from unittest.mock import Mock
-
+import jwt
 from app.main import app
 from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
-from models.User import User
+
+
+def get_good_token():
+    """
+    Create a good token
+    :return: the token
+    """
+    payload_data = {
+        "id": 1,
+        'exp': datetime.utcnow() + timedelta(days=5)  # expiration time
+    }
+    my_secret = os.getenv("JWT_SECRET")
+    token = jwt.encode(
+        payload=payload_data,
+        key=my_secret, algorithm="HS256"
+    )
+    return token
 
 
 class UsersTests(unittest.TestCase):
@@ -75,41 +93,48 @@ class UsersTests(unittest.TestCase):
 
     def test_user_by_email_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
-        response = self.app.get('/users/requinFR@gmail.com')
+        token = get_good_token()
+        response = self.app.get('/users/requinFR@gmail.com', headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.user_json, response.get_json())
 
     def test_user_by_email_non_existing_email(self):
         self.dal_service.execute = Mock(return_value=[])
-        response = self.app.get('/users/noexists@gmail.com')
+        token = get_good_token()
+        response = self.app.get('/users/noexists@gmail.com', headers={"Authorization": token})
         self.assertEqual(404, response.status_code)
 
     def test_get_user_by_id_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
-        response = self.app.get('/users/idUser=1')
+        token = get_good_token()
+        response = self.app.get('/users/idUser=1', headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.user_json, response.get_json())
 
     def test_get_user_by_id_non_exisiting_id(self):
         self.dal_service.execute = Mock(return_value=[])
-        response = self.app.get('/users/idUser=100')
+        token = get_good_token()
+        response = self.app.get('/users/idUser=100', headers={"Authorization": token})
         self.assertEqual(404, response.status_code)
 
     def test_get_users_ok(self):
         self.dal_service.execute = Mock(return_value=self.all_users_from_db)
-        response = self.app.get('/users')
+        token = get_good_token()
+        response = self.app.get('/users', headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual([self.user_json, self.user2_json], response.get_json())
 
     def test_get_users_by_pseudo_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
-        response = self.app.get('/users/pseudo/REQUIN')
+        token = get_good_token()
+        response = self.app.get('/users/pseudo/REQUIN', headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.user_json, response.get_json())
 
     def test_get_users_by_pseudo_non_existing_pseudo(self):
         self.dal_service.execute = Mock(return_value=[])
-        response = self.app.get('/users/pseudo/RENARD_FUTE')
+        token = get_good_token()
+        response = self.app.get('/users/pseudo/RENARD_FUTE', headers={"Authorization": token})
         self.assertEqual(404, response.status_code)
 
     def test_add_users_ok(self):

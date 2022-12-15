@@ -36,7 +36,7 @@ def get_favorites_from_user(id_user):
     all_favorites_json = []
     for favorite in all_favorites:
         user = users_service.get_users_by_id(favorite.id_teacher)
-        all_favorites_json.append({"teacher_username": user.pseudo})
+        all_favorites_json.append({"id_teacher": favorite.id_teacher,"teacher_username": user.pseudo})
     return all_favorites_json
 
 

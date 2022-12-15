@@ -170,37 +170,16 @@ INSERT INTO projet.courses(id_category, id_teacher, course_description, price_pe
 VALUES (9,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (7,2,'Cours particulier sur les fonctions du second degré', 25, 'Paris', 'France','Intermédiaire');
+VALUES (7,2,'Cours particulier sur les fonctions du second degré', 22, 'Paris', 'France','Intermédiaire');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (1,4,'Cours d Anglais avec Browny', 25, 'Namur', 'Belgique','Débutant');
+VALUES (1,4,'Cours d Anglais de niveau B1', 32, 'Namur', 'Belgique', 'Confirmé');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (9,3,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (9,3,'Un cours de PHP vous apprenant comment écrire vos propres fonctions personnelles et vos procédures', 25, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (12,1,'Cours de Python', 25, 'Bruxelles', 'Belgique','Débutant');
-
-
-
--- APPOINTMENTS
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(1, 5, 'pending', '2022-10-20', 'rue de la colline', 121);
-
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(1, 3, 'accepted', '2022-10-20', 'rue de la colline', 121);
-
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(2, 1, 'canceled', '2022-10-20', 'rue de la colline', 121);
-
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(3, 2, 'finished', '2022-10-20', 'rue de la colline', 121);
-
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(4, 1, 'finished', '2022-10-20', 'rue de la colline', 121);
-
-INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(5, 3, 'not_come', '2022-10-20', 'rue de la colline', 121);
+VALUES (12,1,'Apprendre les bases du Python, ', 25, 'Bruxelles', 'Belgique','Débutant');
 
 
 
@@ -222,17 +201,7 @@ VALUES('Prend le temps de bien expliquer les différents concepts même si parfo
 
 
 -- NOTIFICATIONS
-INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
-VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE);
-
-INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
-VALUES (2, 'Une nouvelle notif pour toi bebou', now(), FALSE);
-
-INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
-VALUES (4, 'Vous avez un rendez vous', now(), TRUE);
-
 
 
 -- CHAT_ROOMS
-INSERT INTO projet.chat_rooms(id_room, id_user1, id_user2)
-VALUES ('1b22b1e4-1fb9-412f-bc8e-b49942de2d78', 1, 2)
+

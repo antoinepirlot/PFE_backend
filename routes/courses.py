@@ -40,6 +40,7 @@ def get_all_courses():
 
 
 @route.route("/<id_course>", methods=["GET"])
+@authorize
 def get_one(id_course):
     id_course = int(id_course)
     if id_course < 1:

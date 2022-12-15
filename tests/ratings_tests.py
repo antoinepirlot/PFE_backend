@@ -49,7 +49,10 @@ class RatingsTests(unittest.TestCase):
                                                      self.teacher,
                                                      self.all_appointments,
                                                      self.empty_list,
+                                                     None,
+                                                     self.student,
                                                      None])
+
         token = get_good_token(1)
         response = self.app.post('/ratings/', json=self.correct_rating_json, headers={"Authorization": token})
         self.assertEqual(201, response.status_code)

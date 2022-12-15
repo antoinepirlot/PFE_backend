@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from models.User import User
 from services.AppointmentsService import AppointmentsService
 from utils.security import prevent_xss
+from utils.authorize import authorize
 
 appointments_service = AppointmentsService()
 
@@ -15,6 +16,7 @@ route = Blueprint("appointments", __name__)
 # ###GET###
 # #########
 @route.route('/<int:id_student>', methods=['GET'])
+@authorize
 def get_appointments(id_student):
     result = appointments_service.get_appointments_for_user(id_student)
     appointments = []
@@ -24,6 +26,7 @@ def get_appointments(id_student):
 
 
 @route.route('/<int:id_course>/<int:id_student>', methods=['GET'])
+@authorize
 def get_appointment_for_user_of_course(id_course, id_student):
     result = appointments_service.get_appointment_for_user_of_course(id_course, id_student)
 
@@ -31,6 +34,7 @@ def get_appointment_for_user_of_course(id_course, id_student):
 
 
 @route.route('/<int:id_course>/<int:id_student>/state/<string:appointment_state>', methods=['PUT'])
+@authorize
 def update_appointments_state(id_course, id_student, appointment_state):
     appointments_service.update_appointments_state(id_course, id_student, prevent_xss(appointment_state))
     return jsonify({"update done": ""})
@@ -40,6 +44,7 @@ def update_appointments_state(id_course, id_student, appointment_state):
 # ###POST##
 # #########
 @route.route("/", methods=['POST'])
+@authorize
 def create_one_appointement():
     # check body is not empty
     if 'id_course' not in request.get_json() or (not isinstance(request.json['id_course'], int)) or \

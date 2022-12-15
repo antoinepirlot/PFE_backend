@@ -52,26 +52,6 @@ class FavoritesDAO:
             results_export_fav_teachers.append(favorite)
         return results_export_fav_teachers
 
-    def get_most_favorites_teachers(self):
-        """
-        Get a list with the id teacher and its number of favorites student gives to him foreach teacher
-        :return: list with the id teacher and its number of favorites student gives to him foreach teacher
-        """
-        sql = """
-            SELECT id_teacher, count(id_student) as total FROM projet.favorites 
-            GROUP BY id_teacher ORDER BY total DESC
-        """
-        results_export_fav_teachers = []
-        results = self._dal.execute(sql, [], True)
-        if len(results) == 0:
-            return None
-        for row in results:
-            res = {
-                "id_teacher": row[0],
-                "total_like": row[1]
-            }
-            results_export_fav_teachers.append(res)
-        return results_export_fav_teachers
 
     def add_favorite(self, favorite):
         """

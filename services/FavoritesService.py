@@ -54,22 +54,6 @@ class FavoritesService:
             self._dal_service.rollback_transaction()
             raise e
 
-    def get_most_favorites_teachers(self):
-        """
-        Get a list with the id teacher and its number of favorites student gives to him foreach teacher
-        :return: list with the id teacher and its number of favorites student gives to him foreach teacher
-        """
-        try:
-            self._dal_service.start()
-            results = self._favorites_DAO.get_most_favorites_teachers()
-            if results is None:
-                raise NotFoundException
-            self._dal_service.commit_transaction()
-            return results
-        except Exception as e:
-            self._dal_service.rollback_transaction()
-            raise e
-
     def add_favorite(self, favorite):
         """
         Create a favorite

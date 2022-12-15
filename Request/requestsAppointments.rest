@@ -20,4 +20,5 @@ Content-Type: application/json
 }
 
 ### PUT update appointment where course id is 1 & user id is 1
-PUT http://localhost:5000/appointments/1/1/state/pending
+PUT http://localhost:5000/appointments/5/1/state/pending
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM

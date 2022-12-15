@@ -34,6 +34,7 @@ def get_appointment_for_user_of_course(id_course, id_student):
 
 
 @route.route('/<int:id_course>/<int:id_student>/state/<string:appointment_state>', methods=['PUT'])
+@authorize
 def update_appointments_state(id_course, id_student, appointment_state):
     appointments_service.update_appointments_state(id_course, id_student, prevent_xss(appointment_state))
     return jsonify({"update done": ""})

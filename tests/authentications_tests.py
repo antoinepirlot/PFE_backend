@@ -1,11 +1,7 @@
 import unittest
 from unittest.mock import Mock
-
-import bcrypt
-
 from utils_for_tests import get_good_token
 from app.main import app
-from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
 
 
@@ -63,7 +59,6 @@ class AuthenticationsTests(unittest.TestCase):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
         response = self.app.get('authentications/', headers={"Authorization": "wrong_token"})
         self.assertEqual(403, response.status_code)
-
 
 
 if __name__ == '__main__':

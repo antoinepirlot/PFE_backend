@@ -1,1 +1,1 @@
-web: gunicorn wsgi:start
+web: gunicorn wsgi:run()

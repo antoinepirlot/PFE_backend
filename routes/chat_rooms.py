@@ -1,5 +1,4 @@
-from flask import Blueprint, abort, jsonify
-from werkzeug.exceptions import NotFound
+from flask import Blueprint, abort
 
 from services.ChatRoomsService import ChatRoomsService
 
@@ -18,8 +17,6 @@ def get_chat_room(id_user1, id_user2):
     if chat_room is None:
         raise NotFoundException
     return chat_room.convert_to_json(), 201
-
-
 
 
 @route.route('/getRoomById/<id_room>', methods=['GET'])

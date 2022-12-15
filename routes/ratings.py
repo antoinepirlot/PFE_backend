@@ -16,7 +16,6 @@ route = Blueprint("ratings", __name__)
 ###GET###
 #########
 @route.route('/', methods=['GET'])
-@authorize
 def get_ratings_from_teacher():
     id_teacher = request.args.get('id_teacher')
     if id_teacher is None or int(id_teacher) <= 0:

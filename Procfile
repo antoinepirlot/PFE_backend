@@ -1,1 +1,1 @@
-web: gunicorn wsgi:socketio
+gunicorn --worker-class eventlet -w 1 wsgi:app

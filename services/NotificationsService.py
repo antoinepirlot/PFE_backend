@@ -43,3 +43,18 @@ class NotificationsService:
         except Exception as e:
             self._dal_service.rollback_transaction()
             raise e
+
+    def update_notification(self, id_notification):
+        """
+        Update an appointment state, from the database.
+        :param: id_course: the course id
+        :param: id_student: the student's id
+        :param: appointment_state: the state for the appointment
+        """
+        try:
+            self._dal_service.start()
+            self._notifications_dao.update_notification(id_notification)
+            self._dal_service.commit_transaction()
+        except Exception as e:
+            self._dal_service.rollback_transaction()
+            raise e

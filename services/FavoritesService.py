@@ -2,6 +2,9 @@ from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.FavoritesDAO import FavoritesDAO
 from data.services.DALService import DALService
+from data.DAO.NotificationsDAO import NotificationsDAO
+from data.DAO.UsersDAO import UsersDAO
+from models.Notification import Notification
 
 
 class FavoritesService:
@@ -15,6 +18,8 @@ class FavoritesService:
             # No instance of FavoritesService class, a new one is created
             cls._dal_service = DALService()
             cls._favorites_DAO = FavoritesDAO()
+            cls._notifications_DAO = NotificationsDAO()
+            cls._users_DAO = UsersDAO()
             cls._instance = super(FavoritesService, cls).__new__(cls)
         # There's already an instance of FavoritesService class, so the existing one is returned
         return cls._instance
@@ -54,22 +59,6 @@ class FavoritesService:
             self._dal_service.rollback_transaction()
             raise e
 
-    def get_most_favorites_teachers(self):
-        """
-        Get a list with the id teacher and its number of favorites student gives to him foreach teacher
-        :return: list with the id teacher and its number of favorites student gives to him foreach teacher
-        """
-        try:
-            self._dal_service.start()
-            results = self._favorites_DAO.get_most_favorites_teachers()
-            if results is None:
-                raise NotFoundException
-            self._dal_service.commit_transaction()
-            return results
-        except Exception as e:
-            self._dal_service.rollback_transaction()
-            raise e
-
     def add_favorite(self, favorite):
         """
         Create a favorite
@@ -82,6 +71,12 @@ class FavoritesService:
             if result is not None:
                 raise ConflictException("You already like this profile")
             result = self._favorites_DAO.add_favorite(favorite)
+
+            #add new notification
+            user = self._users_DAO.get_user_by_id(favorite.id_student)
+
+            self._notifications_DAO.add_notification(Notification(favorite.id_teacher, user.pseudo + " vous a ajouté a ses favoris", None))
+
             self._dal_service.commit_transaction()
             return result
         except Exception as e:

@@ -40,12 +40,6 @@ def get_favorites_from_user(id_user):
     return all_favorites_json
 
 
-@route.route('/mostFavoritesTeachers', methods=['GET'])
-def get_most_favorites_teachers():
-    all_favorites = favorites_service.get_most_favorites_teachers()
-    return all_favorites
-
-
 # ########
 # ##POST##
 # ########

@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock
-from flask import request
 from app.main import app
 from data.DAO.CoursesDAO import CoursesDAO
 from data.services.DALService import DALService
+from utils_for_tests import get_good_token
 
 
 class CoursesTests(unittest.TestCase):
@@ -104,25 +104,29 @@ class CoursesTests(unittest.TestCase):
 
     def test_get_one_course_with_id_course_ok(self):
         self.dal_service.execute = Mock(return_value=self.course_from_db)
-        response = self.app.get("courses/1")
+        token = get_good_token(1)
+        response = self.app.get("courses/1", headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.course_json, response.get_json())
 
     def test_get_one_course_with_id_course_not_existing(self):
         self.dal_service.execute = Mock(return_value=[])
-        response = self.app.get("courses/100")
+        token = get_good_token(1)
+        response = self.app.get("courses/100", headers={"Authorization": token})
         self.assertEqual(404, response.status_code)
 
     def test_get_one_course_with_id_course_lower_than_1(self):
-        self.dal_service.execute = Mock(return_value=[])
-        response = self.app.get("courses/0")
+        self.dal_service.execute = Mock(return_value=self.course_from_db)
+        token = get_good_token(1)
+        response = self.app.get("courses/0", headers={"Authorization": token})
         self.assertEqual(400, response.status_code)
 
-    # def test_get_all_courses_from_teacher_id_ok(self):
-    #     self.dal_service.execute = Mock(return_value=self.course_from_teacher_from_db)
-    #     response = self.app.get("courses/teacher")
-    #     self.assertEqual(200, response.status_code)
-    #     self.assertEqual(self.courses_from_teacher_json, response.get_json())
+    def test_get_all_courses_from_teacher_id_ok(self):
+        self.dal_service.execute = Mock(return_value=self.course_from_teacher_from_db)
+        token = get_good_token(1)
+        response = self.app.get("courses/teacher", headers={"Authorization": token})
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(self.courses_from_teacher_json, response.get_json())
 
     def test_get_all_courses_from_teacher_without_token(self):
         response = self.app.get("courses/teacher")

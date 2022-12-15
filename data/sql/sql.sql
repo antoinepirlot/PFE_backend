@@ -42,7 +42,9 @@ CREATE TABLE projet.notifications (
     id_user INTEGER NOT NULL REFERENCES projet.users(id_user),
     notification_text varchar(255) NOT NULL check ( notification_text<>'' ),
     notification_date TIMESTAMP NOT NULL DEFAULT NOW(),
-    seen BOOLEAN NOT NULL DEFAULT false
+    seen BOOLEAN NOT NULL DEFAULT false,
+    chat_link VARCHAR(100) DEFAULT ' '
+
 );
 
 CREATE TABLE projet.categories (
@@ -78,6 +80,18 @@ CREATE TABLE projet.appointments (
     CONSTRAINT appointment_pk PRIMARY KEY (id_course, id_student)
 );
 
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------INSERTS-----------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+-- USERS
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
 VALUES ('Dupont', 'Pierre', 'requinFR@gmail.com', 'REQUIN', 'male', '(+32)4 77 123 659', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
@@ -93,6 +107,9 @@ VALUES ('Patala', 'Morgane', 'morgane1780@gmail.com', 'morganeWemmel', 'female',
 INSERT INTO projet.users (lastname, firstname, email, pseudo, sexe, phone,password)
 VALUES ('Soler', 'Carlos', 'PSGfan@gmail.com', 'soleil', 'male', '(+32)4 77 321 559', '$2b$12$GywdfXS27bA0BrZFgZrbW.m9vqCT28SBjek.3eQF/K3AyMD7ZvnCO'); -- password : password123
 
+
+
+-- CATEGORIES
 INSERT INTO projet.categories (name)
 VALUES ('Anglais');
 
@@ -129,32 +146,49 @@ VALUES ('Piano');
 INSERT INTO projet.categories (name)
 VALUES ('Python');
 
+
+
+-- TEACHER_SKILLS
 INSERT INTO projet.teacher_skills(id_category, id_teacher)
-VALUES (1, 1);
+VALUES (9, 1);
 
 INSERT INTO projet.teacher_skills(id_category, id_teacher)
-VALUES (2, 1);
+VALUES (9, 3);
 
+INSERT INTO projet.teacher_skills(id_category, id_teacher)
+VALUES (7, 2);
+
+INSERT INTO projet.teacher_skills(id_category, id_teacher)
+VALUES (12, 1);
+
+INSERT INTO projet.teacher_skills(id_category, id_teacher)
+VALUES (1, 4);
+
+
+-- COURSES
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
 VALUES (9,1,'Cours permettant de vous introduire le langage PHP. Aucun prérequis n''est nécessaire', 18, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (7,1,'Cours particulier sur les fonctions du second degré', 25, 'Bruxelles', 'Belgique','Intermédiaire');
+VALUES (7,2,'Cours particulier sur les fonctions du second degré', 25, 'Paris', 'France','Intermédiaire');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (1,1,'Cours d Anglais avec Browny', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (1,4,'Cours d Anglais avec Browny', 25, 'Namur', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
-VALUES (9,1,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
+VALUES (9,3,'Cours d e PHP', 25, 'Bruxelles', 'Belgique','Débutant');
 
 INSERT INTO projet.courses(id_category, id_teacher, course_description, price_per_hour, city, country, level)
 VALUES (12,1,'Cours de Python', 25, 'Bruxelles', 'Belgique','Débutant');
 
+
+
+-- APPOINTMENTS
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(1, 5, 'pending', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(1, 1, 'accepted', '2022-10-20', 'rue de la colline', 121);
+VALUES(1, 3, 'accepted', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
 VALUES(2, 1, 'canceled', '2022-10-20', 'rue de la colline', 121);
@@ -166,13 +200,39 @@ INSERT INTO projet.appointments(id_course, id_student, appointment_state, appoin
 VALUES(4, 1, 'finished', '2022-10-20', 'rue de la colline', 121);
 
 INSERT INTO projet.appointments(id_course, id_student, appointment_state, appointment_date, street, number_house)
-VALUES(5, 1, 'not_come', '2022-10-20', 'rue de la colline', 121);
+VALUES(5, 3, 'not_come', '2022-10-20', 'rue de la colline', 121);
 
+
+
+-- FAVORITES
+INSERT INTO projet.favorites(id_teacher, id_student)
+VALUES (1, 3);
+
+INSERT INTO projet.favorites(id_teacher, id_student)
+VALUES (4, 2);
+
+
+-- RATINGS
 INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
 VALUES('Prof qui explique très bien, je recommande', 5, 5, 1);
 
+INSERT INTO projet.ratings(rating_text, rating_number, id_rater, id_rated)
+VALUES('Prend le temps de bien expliquer les différents concepts même si parfois un peu trop flou, merci :)', 4, 3, 2);
+
+
+
+-- NOTIFICATIONS
 INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
 VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE);
 
 INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
-VALUES (1, 'Une nouvelle notif pour toi bebou', now(), FALSE);
+VALUES (2, 'Une nouvelle notif pour toi bebou', now(), FALSE);
+
+INSERT INTO projet.notifications(id_user, notification_text, notification_date, seen)
+VALUES (4, 'Vous avez un rendez vous', now(), TRUE);
+
+
+
+-- CHAT_ROOMS
+INSERT INTO projet.chat_rooms(id_room, id_user1, id_user2)
+VALUES ('1b22b1e4-1fb9-412f-bc8e-b49942de2d78', 1, 2)

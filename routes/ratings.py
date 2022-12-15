@@ -5,6 +5,7 @@ from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
 from services.RatingsService import RatingsService
 from models.Rating import Rating
 from utils.security import prevent_xss
+from utils.authorize import authorize
 
 ratings_service = RatingsService()
 
@@ -30,6 +31,7 @@ def get_ratings_from_teacher():
 ##POST##
 ########
 @route.route("/", methods=["POST"])
+@authorize
 def create_one():
     # check body is not empty
     if 'id_rater' not in request.get_json() or (not isinstance(request.json['id_rater'], int)) or \

@@ -44,6 +44,7 @@ def update_appointments_state(id_course, id_student, appointment_state):
 # ###POST##
 # #########
 @route.route("/", methods=['POST'])
+@authorize
 def create_one_appointement():
     # check body is not empty
     if 'id_course' not in request.get_json() or (not isinstance(request.json['id_course'], int)) or \

@@ -10,3 +10,9 @@ Content-Type: application/json
   "notification_text": "tu es un barjo la macque",
   "chat_link": "zaezeaiufbzea oiuezraàiçp!ugh zaepiçoue gpiuezrh gpibznzaoiuvbrhnrfzo!iu"
 }
+
+### PUT update notification
+PUT http://localhost:5000/notifications/update/2
+
+### Get ratings from a teacher
+GET http://localhost:5000/notifications/newNotif/1

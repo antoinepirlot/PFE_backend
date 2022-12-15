@@ -112,3 +112,7 @@ def conflict_exception(e):
 @app.errorhandler(FatalException)
 def fatal_exception(e):
     return str(e), 500
+
+
+def run():
+    socketio.run(app)

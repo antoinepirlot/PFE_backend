@@ -1,13 +1,11 @@
 import jwt
 from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, request, g
-from werkzeug.exceptions import NotFound
 import os
 
-import utils.authorize
 from Exceptions.WebExceptions.BadRequestException import BadRequestException
 from services.UsersService import UsersService
-from utils.authorize import get_id_from_token, authorize
+from utils.authorize import authorize
 from utils.security import prevent_xss
 
 users_service = UsersService()
@@ -46,12 +44,4 @@ def login():
 @route.route('/', methods=['GET'])
 @authorize
 def get_user_by_token():
-    id_user = get_id_from_token(request.headers["Authorization"])
-    result = users_service.get_users_by_id(id_user)
-    return result.convert_to_json()
-
-
-@route.route('/getUserFromSession', methods=['GET'])
-@authorize
-def get_user_from_session():
     return g.user

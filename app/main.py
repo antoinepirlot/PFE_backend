@@ -9,7 +9,7 @@ from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from Exceptions.WebExceptions.UnauthorizedException import UnauthorizedException
-from routes import courses, users, ratings, favorites, authentications, notifications, chat_rooms, categories, \
+from routes import courses, users, ratings, favorites, authentications, notifications, categories, \
     appointments
 
 app = Flask(__name__)
@@ -30,7 +30,6 @@ app.register_blueprint(ratings.route, url_prefix="/ratings")
 app.register_blueprint(favorites.route, url_prefix="/favorites")
 app.register_blueprint(notifications.route, url_prefix="/notifications")
 app.register_blueprint(authentications.route, url_prefix="/authentications")
-app.register_blueprint(chat_rooms.route, url_prefix="/chat_rooms")
 app.register_blueprint(categories.route, url_prefix="/categories")
 app.register_blueprint(appointments.route, url_prefix="/appointments")
 

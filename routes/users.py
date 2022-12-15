@@ -69,4 +69,4 @@ def get_user_by_pseudo(pseudo):
 def add_user():
     json = prevent_xss(request.json)
     users_service.sing_in_user(json)
-    return jsonify({'user': 'user created'})
+    return jsonify({'user': 'user created'}), 201

@@ -70,7 +70,7 @@ class CoursesDAO:
         """
         sql = """
             SELECT
-                   cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level, cou.id_teacher,
+                   cou.id_course, cou.course_description, cou.price_per_hour, cou.city, cou.country, cou.level,
                    cat.id_category, cat.name,u.id_user, u.lastname, u.firstname, u.email, u.pseudo, u.sexe, u.phone,
                    COALESCE(SUM(ra.rating_number),0) AS "sum_stars", COUNT(ra.id_rated) AS "total_tuples_stars"
                 FROM 

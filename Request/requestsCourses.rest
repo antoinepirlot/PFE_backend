@@ -14,7 +14,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUz
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNTMyMzU5fQ.vQU8GzwUpdUaYYkzHOCM525z1YP-VDrJZKdgowXhjBE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNjcxNTQ0MjM2fQ.4zLz-Dz6BSnwBwmPSO3H-MV79j15gGdJMPXbdH8M08w
 
 ### 404 expected
 GET http://localhost:5000/courses/8000

@@ -43,9 +43,9 @@ class AppointmentsDAO:
         :param: id_student: the student's id
         :return: the list of appointments. If there's no appointments, it returns None
         """
-        sql = "SELECT DISTINCT id_course, id_student, appointment_state, appointment_date, street, number_house, box_house " \
-              "FROM projet.appointments " \
-              "WHERE  id_student = %(id_student)s ORDER BY appointment_state DESC, appointment_date"
+        sql = "SELECT DISTINCT ap.id_course, ap.id_student, ap.appointment_state, ap.appointment_date, ap.street, ap.number_house, ap.box_house " \
+              "FROM projet.appointments ap, projet.courses co " \
+              "WHERE co.id_course = ap.id_course AND ap.id_student = %(id_student)s OR co.id_teacher = %(id_student)s ORDER BY ap.appointment_state DESC, ap.appointment_date"
 
         results = self._dal.execute(sql, {"id_student": id_student}, True)
         if len(results) == 0:
@@ -87,7 +87,7 @@ class AppointmentsDAO:
               "WHERE  id_course = %(id_course)s AND id_student = %(id_student)s"
 
         self._dal.execute(sql, {"id_course": int(id_course), "id_student": int(id_student),
-                               "appointment_state": str(appointment_state)})
+                                "appointment_state": str(appointment_state)})
 
     def create_appointement(self, id_course, id_student, appointment_date, street, number_house, box_house):
         """

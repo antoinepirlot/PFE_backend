@@ -2,9 +2,11 @@ from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from Exceptions.WebExceptions.ConflictException import ConflictException
 from Exceptions.WebExceptions.ForbiddenException import ForbiddenException
 from data.DAO.AppointmentsDAO import AppointmentsDAO
+from data.DAO.NotificationsDAO import NotificationsDAO
 from data.DAO.RatingsDAO import RatingsDAO
 from data.DAO.UsersDAO import UsersDAO
 from data.services.DALService import DALService
+from models.Notification import Notification
 
 
 class RatingsService:
@@ -18,6 +20,7 @@ class RatingsService:
             cls._appointments_DAO = AppointmentsDAO()
             cls._ratings_DAO = RatingsDAO()
             cls._users_DAO = UsersDAO()
+            cls._notifications_DAO = NotificationsDAO()
             cls._dal_service = DALService()
             cls._instance = super(RatingsService, cls).__new__(cls)
         # There's already an instance of RatingsService class, so the existing one is returned
@@ -72,6 +75,13 @@ class RatingsService:
             if rating_db is not None:
                 raise ConflictException("You already give this teacher a rating")
             rating = self._ratings_DAO.create_one_rating(rating)
+
+            # add new notification
+            user = self._users_DAO.get_user_by_id(rating.id_rater)
+
+            self._notifications_DAO.add_notification(
+                Notification(rating.id_rated, user.pseudo + " vous a ajouté un avis", None))
+
             self._dal_service.commit_transaction()
             return rating
         except Exception as e:

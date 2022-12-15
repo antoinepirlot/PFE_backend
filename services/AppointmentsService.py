@@ -1,7 +1,11 @@
 from Exceptions.WebExceptions.NotFoundException import NotFoundException
 from data.DAO.AppointmentsDAO import AppointmentsDAO
+from data.DAO.CoursesDAO import CoursesDAO
+from data.DAO.NotificationsDAO import NotificationsDAO
+from data.DAO.UsersDAO import UsersDAO
 
 from data.services.DALService import DALService
+from models.Notification import Notification
 
 
 class AppointmentsService:
@@ -13,6 +17,9 @@ class AppointmentsService:
         if not hasattr(cls, "_instance"):
             # No instance of AppointmentsService class, a new one is created
             cls._appointments_DAO = AppointmentsDAO()
+            cls._courses_dao = CoursesDAO()
+            cls._users_DAO = UsersDAO()
+            cls._notifications_DAO = NotificationsDAO()
             cls._dal = DALService()
             cls._instance = super(AppointmentsService, cls).__new__(cls)
         # There's already an instance of AppointmentsService class, so the existing one is returned
@@ -35,8 +42,6 @@ class AppointmentsService:
             self._dal.rollback_transaction()
             raise e
 
-
-
     def get_appointment_for_user_of_course(self, id_course, id_student):
         """
         Get appointment of user and course, from the database.
@@ -52,7 +57,6 @@ class AppointmentsService:
         except Exception as e:
             self._dal.rollback_transaction()
             raise e
-
 
     def update_appointments_state(self, id_course, id_student, appointment_state):
         """
@@ -82,7 +86,18 @@ class AppointmentsService:
         try:
             self._dal.start()
             result = self._appointments_DAO.create_appointement(id_course, id_student, appointment_date, street,
-                                                               number_house, box_house)
+                                                                number_house, box_house)
+
+            # add new notification
+            course = self._courses_dao.get_one(id_course)
+            print("id teacher de course", )
+            user = self._users_DAO.get_user_by_id(course.id_teacher.id_user)
+            print(user)
+
+            self._notifications_DAO.add_notification(
+                Notification(id_student,
+                             user.pseudo + " vous a envoyé a un rendez-vous, aller voir dans vos rendez-vous", None))
+
             self._dal.commit_transaction()
             return result
         except Exception as e:
@@ -100,9 +115,10 @@ class AppointmentsService:
         """
         try:
             self._dal.start()
-            result = self._appointments_DAO.create_appointement_without_box_house(id_course, id_student, appointment_date,
-                                                                                 street,
-                                                                                 number_house)
+            result = self._appointments_DAO.create_appointement_without_box_house(id_course, id_student,
+                                                                                  appointment_date,
+                                                                                  street,
+                                                                                  number_house)
             self._dal.commit_transaction()
             return result
         except Exception as e:

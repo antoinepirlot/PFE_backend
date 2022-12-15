@@ -9,8 +9,8 @@ POST http://localhost:5000/appointments/
 Content-Type: application/json
 
 {
-  "id_course": 7,
-  "id_student": 6,
+  "id_course": 1,
+  "id_student": 4,
   "appointment_date": "2022-10-20",
   "street" : "Avenue des champs ellysés",
   "number_house" : 12,

@@ -19,7 +19,7 @@ def get_notifications_from_user(id_user):
     notifications = []
     for notification in result:
         notifications.append(notification.convert_to_json())
-    return notifications, 200
+    return notifications
 
 
 @route.route('', methods=['POST'])
@@ -32,4 +32,20 @@ def add_notification():
         notification = Notification(int(json['id_user']), str(json['notification_text']), str(json['chat_link']))
 
     notification_service.add_notification(notification)
-    return jsonify({'notification': 'notification created'}), 201
+    return jsonify({'notification': 'notification created'})
+
+
+@route.route('/update/<int:id_notification>', methods=['PUT'])
+def update_notification(id_notification):
+    print(id_notification)
+    notification_service.update_notification(id_notification)
+    return jsonify({"update done": "notification"})
+
+
+@route.route('/newNotif/<int:id_user>', methods=['GET'])
+def isNewNotification(id_user):
+    result = notification_service.isNewNotification(id_user)
+    notifications = []
+    for notification in result:
+        notifications.append(notification.convert_to_json())
+    return notifications

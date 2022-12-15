@@ -52,12 +52,17 @@ class AuthenticationsTests(unittest.TestCase):
                                                                 "password": "wrong_password"})
         self.assertEqual(404, response.status_code)
 
-    def test_get_user_by_token(self):
+    def test_get_user_by_token_ok(self):
         self.dal_service.execute = Mock(return_value=self.user_from_db)
         token = get_good_token(1)
         response = self.app.get('authentications/', headers={"Authorization": token})
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.user_json_without_psw, response.get_json())
+
+    def test_get_user_by_token_with_bad_token(self):
+        self.dal_service.execute = Mock(return_value=self.user_from_db)
+        response = self.app.get('authentications/', headers={"Authorization": "wrong_token"})
+        self.assertEqual(403, response.status_code)
 
 
 

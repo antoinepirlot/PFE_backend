@@ -12,16 +12,35 @@ class ChatRoomsTests(unittest.TestCase):
         self.dal_service.start = Mock()
         self.dal_service.commit_transaction = Mock()
         self.dal_service.rollback_transaction = Mock()
-        self.chatroom_from_db = [[(25, 1, 2)]]
+        self.chatroom_from_db = [(25, 1, 2)]
         self.chatroom_json = {"id_room": 25, "id_user1": 1, "id_user2": 2}
 
     def test_get_chat_room_by_id(self):
-        self.dal_service.execute = Mock(return_value=self.chatroom_from_db)
+        self.dal_service.execute = Mock(return_value=[self.chatroom_from_db])
         response = self.app.get('/chat_rooms/getRoomById/25')
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertEqual(self.chatroom_json, response.get_json())
 
     def test_get_chat_room_by_id_with_non_existent_id(self):
         self.dal_service.execute = Mock(return_value=[[]])
         response = self.app.get('/chat_rooms/getRoomById/2500')
         self.assertEqual(404, response.status_code)
+
+    def test_get_chat_room_ok(self):
+        self.dal_service.execute = Mock(return_value=self.chatroom_from_db)
+        response = self.app.get('/chat_rooms/1/2')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_chat_room_with_non_existant_id_user(self):
+        self.dal_service.execute = Mock(return_value=[])
+        response = self.app.get('/chat_rooms/1/2500')
+        self.assertEqual(404, response.status_code)
+
+    def test_create_chat_room_ok(self):
+        self.dal_service.execute = Mock(side_effect=[[], self.chatroom_from_db])
+        response = self.app.post('/chat_rooms/1/2')
+        self.assertEqual(201, response.status_code)
+
+    def test_create_chat_room_with_same_id_user(self):
+        response = self.app.post('/chat_rooms/1/1')
+        self.assertEqual(403, response.status_code)

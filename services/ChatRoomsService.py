@@ -31,7 +31,7 @@ class ChatRoomsService:
             self._dal.start()
             results = self._chat_rooms_DAO.get_chat_room(id_user1, id_user2)
             if results is None:
-               return None
+                raise NotFoundException
             self._dal.commit_transaction()
             return results
         except Exception as e:

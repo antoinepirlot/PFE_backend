@@ -68,6 +68,7 @@ def get_all_courses_from_teacher():
 # ##POST##
 # ########
 @route.route("/", methods=["POST"])
+@authorize
 def create_one():
     # check body is not empty
     if 'id_category' not in request.get_json() or (not isinstance(request.json['id_category'], int)) or \

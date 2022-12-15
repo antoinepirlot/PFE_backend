@@ -14,16 +14,20 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUz
 
 ### 200 expected with a course
 GET http://localhost:5000/courses/3
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNTMyMzU5fQ.vQU8GzwUpdUaYYkzHOCM525z1YP-VDrJZKdgowXhjBE
 
 ### 404 expected
 GET http://localhost:5000/courses/8000
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM
 
 ### 400 expected because id is lower than 1
 GET http://localhost:5000/courses/0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM
 
 ### Create a course
 POST http://localhost:5000/courses
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM
 
 {
   "id_category": 3,

@@ -40,6 +40,7 @@ def get_all_courses():
 
 
 @route.route("/<id_course>", methods=["GET"])
+@authorize
 def get_one(id_course):
     id_course = int(id_course)
     if id_course < 1:
@@ -67,6 +68,7 @@ def get_all_courses_from_teacher():
 # ##POST##
 # ########
 @route.route("/", methods=["POST"])
+@authorize
 def create_one():
     # check body is not empty
     if 'id_category' not in request.get_json() or (not isinstance(request.json['id_category'], int)) or \

@@ -26,6 +26,7 @@ def get_appointments(id_student):
 
 
 @route.route('/<int:id_course>/<int:id_student>', methods=['GET'])
+@authorize
 def get_appointment_for_user_of_course(id_course, id_student):
     result = appointments_service.get_appointment_for_user_of_course(id_course, id_student)
 

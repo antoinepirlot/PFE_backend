@@ -4,6 +4,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUz
 
 ### GET appointment where course id is 1 & user id is 1
 GET http://localhost:5000/appointments/1/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZXhwIjoxNjcxNDUzOTg5fQ.rG_jnAQEULtqJYVTitU0hf9HYyiDh-Ieup438zahLtM
 
 ### POST a new appointment
 POST http://localhost:5000/appointments/

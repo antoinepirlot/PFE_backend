@@ -66,16 +66,3 @@ class NotificationsDAO:
 
         print(id_notification)
         self._dal.execute(sql, {"id_notification": int(id_notification)})
-
-    def isNewNotification(self, id_user):
-        sql = """SELECT id_user, notification_text,chat_link, id_notification, notification_date, seen
-            FROM projet.notifications 
-            WHERE id_user = %(id_user)s AND seen = false;"""
-
-        results_export_notif = []
-        value = {"id_user": id_user}
-        results = self._dal.execute(sql, value, True)
-        for row in results:
-            notif = Notification(int(row[0]), str(row[1]), str(row[2]), int(row[3]), str(row[4]), bool(row[5]))
-            results_export_notif.append(notif)
-        return results_export_notif

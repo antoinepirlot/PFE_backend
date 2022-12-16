@@ -9,4 +9,4 @@ Installation instructions:
 * Activate the virtual environnement by using the command "./venv/Scripts/activate"
 * "(venv)" must appear in the terminal at the beginning of the line
 * Run "pip install -r requirements.txt"
-* Run the last command : "flask run" and enjoy :p
+* Run the last command : "wsgi.py" and enjoy :p

@@ -9,4 +9,14 @@ Installation instructions:
 * Activate the virtual environnement by using the command "./venv/Scripts/activate"
 * "(venv)" must appear in the terminal at the beginning of the line
 * Run "pip install -r requirements.txt"
-* Run the last command : "flask run" and enjoy :p
+* Run the last command : "wsgi.py" and enjoy :p
+
+If you want to run the app in local you will need a .env file with these informations : 
+
+```shell
+JWT_SECRET=<yourSecretHere>
+USER=<yourUserHere>
+PASSWORD=<yourPasswordHere>
+HOST=<yourHostHere>
+DATABASE=<nameOfYourDatabaseHere>
+```

@@ -14,7 +14,7 @@ Installation instructions:
 If you want to run the app in local you will need a .env file with these informations : 
 
 ```shell
-JWT_SECRET = <yourSecretHere>
+JWT_SECRET=<yourSecretHere>
 USER=<yourUserHere>
 PASSWORD=<yourPasswordHere>
 HOST=<yourHostHere>
